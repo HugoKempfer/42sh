@@ -9,9 +9,9 @@
 #include <stdio.h>
 #include "my.h"
 #include "functions.h"
+#include "tools.h"
 
 int main(int unused ac, char unused **av)
 {
-	my_putstr("makefile_test\n");
 	return (0);
 }

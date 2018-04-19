@@ -30,6 +30,7 @@ all:		$(NAME)
 $(NAME):	$(OBJ)
 		$(AR) $(NAME) $(OBJ)
 		cp my.h ../../include
+		cp list.h ../../include
 
 clean:
 		rm -f $(OBJ)

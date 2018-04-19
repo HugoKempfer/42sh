@@ -5,7 +5,7 @@
 ## Standard Makefile configuration
 ##
 
-SRC	=	$(wildcard src/*.c)
+SRC	=	$(wildcard src/*.c) $(wildcard ./src/*/*.c)
 
 OBJ	=	$(SRC:.c=.o)
 
