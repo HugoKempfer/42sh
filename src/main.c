@@ -26,6 +26,7 @@ static char SENTINEL_CHAR[] = {
 	'>',
 	'|',
 	';',
+	'&',
 	-1
 };
 static char SEPARATORS[] = {
@@ -37,6 +38,7 @@ static char SEPARATORS[] = {
 	'>',
 	'|',
 	';',
+	'&',
 	-1
 };
 

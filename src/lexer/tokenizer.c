@@ -11,16 +11,14 @@
 #include "strings.h"
 
 static const token_type_list_t TYPES[] = {
+	{"||", OR},
+	{">>", D_SUP},
+	{"<<", D_INF},
+	{"&&", AND},
 	{"|", PIPE},
 	{">", SUP},
 	{"<", INF},
-	{">>", D_SUP},
-	{"<<", D_INF},
 	{";", SEMI_COLON},
-	{"(", PARENTHESES},
-	{"`", BACK_TICKS},
-	{"&&", AND},
-	{"||", OR},
 	{"", COMMAND}
 };
 
@@ -96,7 +94,7 @@ llist_t *tokenize_command(char **command)
 			++command;
 			continue;
 		}
-		else if (check_process(tokens, type, value)) {
+		else if (!(check_process(tokens, type, value))) {
 			list_destroy(tokens);
 			return (NULL);
 		}

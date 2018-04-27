@@ -14,16 +14,14 @@ typedef struct token_s token_t;
 typedef struct token_type_list_s token_type_list_t;
 
 enum token_type {
+	OR,
+	D_SUP,
+	D_INF,
+	AND,
 	PIPE,
 	SUP,
 	INF,
-	D_SUP,
-	D_INF,
 	SEMI_COLON,
-	PARENTHESES,
-	BACK_TICKS,
-	AND,
-	OR,
 	COMMAND
 };
 
