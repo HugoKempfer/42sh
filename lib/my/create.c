@@ -51,12 +51,14 @@ int	list_push_head(void *data, llist_t *list)
 		list->head = node;
 	}
 	++(list->nb_nodes);
+	return (true);
 }
 
 int	list_push_tail(void *data, llist_t *list)
 {
 	lnode_t *node = list_create_node(data);
 
+	printf("LIST PUSH TAIL\n");
 	if (!(node)) {
 		return (false);
 	}

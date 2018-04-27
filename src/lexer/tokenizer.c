@@ -57,15 +57,13 @@ static int process(llist_t *tokens, enum token_type type, char **value)
 		return (false);
 	}
 	if (type == COMMAND && value) {
-		printf("It's a command and TRUE\n");
 		token->value = value;
 		if (!(list_push_tail(token, tokens))) {
 			free(token);
 			return (false);
 		}
-	}
-	else if (type == COMMAND && !(value)) {
-		printf("Empty command\n");
+		return (true);
+	} else if (type == COMMAND && !(value)) {
 		free(token);
 		return (true);
 	}

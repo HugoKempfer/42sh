@@ -63,7 +63,6 @@ int main(int unused ac, char unused **av)
 		command = subdivise_str(str, (cutter_charset_t){SEPARATORS, SENTINEL_CHAR, SUROUNDINGS});
 		tokens = tokenize_command(command);
 		printf("nb tokens [%d]\n", tokens->nb_nodes);
-		list_push_tail(NULL, tokens);
 		print(tokens);
 	} while (prompt);
 	return (0);
