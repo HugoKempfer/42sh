@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "lexer_explicit.h"
 
 int get_nb_lines(char **buffer)
 {
@@ -18,7 +17,7 @@ int get_nb_lines(char **buffer)
 		return (0);
 	}
 	while (buffer[it]) {
-		it++;
+		++it;
 	}
 	return (it);
 }
@@ -29,7 +28,7 @@ void destroy_str_array(char **buffer)
 
 	while (buffer && buffer[it]) {
 		free(buffer[it]);
-		it++;
+		++it;
 	}
 	free(buffer);
 }
@@ -49,7 +48,7 @@ char *alloc_str(char *str)
 	}
 	while (str && str[it]) {
 		output[it] = str[it];
-		it++;
+		++it;
 	}
 	output[it] = '\0';
 	return (output);
@@ -65,7 +64,7 @@ char *alloc_n_str(char *str, int size)
 	}
 	while (str && str[it] && it < size) {
 		output[it] = str[it];
-		it++;
+		++it;
 	}
 	output[it] = '\0';
 	return (output);
@@ -77,14 +76,14 @@ char **add_line(char **buffer, char *line)
 	int nb_lines = get_nb_lines(buffer);
 	char **output = NULL;
 
-	output = malloc(sizeof(char*) * (nb_lines + 2));
+	output = malloc(sizeof(char *) * (nb_lines + 2));
 	if (!(output)) {
 		destroy_str_array(buffer);
 		return (NULL);
 	}
 	while (buffer && buffer[it]) {
 		output[it] = buffer[it];
-		it++;
+		++it;
 	}
 	output[it] = line;
 	output[it + 1] = NULL;

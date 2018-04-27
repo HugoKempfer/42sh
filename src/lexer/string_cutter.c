@@ -7,12 +7,8 @@
 
 #include <stddef.h>
 #include <stdbool.h>
-#include "lexer_explicit.h"
 #include "strings.h"
 #include "tools.h"
-
-static const char SENTINEL_CHAR[] = {'-', '\t', -1};
-static const char SEPARATORS[] = {'\0', ' ', '\t', '\n', '-', -1};
 
 static bool is_in_arr(char const c, char const *arr)
 {
@@ -22,52 +18,67 @@ static bool is_in_arr(char const c, char const *arr)
 		if (c == arr[it]) {
 			return (true);
 		}
-		it++;
+		++it;
 	}
 	return (false);
 }
 
-static int get_eow(char *str, cutter_charset_t *charset)
+static char *is_surrounding(char c, char **arr)
+{
+	int it = 0;
+
+	while (arr[it] && *(arr[it]) != -1) {
+		if (c == *(arr[it])) {
+			return (arr[it]);
+		}
+		++it;
+	}
+	return (NULL);
+}
+
+static int get_eow(char *str, cutter_charset_t charset)
 {
 	int it = 0;
 
 	if (!(str) || !(*(str))) {
 		return (-1);
 	}
-	if (is_in_arr(*str, SENTINEL_CHAR)) {
-		while (is_in_arr(str[it], charset->kept_separators)) {
-			it++;
+	if (is_surrounding(*str, charset.surroundings)) {
+		return (get_end_of_str(str, is_surrounding(*str,
+						charset.surroundings)));
+	} else if (is_in_arr(*str, charset.kept_separators)) {
+		while (is_in_arr(str[it], charset.kept_separators)) {
+			++it;
 		}
-	}
-	else {
-		while (!(is_in_arr(str[it], charset->separators))) {
-			it++;
+	} else {
+		while (!(is_in_arr(str[it], charset.separators))) {
+			++it;
 		}
 	}
 	return (it);
 }
 
-static int get_next_word(char *str, int *cursor, cutter_charset_t *charset)
+static int get_next_word(char *str, int *cursor, cutter_charset_t charset)
 {
 	int it = 0;
 
 	if (!(str) || !(*(str))) {
 		return (-1);
 	}
-	while (is_in_arr(str[it], charset->separators)) {
+	while (is_in_arr(str[it], charset.separators)) {
 		if (!(str[it])) {
 			return (-1);
 		}
-		if (is_in_arr(str[it], charset->kept_separators)) {
+		if (is_in_arr(str[it], charset.kept_separators)) {
 			break;
 		}
-		it++;
+		++it;
 	}
 	*cursor += it;
 	return (it);
 }
 
-char **subdivise_str(char *str, cutter_charset_t *charset)
+char **subdivise_str(char *str, cutter_charset_t charset)
 {
 	int it = 0;
 	int eow = 0;

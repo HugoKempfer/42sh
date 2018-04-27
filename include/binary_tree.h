@@ -42,4 +42,5 @@ struct tnode_s {
 	tnode_data_t data;
 
 };
+
 #endif /* ifndef BINARY_TREE_H */

@@ -9,5 +9,13 @@
 
 char *prompt(void)
 {
-	return (NULL);
+	char *command = NULL;
+	size_t len;
+
+	fputs("42sh> ", stdout);
+	if (getline(&command, &len, stdin) == -1) {
+		free(command);
+		return (NULL);
+	}
+	return (command);
 }
