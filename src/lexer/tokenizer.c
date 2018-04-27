@@ -10,6 +10,7 @@
 #include "tools.h"
 #include "strings.h"
 
+/* Always put the doubly separator at the top */
 static const token_type_list_t TYPES[] = {
 	{"||", OR},
 	{">>", D_SUP},
@@ -81,7 +82,7 @@ static int check_process(llist_t *tokens, enum token_type type, char **value)
 
 llist_t *tokenize_command(char **command)
 {
-	llist_t *tokens = list_init(NULL);
+	llist_t *tokens = list_init(&destroy_token);
 	enum token_type type;
 	char **value = NULL;
 
@@ -98,6 +99,7 @@ llist_t *tokenize_command(char **command)
 		}
 		value = NULL;
 		++command;
+		free(command - 1);
 	}
 	return ((process(tokens, COMMAND, value) ? tokens : NULL));
 }

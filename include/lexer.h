@@ -25,15 +25,19 @@ enum token_type {
 	COMMAND
 };
 
+/* Struct of the token itself */
 struct token_s {
 	enum token_type type;
 	char **value;
 };
+
+/* Structure of the branch table */
 struct token_type_list_s {
 	char *str;
 	enum token_type type;
 };
 
 llist_t *tokenize_command(char **command);
+void destroy_token(void *data);
 
 #endif /* ifndef LEXER_H */
