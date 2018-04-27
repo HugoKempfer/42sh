@@ -9,6 +9,7 @@
 #define LEXER_H
 
 #include "tools.h"
+#include "list.h"
 
 typedef struct token_s token_t;
 typedef struct token_type_list_s token_type_list_t;

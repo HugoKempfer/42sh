@@ -13,6 +13,6 @@ void destroy_token(void *data)
 {
 	token_t *token = (token_t *)data;
 
-	free(data->value);
-	free(data);
+	free(token->value);
+	free(token);
 }
