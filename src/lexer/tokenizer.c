@@ -70,7 +70,6 @@ static int process(llist_t *tokens, enum token_type type, char **value)
 
 static int check_process(llist_t *tokens, enum token_type type, char **value)
 {
-	printf("CHECK PROCESS\n");
 	if (!(process(tokens, COMMAND, value))) {
 		return (false);
 	}
@@ -89,7 +88,6 @@ llist_t *tokenize_command(char **command)
 	while (command && *command) {
 		type = get_token_type(*(command));
 		if (type == COMMAND) {
-			printf("COMMAND\n");
 			value = add_line(value, *(command));
 			++command;
 			continue;
@@ -98,7 +96,6 @@ llist_t *tokenize_command(char **command)
 			list_destroy(tokens);
 			return (NULL);
 		}
-		printf("SEPARATOR\n");
 		value = NULL;
 		++command;
 	}
