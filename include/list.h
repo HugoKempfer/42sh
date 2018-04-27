@@ -28,8 +28,8 @@ struct llist_s
 };
 
 lnode_t *list_create_node(void *);
-void	list_push_head(void *, llist_t *);
-void	list_push_tail(void *, llist_t *);
+int	list_push_head(void *, llist_t *);
+int	list_push_tail(void *, llist_t *);
 lnode_t	*list_index(int, lnode_t *);
 void	list_pop(lnode_t *, llist_t *);
 llist_t	*list_create(destroy_func_t *);

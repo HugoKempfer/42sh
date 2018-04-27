@@ -11,6 +11,8 @@
 #include "functions.h"
 #include "tools.h"
 #include "strings.h"
+#include "list.h"
+#include "lexer.h"
 
 static char *SUROUNDINGS[] = {
 	"\"\"",
@@ -40,13 +42,13 @@ static char SEPARATORS[] = {
 
 char *prompt(void);
 
-static void print(char **str)
+static void print(llist_t *tokens)
 {
-	int it = 0;
+	lnode_t *node = tokens->head;
 
-	while (str[it]) {
-		printf("[%s]\n", str[it]);
-		++it;
+	while (node) {
+		printf("[%d]\n", ((token_t *)(node->data))->type);
+		node = node->next;
 	}
 }
 
@@ -54,11 +56,15 @@ int main(int unused ac, char unused **av)
 {
 	char *str = NULL;
 	char **command = NULL;
+	llist_t *tokens = NULL;
 
 	do {
 		str = prompt();
 		command = subdivise_str(str, (cutter_charset_t){SEPARATORS, SENTINEL_CHAR, SUROUNDINGS});
-		print(command);
+		tokens = tokenize_command(command);
+		printf("nb tokens [%d]\n", tokens->nb_nodes);
+		list_push_tail(NULL, tokens);
+		print(tokens);
 	} while (prompt);
 	return (0);
 }

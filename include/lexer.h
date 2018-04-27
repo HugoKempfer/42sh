@@ -10,7 +10,8 @@
 
 #include "tools.h"
 
-typedef struct token_s token_t
+typedef struct token_s token_t;
+typedef struct token_type_list_s token_type_list_t;
 
 enum token_type {
 	PIPE,
@@ -18,6 +19,7 @@ enum token_type {
 	INF,
 	D_SUP,
 	D_INF,
+	SEMI_COLON,
 	PARENTHESES,
 	BACK_TICKS,
 	AND,
@@ -29,4 +31,11 @@ struct token_s {
 	enum token_type type;
 	char **value;
 };
+struct token_type_list_s {
+	char *str;
+	enum token_type type;
+};
+
+llist_t *tokenize_command(char **command);
+
 #endif /* ifndef LEXER_H */
