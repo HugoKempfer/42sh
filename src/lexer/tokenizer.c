@@ -99,7 +99,7 @@ llist_t *tokenize_command(char **command)
 		}
 		value = NULL;
 		++command;
-		free(command - 1);
+		free(*(command - 1));
 	}
 	return ((process(tokens, COMMAND, value) ? tokens : NULL));
 }
