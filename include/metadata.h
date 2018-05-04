@@ -17,15 +17,17 @@ typedef struct tree_metadata_s tree_metadata_t;
 
 enum separator_type
 {
-	SEMI_COLON,
-	AND,
-	OR,
-	NONE
+	NONE,
+	OR = 1,
+	SEMI_COLON = 2,
+	AND = 3
 };
 
 enum exec_state
 {
+	NONE,
 	ACTIVE,
+	TERMINATED,
 	SUSPENDED
 };
 
@@ -33,7 +35,7 @@ struct tree_metadata_s {
 	tnode_t *head;
 	bool is_job;
 	pid_t pid;
-	enum separator_type separator;
+	enum separator_type tree_type;
 	enum exec_state state;
 };
 

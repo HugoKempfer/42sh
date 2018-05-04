@@ -19,16 +19,18 @@ typedef struct tnode_s tnode_t;
 
 enum tnode_type
 {
-	PIPE,
-	SUP,
-	INF,
-	D_SUP,
-	D_INF,
-	PARENTHESES,
-	BACK_TICKS,
-	AND,
-	OR,
-	COMMAND
+	OR = 1,
+	AND = 2,
+	SEMI_COLON = 3,
+	D_SUP = 4,
+	D_INF = 5,
+	PIPE = 6,
+	SUP = 7,
+	INF = 8,
+	PARENTHESES = 9,
+	BACK_TICKS = 10,
+	COMMAND = 0,
+	TREE_HEAD = -1
 };
 
 struct tnode_data_s {

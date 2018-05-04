@@ -18,6 +18,7 @@ static char *SUROUNDINGS[] = {
 	"\"\"",
 	"()",
 	"[]",
+	"``",
 	NULL
 };
 
