@@ -23,7 +23,7 @@ static const token_type_list_t TYPES[] = {
 	{"", COMMAND}
 };
 
-static enum token_type get_token_type(char *str)
+static enum tnode_type get_token_type(char *str)
 {
 	int it = 0;
 
@@ -36,7 +36,7 @@ static enum token_type get_token_type(char *str)
 	return (COMMAND);
 }
 
-static token_t *create_token(char **value, enum token_type type)
+static token_t *create_token(char **value, enum tnode_type type)
 {
 	token_t *token = malloc(sizeof(*token));
 
@@ -48,7 +48,7 @@ static token_t *create_token(char **value, enum token_type type)
 	return (token);
 }
 
-static int process(llist_t *tokens, enum token_type type, char **value)
+static int process(llist_t *tokens, enum tnode_type type, char **value)
 {
 	token_t *token = create_token(NULL, type);
 
@@ -69,7 +69,7 @@ static int process(llist_t *tokens, enum token_type type, char **value)
 	return (list_push_tail(token, tokens));
 }
 
-static int check_process(llist_t *tokens, enum token_type type, char **value)
+static int check_process(llist_t *tokens, enum tnode_type type, char **value)
 {
 	if (!(process(tokens, COMMAND, value))) {
 		return (false);
@@ -83,7 +83,7 @@ static int check_process(llist_t *tokens, enum token_type type, char **value)
 llist_t *tokenize_command(char **command)
 {
 	llist_t *tokens = list_init(&destroy_token);
-	enum token_type type;
+	enum tnode_type type;
 	char **value = NULL;
 
 	while (command && *command) {

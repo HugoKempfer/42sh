@@ -5,13 +5,14 @@
 ** Functions to build the binary tree from the tokens
 */
 
-#include "tools.h"
 #include "binary_tree.h"
-#include "list.h"
-#include "lexer.h"
-#include "parser.h"
 #include "42sh.h"
+#include "lexer.h"
+#include "list.h"
+#include "parser.h"
+#include "tools.h"
 
+/* Init the tree metadata wrapper */
 static tree_metadata_t *init_tree_metadata(void)
 {
 	tree_metadata_t *metadata = malloc(sizeof(*metadata));
@@ -22,6 +23,7 @@ static tree_metadata_t *init_tree_metadata(void)
 	return (metadata);
 }
 
+/* Build a whole command tree and push it into the process list */
 static int build_tree(llist_t *tokens, shell_info_t *shell_info)
 {
 	tree_metadata_t *metadata = init_tree_metadata();
@@ -33,7 +35,7 @@ static int build_tree(llist_t *tokens, shell_info_t *shell_info)
 		return (false);
 	}
 	metadata->head = head;
-	if (!(build_separator_branch(tokens, shell_infos, head))) {
+	if (!(build_separator_branch(tokens, head))) {
 		return (false);
 	}
 	if (!(add_expressions_branch(tokens, head))) {
@@ -41,9 +43,11 @@ static int build_tree(llist_t *tokens, shell_info_t *shell_info)
 	}
 	metadata->tree_type = ((token_t *)tokens->tail->data)->type;
 	list_pop(tokens->tail, tokens);
+	list_push_head(metadata, shell_info->processes);
 	return (true);
 }
 
+/* Loop the creation of command trees */
 int build_trees_from_tokens(llist_t *tokens, shell_info_t *shell_info)
 {
 	while (!(tokens->nb_nodes)) {

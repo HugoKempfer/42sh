@@ -44,4 +44,9 @@ struct tnode_s {
 	tnode_data_t data;
 };
 
+/* Function prototypes */
+int create_and_link(tnode_t *parent, tnode_data_t data, int position);
+int add_link(tnode_t *parent, tnode_t *child, int position);
+tnode_t *create_tnode(tnode_data_t data);
+
 #endif /* ifndef BINARY_TREE_H */

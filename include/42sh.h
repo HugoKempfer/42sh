@@ -5,8 +5,10 @@
 ** Main strucures of the shell
 */
 
-#ifndef 42SH_H
-#define 42SH_H
+#ifndef SH_H
+#define SH_H
+
+#include "list.h"
 
 typedef struct shell_info_s shell_info_t;
 
@@ -17,4 +19,4 @@ struct shell_info_s {
 	llist_t *env;
 };
 
-#endif /* ifndef 42SH_H */
+#endif /* ifndef SH_H */

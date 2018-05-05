@@ -5,12 +5,12 @@
 ** Functions to build the tree branches
 */
 
-#include "tools.h"
 #include "binary_tree.h"
 #include "list.h"
 #include "lexer.h"
 #include "parser.h"
 #include "42sh.h"
+#include "tools.h"
 
 static int push_tnode(token_t *token, tnode_t *head, int position)
 {
@@ -30,14 +30,14 @@ static inline int is_last_command(lnode_t *node)
 		return (true);
 	}
 	token = node->data;
-	else if (IS_TREE_SEPARATOR(token->type)) {
+	if (IS_TREE_SEPARATOR(token->type)) {
 		return (true);
 	}
 	return (false);
 }
 
 /* Build the main branches which hold expressions together */
-int build_separator_branch(llist_t *tokens, shell_info_t *infos, tnode_t *head)
+int build_separator_branch(llist_t *tokens, tnode_t *head)
 {
 	lnode_t *node = tokens->tail;
 	token_t *token = NULL;

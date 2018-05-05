@@ -9,23 +9,24 @@
 #define METADATA_H
 
 
-#include <sys/types.h>
-#include "tools.h"
 #include "lexer.h"
+#include "binary_tree.h"
+#include "tools.h"
+#include <sys/types.h>
 
 typedef struct tree_metadata_s tree_metadata_t;
 
 enum separator_type
 {
 	NONE,
-	OR = 1,
-	SEMI_COLON = 2,
-	AND = 3
+	T_OR = 1,
+	T_AND = 2,
+	T_SEMI_COLON = 3
 };
 
 enum exec_state
 {
-	NONE,
+	NOT_EXECUTED,
 	ACTIVE,
 	TERMINATED,
 	SUSPENDED

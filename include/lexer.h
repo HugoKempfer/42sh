@@ -8,6 +8,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include "metadata.h"
 #include "binary_tree.h"
 #include "list.h"
 #include "tools.h"
@@ -23,9 +24,9 @@ typedef struct token_type_list_s token_type_list_t;
 #define SURROUND_MAX 10
 
 /* Maccros to check if it's a separator  */
-#define IS_TREE_SEPARATOR(a) ((a) && (a) >= T_SEP_min && (a) <= T_SEP_max)
-#define IS_CMD_SEPARATOR(a) ((a) && (a) >= CMD_SEP_min && (a) <= CMD_SEP_max)
-#define IS_SEPARATOR(a) ((a) && (a) >= SURROUND_MIN && (a) <= SURROUND_MAX)
+#define IS_TREE_SEPARATOR(a) ((a) >= T_SEP_min && (a) <= T_SEP_max)
+#define IS_CMD_SEPARATOR(a) ((a) >= CMD_SEP_min && (a) <= CMD_SEP_max)
+#define IS_SEPARATOR(a) ((a) >= SURROUND_MIN && (a) <= SURROUND_MAX)
 
 /* Struct of the token itself */
 struct token_s {
@@ -36,7 +37,7 @@ struct token_s {
 /* Structure of the branch table */
 struct token_type_list_s {
 	char *str;
-	enum token_type type;
+	enum tnode_type type;
 };
 
 llist_t *tokenize_command(char **command);

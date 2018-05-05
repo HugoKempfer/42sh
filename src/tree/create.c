@@ -5,9 +5,9 @@
 ** Create binary tree nodes
 */
 
-#include <stdbool.h>
-#include "tools.h"
 #include "binary_tree.h"
+#include "tools.h"
+#include <stdbool.h>
 
 tnode_t *create_tnode(tnode_data_t data)
 {
