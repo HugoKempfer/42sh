@@ -5,14 +5,14 @@
 ** main.c
 */
 
+#include "lexer.h"
+#include "parser.h"
+#include "my.h"
+#include "strings.h"
+#include "tools.h"
+#include "list.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "my.h"
-#include "functions.h"
-#include "tools.h"
-#include "strings.h"
-#include "list.h"
-#include "lexer.h"
 
 static char *SUROUNDINGS[] = {
 	"\"\"",
@@ -60,6 +60,7 @@ int main(int unused ac, char unused **av)
 	char *str = NULL;
 	char **command = NULL;
 	llist_t *tokens = NULL;
+	shell_info_t *info = init_shell_info();
 
 	do {
 		str = prompt();
@@ -67,6 +68,8 @@ int main(int unused ac, char unused **av)
 		tokens = tokenize_command(command);
 		printf("nb tokens [%d]\n", tokens->nb_nodes);
 		print(tokens);
+		build_trees_from_tokens(tokens, info);
+		printf("Nb trees [%d]\n", info->processes->nb_nodes);
 	} while (prompt);
 	return (0);
 }

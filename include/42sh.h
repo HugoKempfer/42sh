@@ -19,4 +19,5 @@ struct shell_info_s {
 	llist_t *env;
 };
 
+shell_info_t *init_shell_info(void);
 #endif /* ifndef SH_H */
