@@ -12,6 +12,8 @@
 #include "42sh.h"
 #include "tools.h"
 
+void print(llist_t *tokens); //TODO del this
+
 static int push_tnode(token_t *token, tnode_t *head, int position)
 {
 	tnode_data_t data = {token->type, token->value};
@@ -37,49 +39,90 @@ static inline int is_last_command(lnode_t *node)
 }
 
 /* Build the main branches which hold expressions together */
+//int build_separator_branch(llist_t *tokens, tnode_t *head)
+//{
+//	lnode_t *node = tokens->tail;
+//	token_t *token = NULL;
+//
+//	if (!node) {
+//		return (false);
+//	}
+//	do {
+//		token = node->data;
+//		if (token->type == COMMAND) {
+//			node = node->prev;
+//			continue;
+//		}
+//		if (!(push_tnode(token, head, LEFT))) {
+//			return (false);
+//		}
+//		head = head->left;
+//		node = node->prev;
+//		list_pop(node->next, tokens);
+//	} while (node && !(IS_TREE_SEPARATOR(token->type)));
+//	return (true);
+//}
+
 int build_separator_branch(llist_t *tokens, tnode_t *head)
 {
 	lnode_t *node = tokens->tail;
-	token_t *token = NULL;
 
 	if (!node) {
 		return (false);
 	}
-	do {
-		token = node->data;
-		if (token->type == COMMAND) {
+	while (node && !(IS_TREE_SEPARATOR(((token_t *)(node->data))->type))) {
+		if (((token_t *)(node->data))->type == COMMAND) {
 			node = node->prev;
 			continue;
 		}
-		if (!(push_tnode(token, head, LEFT))) {
+		if (!(push_tnode(node->data, head, LEFT))) {
 			return (false);
 		}
 		head = head->left;
 		node = node->prev;
 		list_pop(node->next, tokens);
-	} while (node && !(IS_TREE_SEPARATOR(token->type)));
+	}
 	return (true);
 }
 
 /* Build ann sub-branches which heritates from the separators branches */
+//int add_expressions_branch(llist_t *tokens, tnode_t *head)
+//{
+//	lnode_t *node = tokens->tail;
+//	token_t *token = NULL;
+//	int position;
+//
+//	if (!(node)) {
+//		return (false);
+//	}
+//	do {
+//		token = node->data;
+//		position = is_last_command(node->prev) ? LEFT : RIGHT;
+//		if (!push_tnode(token, head, position)) {
+//			return (false);
+//		}
+//		node = node->prev;
+//		head = head->left;
+//		list_pop(node, tokens);
+//	} while (node && token->type == COMMAND);
+//	return (true);
+//}
+/* Build ann sub-branches which heritates from the separators branches */
 int add_expressions_branch(llist_t *tokens, tnode_t *head)
 {
 	lnode_t *node = tokens->tail;
-	token_t *token = NULL;
 	int position;
 
-	if (!(node)) {
-		return (false);
-	}
-	do {
-		token = node->data;
+	while (node && ((token_t *)(node->data))->type == COMMAND) {
 		position = is_last_command(node->prev) ? LEFT : RIGHT;
-		if (!push_tnode(token, head, position)) {
+		if (!push_tnode(node->data, head, position)) {
 			return (false);
 		}
 		node = node->prev;
 		head = head->left;
-		list_pop(node, tokens);
-	} while (node && token->type == COMMAND);
+		if (node) {
+			list_pop(node->next, tokens);
+		}
+	}
 	return (true);
 }

@@ -45,7 +45,7 @@ static char SEPARATORS[] = {
 
 char *prompt(void);
 
-static void print(llist_t *tokens)
+void print(llist_t *tokens)
 {
 	lnode_t *node = tokens->head;
 

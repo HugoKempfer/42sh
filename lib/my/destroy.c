@@ -10,24 +10,25 @@
 
 static void list_destroy_node(lnode_t *node, llist_t *list)
 {
-	if (!(list->destroyer)) {
-		return;
+	printf("List destroy node\n");
+	if (list->destroyer) {
+		(list->destroyer)(node->data);
 	}
-	(list->destroyer)(node->data);
 	free(node);
+	node = NULL;
 }
 
 void	list_pop(lnode_t *node, llist_t *list)
 {
-	if (node->next == NULL && node->prev == NULL) {
+	if (!node->next && !node->prev) {
 		list->head = NULL;
 		list->tail = NULL;
-	} else if (node->next == NULL || node->prev == NULL) {
-		if (node->next == NULL && node->prev != NULL) {
+	} else if (!node->next || !node->prev) {
+		if (!node->next && node->prev) {
 			node->prev->next = node->next;
 			list->tail = node->prev;
 		}
-		else if (node->prev == NULL && node->next != NULL){
+		else if (!node->prev && node->next){
 			node->next->prev = node->prev;
 			list->head = node->next;
 		}
