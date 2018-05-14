@@ -47,7 +47,7 @@ static int build_tree_branches(llist_t *tokens, tnode_t *head)
 			return (false);
 		}
 	}
-	else if (!(add_expressions_branch(tokens, head->left))) {
+	else if (!(add_expressions_branch(tokens, head))) {
 		return (false);
 	}
 }

@@ -69,6 +69,17 @@ int build_separator_branch(llist_t *tokens, tnode_t *head)
 	return (true);
 }
 
+static int is_tree_last_expression(lnode_t *node)
+{
+	if (!node) {
+		return (true);
+	}
+	else if (IS_TREE_SEPARATOR(((token_t *)(node->data))->type)) {
+		return (true);
+	}
+	return (false);
+}
+
 /* Build ann sub-branches which heritates from the separators branches */
 int add_expressions_branch(llist_t *tokens, tnode_t *head)
 {
@@ -77,16 +88,15 @@ int add_expressions_branch(llist_t *tokens, tnode_t *head)
 	int position;
 
 	while (node && ((token_t *)(node->data))->type == COMMAND) {
+		if (!is_tree_last_expression(node->prev)) {
+			head = head->left;
+		}
 		position = is_last_command(node->prev) ? LEFT : RIGHT;
-		printf("POSITION -> [%d]\n", position);
 		if (!push_tnode(node->data, head, position)) {
 			return (false);
 		}
 		to_del = node;
 		node = node->prev;
-		if (node && node->prev && !IS_TREE_SEPARATOR(((token_t *)(node->prev->data))->type)) {
-			head = head->left;
-		}
 		list_pop(to_del, tokens);
 	}
 	return (true);
