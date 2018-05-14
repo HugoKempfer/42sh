@@ -43,9 +43,11 @@ static int build_tree_branches(llist_t *tokens, tnode_t *head)
 		return (false);
 	}
 	if (!(head->left)) {
-		//call the function
+		if (!add_autonomous_cmd(head, tokens)) {
+			return (false);
+		}
 	}
-	if (!(add_expressions_branch(tokens, head->left))) {
+	else if (!(add_expressions_branch(tokens, head->left))) {
 		return (false);
 	}
 }
