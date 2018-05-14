@@ -71,3 +71,5 @@ dkms.conf
 
 # Exeptions handling
 !todo.txt
+# Ctags
+tags
