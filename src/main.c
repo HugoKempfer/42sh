@@ -45,6 +45,14 @@ static char SEPARATORS[] = {
 
 char *prompt(void);
 
+static void print_da(char **arr)
+{
+	while (arr && *arr) {
+		printf("[%s]\n", *arr);
+		++(arr);
+	}
+}
+
 void print(llist_t *tokens)
 {
 	lnode_t *node = tokens->head;
@@ -66,9 +74,14 @@ static void print_tree(shell_info_t *infos)
 		head = metadata->head->left;
 		printf("Printing tree ----------------------\n");
 		while (head) {
-			head->left ? printf("Left [%d]\n", head->left->data.type) : 0;
-			head->right ? printf("Right [%d]\n", head->right->data.type) : 0;
+			head->left ? printf("Left [%d]", head->left->data.type) : 0;
+			head->left ? print_da(head->left->data.str) : 0;
+			head->right ? printf("Right [%d]", head->right->data.type) : 0;
+			head->right ? print_da(head->right->data.str) : 0;
 			printf("PARENT [%d]\n", head->data.type);
+			if (head->data.str) {
+				print_da(head->data.str);
+			}
 			head = head->left;
 		}
 		node = node->next;

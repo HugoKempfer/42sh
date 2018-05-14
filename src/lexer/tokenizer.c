@@ -92,8 +92,7 @@ llist_t *tokenize_command(char **command)
 			value = add_line(value, *(command));
 			++command;
 			continue;
-		}
-		else if (!(check_process(tokens, type, value))) {
+		} else if (!(check_process(tokens, type, value))) {
 			list_destroy(tokens);
 			return (NULL);
 		}
