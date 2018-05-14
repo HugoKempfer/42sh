@@ -16,7 +16,7 @@
 
 typedef struct tree_metadata_s tree_metadata_t;
 
-enum separator_type
+enum tree_type
 {
 	NONE,
 	T_OR = 1,
@@ -36,7 +36,7 @@ struct tree_metadata_s {
 	tnode_t *head;
 	bool is_job;
 	pid_t pid;
-	enum separator_type tree_type;
+	enum tree_type tree_type;
 	enum exec_state state;
 };
 

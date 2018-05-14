@@ -23,30 +23,49 @@ static tree_metadata_t *init_tree_metadata(void)
 	return (metadata);
 }
 
+static enum tree_type define_tree_type(llist_t *tokens)
+{
+	token_t *token;
+	enum tree_type type;
+
+	if (!tokens->tail) {
+		return (T_SEMI_COLON);
+	}
+	token = tokens->tail->data;
+	type = token->type;
+	list_pop(tokens->tail, tokens);
+	return (type);
+}
+
+static int build_tree_branches(llist_t *tokens, tnode_t *head)
+{
+	if (!(build_separator_branch(tokens, head))) {
+		return (false);
+	}
+	if (!(head->left)) {
+		//call the function
+	}
+	if (!(add_expressions_branch(tokens, head->left))) {
+		return (false);
+	}
+}
+
 /* Build a whole command tree and push it into the process list */
 static int build_tree(llist_t *tokens, shell_info_t *shell_info)
 {
 	tree_metadata_t *metadata = init_tree_metadata();
 	tnode_t *head = create_tnode((tnode_data_t){TREE_HEAD, NULL});
 
-	printf("BUILD TREE\n");
 	if (!(metadata) || !(head)) {
 		free(metadata);
 		free(head);
 		return (false);
 	}
 	metadata->head = head;
-	printf("Build separator\n");
-	if (!(build_separator_branch(tokens, head))) {
+	if (!build_tree_branches(tokens, head)) {
 		return (false);
 	}
-	printf("Build expression\n");
-	if (!(add_expressions_branch(tokens, head))) {
-		return (false);
-	}
-	printf("After expression\n");
-	metadata->tree_type = ((token_t *)tokens->tail->data)->type;
-	list_pop(tokens->tail, tokens);
+	metadata->tree_type = define_tree_type(tokens);
 	list_push_head(metadata, shell_info->processes);
 	return (true);
 }

@@ -17,32 +17,34 @@ tnode_t *create_tnode(tnode_data_t data)
 	if (!(node)) {
 		return (NULL);
 	}
+	node->right = NULL;
+	node->left = NULL;
 	node->data = data;
 	return (node);
 }
 
-int add_link(tnode_t *parent, tnode_t *child, int position)
+void add_link(tnode_t *parent, tnode_t *child, int position)
 {
-	tnode_t **branch = (position == LEFT ? &(parent->left) : &(parent->right));
-	int state = !(*branch) ? NOT_EXISTING : EXISTING;
-
-	if (!(parent)) {
-		return (false);
+	if (!parent) {
+		return;
 	}
-	*branch = child;
-	return (state);
+	if (position == LEFT) {
+		parent->left = child;
+	}
+	else if (position == RIGHT) {
+		parent->right = child;
+	}
 }
 
 int create_and_link(tnode_t *parent, tnode_data_t data, int position)
 {
-	int state = 0;
 	tnode_t *node = create_tnode(data);
 
 	if (!(node) || !(parent)) {
-		printf("NODE OR PARENT NULL\n");
+		printf("Parent is [%p]\n", parent);
 		free(node);
 		return (false);
 	}
-	state = add_link(parent, node, position);
-	return (state);
+	add_link(parent, node, position);
+	return (true);
 }

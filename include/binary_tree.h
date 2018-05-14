@@ -15,7 +15,6 @@ typedef struct tnode_s tnode_t;
 #define	RIGHT 1
 #define	NOT_EXISTING 1
 #define	EXISTING 2
-#define	RIGHT 1
 
 enum tnode_type
 {
@@ -46,7 +45,7 @@ struct tnode_s {
 
 /* Function prototypes */
 int create_and_link(tnode_t *parent, tnode_data_t data, int position);
-int add_link(tnode_t *parent, tnode_t *child, int position);
+void add_link(tnode_t *parent, tnode_t *child, int position);
 tnode_t *create_tnode(tnode_data_t data);
 
 #endif /* ifndef BINARY_TREE_H */

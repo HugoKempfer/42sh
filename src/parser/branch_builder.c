@@ -38,30 +38,14 @@ static inline int is_last_command(lnode_t *node)
 	return (false);
 }
 
-/* Build the main branches which hold expressions together */
-//int build_separator_branch(llist_t *tokens, tnode_t *head)
-//{
-//	lnode_t *node = tokens->tail;
-//	token_t *token = NULL;
-//
-//	if (!node) {
-//		return (false);
-//	}
-//	do {
-//		token = node->data;
-//		if (token->type == COMMAND) {
-//			node = node->prev;
-//			continue;
-//		}
-//		if (!(push_tnode(token, head, LEFT))) {
-//			return (false);
-//		}
-//		head = head->left;
-//		node = node->prev;
-//		list_pop(node->next, tokens);
-//	} while (node && !(IS_TREE_SEPARATOR(token->type)));
-//	return (true);
-//}
+int add_autonomous_cmd(tnode_t *head, llist_t *tokens)
+{
+	if (!(push_tnode(((token_t *)(tokens->tail->data)), head, LEFT))) {
+		return (false);
+	}
+	list_pop(tokens->tail, tokens);
+	return (true);
+}
 
 int build_separator_branch(llist_t *tokens, tnode_t *head)
 {
@@ -86,43 +70,24 @@ int build_separator_branch(llist_t *tokens, tnode_t *head)
 }
 
 /* Build ann sub-branches which heritates from the separators branches */
-//int add_expressions_branch(llist_t *tokens, tnode_t *head)
-//{
-//	lnode_t *node = tokens->tail;
-//	token_t *token = NULL;
-//	int position;
-//
-//	if (!(node)) {
-//		return (false);
-//	}
-//	do {
-//		token = node->data;
-//		position = is_last_command(node->prev) ? LEFT : RIGHT;
-//		if (!push_tnode(token, head, position)) {
-//			return (false);
-//		}
-//		node = node->prev;
-//		head = head->left;
-//		list_pop(node, tokens);
-//	} while (node && token->type == COMMAND);
-//	return (true);
-//}
-/* Build ann sub-branches which heritates from the separators branches */
 int add_expressions_branch(llist_t *tokens, tnode_t *head)
 {
 	lnode_t *node = tokens->tail;
+	lnode_t *to_del;
 	int position;
 
 	while (node && ((token_t *)(node->data))->type == COMMAND) {
 		position = is_last_command(node->prev) ? LEFT : RIGHT;
+		printf("POSITION -> [%d]\n", position);
 		if (!push_tnode(node->data, head, position)) {
 			return (false);
 		}
+		to_del = node;
 		node = node->prev;
-		head = head->left;
-		if (node) {
-			list_pop(node->next, tokens);
+		if (node && node->prev && !IS_TREE_SEPARATOR(((token_t *)(node->prev->data))->type)) {
+			head = head->left;
 		}
+		list_pop(to_del, tokens);
 	}
 	return (true);
 }

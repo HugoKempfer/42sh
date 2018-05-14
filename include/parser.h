@@ -17,5 +17,6 @@
 int build_trees_from_tokens(llist_t *tokens, shell_info_t *shell_info);
 int build_separator_branch(llist_t *tokens, tnode_t *head);
 int add_expressions_branch(llist_t *tokens, tnode_t *head);
+int add_autonomous_cmd(tnode_t *head, llist_t *tokens);
 
 #endif /* ifndef PARSER_H */

@@ -55,6 +55,26 @@ void print(llist_t *tokens)
 	}
 }
 
+static void print_tree(shell_info_t *infos)
+{
+	lnode_t *node = infos->processes->head;
+	tree_metadata_t *metadata;
+	tnode_t *head;
+
+	while (node) {
+		metadata = node->data;
+		head = metadata->head->left;
+		printf("Printing tree ----------------------\n");
+		while (head) {
+			head->left ? printf("Left [%d]\n", head->left->data.type) : 0;
+			head->right ? printf("Right [%d]\n", head->right->data.type) : 0;
+			printf("PARENT [%d]\n", head->data.type);
+			head = head->left;
+		}
+		node = node->next;
+	}
+}
+
 int main(int unused ac, char unused **av)
 {
 	char *str = NULL;
@@ -70,6 +90,7 @@ int main(int unused ac, char unused **av)
 		print(tokens);
 		build_trees_from_tokens(tokens, info);
 		printf("Nb trees [%d]\n", info->processes->nb_nodes);
+		print_tree(info);
 	} while (prompt);
 	return (0);
 }
