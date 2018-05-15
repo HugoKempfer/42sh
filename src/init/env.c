@@ -5,9 +5,10 @@
 ** Initialization of the env list
 */
 
-#include "42sh"
+#include "42sh.h"
 #include "list.h"
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
 /* Example of the tcsh vars
@@ -19,6 +20,8 @@
 	USER=hugo
 	GROUP=users
 	HOST=DarkCake
+	OLDPWD=/
+	HOME=/home/
 */
 
 static int copy_base_env(char **base_env, llist_t *env)
