@@ -58,7 +58,6 @@ int	list_push_tail(void *data, llist_t *list)
 {
 	lnode_t *node = list_create_node(data);
 
-	printf("LIST PUSH TAIL\n");
 	if (!(node)) {
 		return (false);
 	}
