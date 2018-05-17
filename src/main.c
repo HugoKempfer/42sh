@@ -6,6 +6,7 @@
 */
 
 #include "lexer.h"
+#include "42sh.h"
 #include "parser.h"
 #include "my.h"
 #include "strings.h"
@@ -88,12 +89,12 @@ static void print_tree(shell_info_t *infos)
 	}
 }
 
-int main(int unused ac, char unused **av)
+int main(int unused ac, char unused **av, char **env)
 {
 	char *str = NULL;
 	char **command = NULL;
 	llist_t *tokens = NULL;
-	shell_info_t *info = init_shell_info();
+	shell_info_t *info = init_shell(env);
 
 	do {
 		str = prompt();
