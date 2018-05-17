@@ -94,7 +94,7 @@ int main(int unused ac, char unused **av, char **env)
 	char *str = NULL;
 	char **command = NULL;
 	llist_t *tokens = NULL;
-	shell_info_t *info = init_shell(env);
+	shell_info_t *info = init_shell_info(env);
 
 	do {
 		str = prompt();

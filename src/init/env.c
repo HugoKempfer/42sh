@@ -79,13 +79,15 @@ static int add_basic_variables_env(llist_t *env)
 	return (true);
 }
 
-int init_list(char **base_env, llist_t *env)
+llist_t *init_list_env(char **base_env)
 {
+	llist_t *env = list_init(NULL);
+
 	if (!copy_base_env(base_env, env)) {
-		return (false);
+		return (NULL);
 	}
 	if (!add_basic_variables_env(env)) {
-		return (false);
+		return (NULL);
 	}
-	return (true);
+	return (env);
 }

@@ -24,11 +24,12 @@ struct shell_info_s {
 	llist_t *global_vars;
 	llist_t *local_vars;
 	llist_t *env;
-	shell_path_t path;
+	shell_path_t *path;
 };
 
-int init_list(char **base_env, llist_t *env);
-shell_info_t *init_shell(char **);
+shell_info_t *init_shell_info(char **base_env);
+llist_t *init_list_env(char **base_env);
+shell_path_t *init_shell_path(void);
 
 
 #endif /* ifndef SH_H */
