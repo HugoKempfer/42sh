@@ -22,8 +22,8 @@ shell_path_t *init_shell_path(void)
 	struct passwd *pw = getpwuid(getuid());
 	shell_path_t *shell_path = malloc(sizeof(shell_path_t));
 
-	shell_path->home = pw->pw_dir;
-	shell_path->pwd = pwd;
-	shell_path->old_pwd = pwd;
+	shell_path->home = pw->pw_dir + 1;
+	shell_path->pwd = pwd + 1;
+	shell_path->old_pwd = pwd + 1;
 	return (shell_path);
 }

@@ -17,27 +17,27 @@
 
 void change_old_pwd_var(shell_path_t *cd_path, llist_t *env)
 {
-	lnode_t *var = env_get_node(env, "OLD_PWD");
-	char *var_name = cd_path->pwd;
+	lnode_t *var = env_get_node(env, "OLDPWD");
+	char *var_name = str_concat((char *[]){"OLDPWD=", cd_path->pwd, NULL});
 
 	if (var) {
 		var->data = var_name;
 	}
-	cd_path->old_pwd = var_name;
+	cd_path->old_pwd = var_name + strlen("OLDPWD=");
 }
 
 int change_pwd_var(shell_path_t *cd_path, llist_t *env)
 {
 	lnode_t *var = env_get_node(env, "PWD");
-	char *var_name = str_concat((char *[]){"PWD=", getcwd(NULL, 4096)});
-
+	char *var_name = str_concat((char *[]){"PWD=", getcwd(NULL, 4096), NULL});
+	printf("getcwd new pwd path : %s\n", getcwd(NULL, 4096));
 	if (!var_name) {
 		return (false);
 	}
 	if (var) {
 		var->data = var_name;
 	}
-	cd_path->pwd = var_name;
+	cd_path->pwd = var_name + strlen("PWD=") + 1;
 	return (true);
 }
 
@@ -50,26 +50,23 @@ int change_home_var(shell_path_t *cd_path, llist_t *env)
 	if (!pw) {
 		return (false);
 	}
-	var_name = str_concat((char *[]){"OLDPWD42=", (char *)pw->pw_dir});
+	var_name = str_concat((char *[]){"HOME=", (char *)pw->pw_dir});
 	if (!var_name) {
 		return (false);
 	}
-	var = env_get_node(env, "OLDPWD");
+	var = env_get_node(env, "HOME");
 	if (var) {
 		var->data = var_name;
 	}
-	cd_path->pwd = var_name;
+	cd_path->home = var_name + strlen("HOME=") + 1;
 	return (true);
 }
 
 int change_var_env(shell_path_t *cd_path, llist_t *env)
 {
-	change_old_pwd_var(cd_path, env);
-	if (!change_pwd_var(cd_path, env)) {
-		return (false);
-	}
-	if (!change_home_var(cd_path, env)) {
-		return (false);
-	}
+	printf("pwd : %s\n", cd_path->pwd);
+	printf("old_pwd : %s\n", cd_path->old_pwd);
+	printf("home : %s\n", cd_path->home);
+	printf("-----------------------------------\n");
 	return (true);
 }

@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+/*change init structure and env*/
 static char SEPARATORS[] = {
 	'/',
 	'\0',
@@ -51,6 +52,8 @@ int cd_home(shell_path_t *cd_path, llist_t *env)
 			return (false);
 		}
 	}
+	cd_path->old_pwd = strdup(cd_path->pwd);
+	cd_path->pwd = cd_path->home;
 	return (true);
 }
 
@@ -59,6 +62,8 @@ int cd_previous(shell_path_t *cd_path)
 	if (!chdir(cd_path->old_pwd)) {
 		return (false);
 	}
+	cd_path->old_pwd = strdup(cd_path->pwd);
+	cd_path->pwd = cd_path->old_pwd;
 	return (true);
 }
 
@@ -77,21 +82,22 @@ int size_back_dir_path(shell_path_t *cd_path)
 		++size_way_deleted;
 		--(pwd_path);
 	}
-	return (size_path - size_way_deleted);
-	
+	return (size_path - size_way_deleted - 1);
 }
 
 int cd_back_parent_dir(shell_path_t *cd_path)
 {
 	char *back_path = cd_path->pwd;
 	char *path_chdir = strndup(back_path, size_back_dir_path(cd_path));
-
+	printf("back path : %s\n", path_chdir);
 	if (!path_chdir) {
 		return (false);
 	}
 	if (!chdir(path_chdir)) {
 		return (false);
 	}
+	cd_path->old_pwd = strdup(cd_path->pwd);
+	cd_path->pwd = path_chdir;
 	return (true);
 }
 
@@ -121,12 +127,15 @@ int cd_management(char **command, shell_info_t *shell)
 		return (true);
 	}
 	while (*cd_args) {
+		printf("%s\n", *cd_args);
 		if (!execute_cd(shell->path, shell->env, *cd_args)) {
+			printf("return false 1\n");
 			return (false);
 		}
-		if (!change_var_env(shell->path, shell->env)) {
+/*		if (!change_var_env(shell->path, shell->env)) {
+			printf("return false 2\n");
 			return (false);
-		}
+			}*/
 		++(cd_args);
 	}
 	return (true);
