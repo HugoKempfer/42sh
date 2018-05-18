@@ -7,14 +7,26 @@
 
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <errno.h>
+#include "tools.h"
 
 /* user_guide */
 
-/* file_sorting */
+/* file_retrieving_and_sorting */
+int	is_sorted(char **filename, int limit);
+int	retrieve_the_files(void);
+
 /* macros */
+#define NO_ERR		1
+#define ERR		0
+#define FAILURE		-1
+
+
+/* globbings */
+bool	wilcard_manager(char **av, char **sorted_files);
 
 /* Attributes polymorphism with _generic*/
 #define unused			__attribute__((unused))

@@ -8,6 +8,8 @@
 #ifndef _MY_H
 #define _MY_H
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 void	my_putchar(char c);
 void	my_putchar_error(char c);
@@ -55,7 +57,8 @@ int	scheduler(int height, int matches_limit);
 int	my_putnbr(int number);
 char	**sched(int ac, char **av, int USER);
 void	print_the_grid(char **grid);
-int	len(char const *str);
+size_t	len_s(char const *str);
 int	my_strcmp_key(char const *s1, char const *s2, int n);
+bool	my_strn_end_cmp(char const *s1, char const *s2);
 
 #endif

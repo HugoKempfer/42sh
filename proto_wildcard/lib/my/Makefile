@@ -17,7 +17,8 @@ SRC	=	my_putstr.c	\
 		my_strcpy.c	\
 		len.c		\
 		my_strcmp_key.c	\
-		my_strncmp.c
+		my_strncmp.c	\
+		my_strn_end_cmp.c
 
 OBJ	=	$(SRC:.c=.o)
 

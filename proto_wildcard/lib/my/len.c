@@ -2,12 +2,14 @@
 ** EPITECH PROJECT, 2018
 ** len
 ** File description:
-** a shorter clone of my_strlen
+** my_strlen + '\0'
 */
 
-int len(char const *str)
+#include <stdlib.h>
+
+size_t len_s(char const *str)
 {
-	int length = 0;
+	size_t length = 0;
 
 	while (str[length] != '\0') {
 		length = length + 1;
