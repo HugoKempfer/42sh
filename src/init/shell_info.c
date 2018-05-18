@@ -5,8 +5,8 @@
 ** Init the shel info structure
 */
 
-#include "list.h"
 #include "42sh.h"
+#include "shell_path.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>

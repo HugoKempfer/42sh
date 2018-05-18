@@ -6,6 +6,7 @@
 */
 
 #include "42sh.h"
+#include "shell_path.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,12 +37,13 @@ void print_dbl_tab(char **str)
 	}
 }
 
-int cd_home(shell_path_t *cd_path, shell_path_t *env)
+int cd_home(shell_path_t *cd_path, llist_t *env)
 {
 	lnode_t *var = env_get_node(env, "HOME");
+	char *var_string = var->data;
 
 	if (var) {
-		if (!chdir(var->data + my_strlen("HOME") + 1)) {
+		if (!chdir(var_string + (strlen("HOME") + 1))) {
 			return (false);
 		}
 	} else {
@@ -52,7 +54,7 @@ int cd_home(shell_path_t *cd_path, shell_path_t *env)
 	return (true);
 }
 
-int cd_previous(shell_path_t *cd_path, shell_path_t *env)
+int cd_previous(shell_path_t *cd_path)
 {
 	if (!chdir(cd_path->old_pwd)) {
 		return (false);
@@ -62,7 +64,7 @@ int cd_previous(shell_path_t *cd_path, shell_path_t *env)
 
 int size_back_dir_path(shell_path_t *cd_path)
 {
-	char *pwd_path = NULL;
+	char *pwd_path = cd_path->pwd;
 	int size_path = 0;
 	int size_way_deleted = 0;
 
@@ -79,7 +81,7 @@ int size_back_dir_path(shell_path_t *cd_path)
 	
 }
 
-int cd_back_parent_dir(shell_path_t *cd_path, shell_path_t *env)
+int cd_back_parent_dir(shell_path_t *cd_path)
 {
 	char *back_path = cd_path->pwd;
 	char *path_chdir = strndup(back_path, size_back_dir_path(cd_path));
@@ -93,16 +95,16 @@ int cd_back_parent_dir(shell_path_t *cd_path, shell_path_t *env)
 	return (true);
 }
 
-int execute_cd(shell_path_t *cd_path, shell_path_t *env, char *command)
+int execute_cd(shell_path_t *cd_path, llist_t *env, char *command)
 {
-	if (!my_strcmp(command, "~")) {
+	if (!strcmp(command, "~")) {
 		return (cd_home(cd_path, env));
 	}
-	if (!my_strcmp(command, "-")) {
-		return (cd_previous(cd_path, env));
+	if (!strcmp(command, "-")) {
+		return (cd_previous(cd_path));
 	}
-	if (!my_strcmp(command, "..")) {
-		return (cd_back_parent_dir(cd_path, env));
+	if (!strcmp(command, "..")) {
+		return (cd_back_parent_dir(cd_path));
 	}
 	return (true);
 }
@@ -127,4 +129,5 @@ int cd_management(char **command, shell_info_t *shell)
 		}
 		++(cd_args);
 	}
+	return (true);
 }

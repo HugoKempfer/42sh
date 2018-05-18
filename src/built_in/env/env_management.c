@@ -12,7 +12,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-char *str_concat(char **);
 int my_putstr(char const *str);
 
 lnode_t *env_get_node(llist_t *env, char *var_name)
@@ -62,7 +61,7 @@ int my_setenv(char **commande, shell_info_t *infos)
 	return (true);
 }
 
-int my_env(shell_info_t *infos)
+void my_env(shell_info_t *infos)
 {
 	llist_t *env = infos->env;
 	lnode_t *node = env->head;

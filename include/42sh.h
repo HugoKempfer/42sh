@@ -28,8 +28,5 @@ struct shell_info_s {
 };
 
 shell_info_t *init_shell_info(char **base_env);
-llist_t *init_list_env(char **base_env);
-shell_path_t *init_shell_path(void);
-
 
 #endif /* ifndef SH_H */

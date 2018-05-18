@@ -6,6 +6,7 @@
 */
 
 #include "42sh.h"
+#include "shell_path.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
