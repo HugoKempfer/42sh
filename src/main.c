@@ -31,6 +31,7 @@ static char SENTINEL_CHAR[] = {
 	'&',
 	-1
 };
+
 static char SEPARATORS[] = {
 	'\0',
 	' ',
@@ -95,10 +96,11 @@ int main(int unused ac, char unused **av, char **env)
 	char **command = NULL;
 	llist_t *tokens = NULL;
 	shell_info_t *info = init_shell_info(env);
+	const cutter_charset_t cutter = {SEPARATORS, SENTINEL_CHAR, SUROUNDINGS};
 
 	do {
 		str = prompt();
-		command = subdivise_str(str, (cutter_charset_t){SEPARATORS, SENTINEL_CHAR, SUROUNDINGS});
+		command = subdivise_str(str, cutter);
 		tokens = tokenize_command(command);
 		printf("nb tokens [%d]\n", tokens->nb_nodes);
 		print(tokens);

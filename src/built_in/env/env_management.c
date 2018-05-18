@@ -34,7 +34,7 @@ void my_unsetenv(char **commande, shell_info_t *infos)
 {
 	llist_t *env = infos->env;
 	char *var_name = commande[1];
-	lnode_t *var = env_get_node(env , var_name);
+	lnode_t *var = env_get_node(env, var_name);
 
 	if (var) {
 		list_pop(var, env);
