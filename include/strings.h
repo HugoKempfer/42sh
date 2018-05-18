@@ -26,5 +26,6 @@ char *alloc_n_str(char *str, int size);
 char **add_line(char **buffer, char *line);
 int get_end_of_str(const char *str, char *);
 char *remove_surroundings(char *str);
+char *str_concat(char **str);
 
 #endif /* ifndef STRING_H */

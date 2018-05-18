@@ -14,7 +14,7 @@ typedef struct shell_info_s shell_info_t;
 
 struct shell_info_s {
 	llist_t *processes;
-	llist_t *global_vars;
+	llist_t *special_vars;
 	llist_t *local_vars;
 	llist_t *env;
 };

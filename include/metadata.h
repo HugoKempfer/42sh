@@ -36,6 +36,7 @@ struct tree_metadata_s {
 	tnode_t *head;
 	bool is_job;
 	pid_t pid;
+	int return_code;
 	enum tree_type tree_type;
 	enum exec_state state;
 };

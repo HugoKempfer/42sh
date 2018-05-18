@@ -10,7 +10,7 @@
 #include "strings.h"
 #include "tools.h"
 
-static bool is_in_arr(char const c, char const *arr)
+static int is_in_arr(char const c, char const *arr)
 {
 	int it = 0;
 
