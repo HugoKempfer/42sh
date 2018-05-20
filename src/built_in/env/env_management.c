@@ -29,10 +29,10 @@ lnode_t *env_get_node(llist_t *env, char *var_name)
 	return (NULL);
 }
 
-void my_unsetenv(char **commande, shell_info_t *infos)
+void my_unsetenv(char **command, shell_info_t *infos)
 {
 	llist_t *env = infos->env;
-	char *var_name = commande[1];
+	char *var_name = command[1];
 	lnode_t *var = env_get_node(env, var_name);
 
 	if (var) {
@@ -40,16 +40,19 @@ void my_unsetenv(char **commande, shell_info_t *infos)
 	}
 }
 
-int my_setenv(char **commande, shell_info_t *infos)
+int my_setenv(char **command, shell_info_t *infos)
 {
 	llist_t *env = infos->env;
-	char *var_name = commande[1];
-	char *var_value = commande[2];
+	char *var_name = command[1];
+	char *var_value = command[2];
 	lnode_t *node = env_get_node(env, var_name);
 	char *var = str_concat((char *[]){var_name, "=", var_value, NULL});
 
 	if (!var) {
 		return (false);
+	}
+	if (!strcmp(var_name, "HOME")) {
+		infos->path->home = var + strlen("HOME=");
 	}
 	if (node) {
 		node->data = var;

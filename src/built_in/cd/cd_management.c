@@ -14,22 +14,18 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-int reset_path_var_env(llist_t *env, char *name, char *path)
+int reset_path_var_env(llist_t *env, char *var_name, char *var_path)
 {
 	lnode_t *var = NULL;
-	char *var_path = NULL;
-	char *var_name_env = str_concat((char*[]){name, "=", NULL});
+	char *new_var_path = NULL;
 
-	if (!var_name_env) {
-		return (false);
-	}
-	var = env_get_node(env, var_name_env);
+	var = env_get_node(env, var_name);
 	if (var) {
-		var_path = str_concat((char*[]){var_name_env, path, NULL});
-		if (!var_path) {
+		new_var_path = str_concat((char*[]){var_name, var_path, NULL});
+		if (!new_var_path) {
 			return (false);
 		}
-		var->data = var_path;
+		var->data = new_var_path;
 	}
 	return (true);
 }
@@ -38,20 +34,34 @@ int reset_paths_var(path_t *paths_var, llist_t *env)
 {
 	paths_var->oldpwd = strdup(paths_var->pwd);
 	paths_var->pwd = getcwd(NULL, 0);
-	if (!reset_path_var_env(env, "PWD", paths_var->pwd)) {
+	if (!reset_path_var_env(env, "PWD=", paths_var->pwd)) {
 		return (false);
 	}
-	if (!reset_path_var_env(env, "OLDPWD", paths_var->oldpwd)) {
+	if (!reset_path_var_env(env, "OLDPWD=", paths_var->oldpwd)) {
 		return (false);
 	}
 	return (true);
 }
 
-void print_var_paths(path_t *path)
+void print_var_paths(path_t *path, llist_t *env)
 {
+	lnode_t *node = NULL;
+
 	printf("oldpwd : %s\n", path->oldpwd);
 	printf("pwd : %s\n", path->pwd);
 	printf("home : %s\n", path->home);
+	node = env_get_node(env, "PWD=");
+	if (node) {
+		printf("env pwd : %s\n", (char*)node->data);
+	}
+	node = env_get_node(env, "OLDPWD=");
+	if (node) {
+		printf("env oldpwd : %s\n", (char*)node->data);
+	}
+	node = env_get_node(env, "HOME=");
+	if (node) {
+		printf("env home : %s\n", (char*)node->data);
+	}
 }
 
 char *chdir_path(llist_t *env, path_t *paths_var, char *command)
@@ -61,7 +71,11 @@ char *chdir_path(llist_t *env, path_t *paths_var, char *command)
 
 	if (command == NULL || !strcmp(command, "~")) {
 		home_var = env_get_node(env, "HOME=");
-		path = (home_var) ? home_var->home : paths_var->home;
+		if (home_var) {
+			path = (char*)home_var->data + strlen("HOME=");
+		} else {
+			path = paths_var->home;
+		}
 	} else {
 		path = command;
 	}
@@ -70,16 +84,14 @@ char *chdir_path(llist_t *env, path_t *paths_var, char *command)
 
 int cd_management(char **command, shell_info_t *shell)
 {
-	char *path = chdir_path(shell->env, shell->path, command[1]);;
+	char *path = chdir_path(shell->env, shell->path, command[1]);
 
 	if (chdir(path) != 0) {
 		return (false);
 	}
-	print_var_paths(shell->path);
-	my_env(shell);
+	print_var_paths(shell->path, shell->env);
 	printf("___________________________________________\n");
 	reset_paths_var(shell->path, shell->env);
-	print_var_paths(shell->path);
-	my_env(shell);
+	print_var_paths(shell->path, shell->env);
 	return (true);
 }

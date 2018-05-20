@@ -27,6 +27,6 @@ shell_info_t *init_shell_info(char **base_env)
 	infos->local_vars = list_init(NULL);
 	infos->env = init_list_env(base_env);
 	infos->path = init_shell_path();
-	cd_management((char*[]){"cd", NULL}, infos);
+	cd_management((char*[]){"cd", "~", NULL}, infos);
 	return (infos);
 }
