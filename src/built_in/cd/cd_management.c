@@ -89,9 +89,8 @@ int cd_management(char **command, shell_info_t *shell)
 	if (chdir(path) != 0) {
 		return (false);
 	}
-	print_var_paths(shell->path, shell->env);
-	printf("___________________________________________\n");
-	reset_paths_var(shell->path, shell->env);
-	print_var_paths(shell->path, shell->env);
+	if (!reset_paths_var(shell->path, shell->env)) {
+		return (false);
+	}
 	return (true);
 }

@@ -17,10 +17,19 @@
 
 path_t *init_shell_path(void)
 {
-	char *pwd = getcwd(NULL, 0);
-	struct passwd *pw = getpwuid(getuid());
-	path_t *shell_path = malloc(sizeof(path_t));
+	char *pwd = NULL;
+	struct passwd *pw = NULL;
+	path_t *shell_path;
 
+	pwd = getcwd(NULL, 0);
+	if (!pwd) {
+		return (false);
+	}
+	pw = getpwuid(getuid());
+	shell_path = malloc(sizeof(path_t));
+	if (!pw || !shell_path) {
+		return (false);
+	}
 	shell_path->home = pw->pw_dir;
 	shell_path->pwd = pwd;
 	shell_path->oldpwd = pwd;
