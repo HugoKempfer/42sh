@@ -23,9 +23,12 @@ shell_info_t *init_shell_info(char **base_env)
 	infos->global_vars = list_init(NULL);
 	infos->local_vars = list_init(NULL);
 	infos->env = init_list_env(base_env);
+	if (!infos->env) {
+		return (NULL);
+	}
 	infos->path = init_shell_path();
-	my_unsetenv((char *[]){"unsetenv", "HOME", NULL}, infos);
-	cd_management((char*[]){"cd", "../..", NULL}, infos);
-	cd_management((char*[]){"cd", "~", NULL}, infos);
+	if (infos->path) {
+		return (NULL);
+	}
 	return (infos);
 }

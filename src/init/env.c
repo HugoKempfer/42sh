@@ -8,15 +8,13 @@
 #include "42sh.h"
 #include "shell_path.h"
 #include "list.h"
+#include "string.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
-
-char *str_concat(char **);
 
 static int copy_base_env(char **base_env, llist_t *env)
 {
