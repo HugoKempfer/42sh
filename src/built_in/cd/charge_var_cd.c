@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <pwd.h>
-
+/*
 void change_old_pwd_var(shell_path_t *cd_path, llist_t *env)
 {
 	lnode_t *var = env_get_node(env, "OLDPWD");
@@ -70,3 +70,4 @@ int change_var_env(shell_path_t *cd_path, llist_t *env)
 	printf("-----------------------------------\n");
 	return (true);
 }
+*/

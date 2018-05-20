@@ -14,129 +14,72 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-/*change init structure and env*/
-static char SEPARATORS[] = {
-	'/',
-	'\0',
-	'\n',
-	-1
-};
-
-static char SENTINEL_CHAR[] = {
-	-1
-};
-
-static char *SUROUNDINGS[] = {
-	NULL
-};
-
-void print_dbl_tab(char **str)
+int reset_path_var_env(llist_t *env, char *name, char *path)
 {
-	while (*str) {
-		printf("case : %s\n", *str);
-		++(str);
+	lnode_t *var = NULL;
+	char *var_path = NULL;
+	char *var_name_env = str_concat((char*[]){name, "=", NULL});
+
+	if (!var_name_env) {
+		return (false);
 	}
-}
-
-int cd_home(shell_path_t *cd_path, llist_t *env)
-{
-	lnode_t *var = env_get_node(env, "HOME");
-	char *var_string = var->data;
-
+	var = env_get_node(env, var_name_env);
 	if (var) {
-		if (!chdir(var_string + (strlen("HOME") + 1))) {
+		var_path = str_concat((char*[]){var_name_env, path, NULL});
+		if (!var_path) {
 			return (false);
 		}
+		var->data = var_path;
+	}
+	return (true);
+}
+
+int reset_paths_var(path_t *paths_var, llist_t *env)
+{
+	paths_var->oldpwd = strdup(paths_var->pwd);
+	paths_var->pwd = getcwd(NULL, 0);
+	if (!reset_path_var_env(env, "PWD", paths_var->pwd)) {
+		return (false);
+	}
+	if (!reset_path_var_env(env, "OLDPWD", paths_var->oldpwd)) {
+		return (false);
+	}
+	return (true);
+}
+
+void print_var_paths(path_t *path)
+{
+	printf("oldpwd : %s\n", path->oldpwd);
+	printf("pwd : %s\n", path->pwd);
+	printf("home : %s\n", path->home);
+}
+
+char *chdir_path(llist_t *env, path_t *paths_var, char *command)
+{
+	char *path = NULL;
+	lnode_t *home_var = NULL;
+
+	if (command == NULL || !strcmp(command, "~")) {
+		home_var = env_get_node(env, "HOME=");
+		path = (home_var) ? home_var->home : paths_var->home;
 	} else {
-		if (!chdir(cd_path->home)) {
-			return (false);
-		}
+		path = command;
 	}
-	cd_path->old_pwd = strdup(cd_path->pwd);
-	cd_path->pwd = cd_path->home;
-	return (true);
-}
-
-int cd_previous(shell_path_t *cd_path)
-{
-	if (!chdir(cd_path->old_pwd)) {
-		return (false);
-	}
-	cd_path->old_pwd = strdup(cd_path->pwd);
-	cd_path->pwd = cd_path->old_pwd;
-	return (true);
-}
-
-int size_back_dir_path(shell_path_t *cd_path)
-{
-	char *pwd_path = cd_path->pwd;
-	int size_path = 0;
-	int size_way_deleted = 0;
-
-	while (*pwd_path) {
-		++(pwd_path);
-		++size_path;
-	}
-	--(pwd_path);
-	while (*pwd_path != '/') {
-		++size_way_deleted;
-		--(pwd_path);
-	}
-	return (size_path - size_way_deleted - 1);
-}
-
-int cd_back_parent_dir(shell_path_t *cd_path)
-{
-	char *back_path = cd_path->pwd;
-	char *path_chdir = strndup(back_path, size_back_dir_path(cd_path));
-	printf("back path : %s\n", path_chdir);
-	if (!path_chdir) {
-		return (false);
-	}
-	if (!chdir(path_chdir)) {
-		return (false);
-	}
-	cd_path->old_pwd = strdup(cd_path->pwd);
-	cd_path->pwd = path_chdir;
-	return (true);
-}
-
-int execute_cd(shell_path_t *cd_path, llist_t *env, char *command)
-{
-	if (!strcmp(command, "~")) {
-		return (cd_home(cd_path, env));
-	}
-	if (!strcmp(command, "-")) {
-		return (cd_previous(cd_path));
-	}
-	if (!strcmp(command, "..")) {
-		return (cd_back_parent_dir(cd_path));
-	}
-	return (true);
+	return (path);
 }
 
 int cd_management(char **command, shell_info_t *shell)
 {
-	const cutter_charset_t cutter = {SEPARATORS, SENTINEL_CHAR, SUROUNDINGS};
-	char **cd_args = subdivise_str(command[1], cutter);
+	char *path = chdir_path(shell->env, shell->path, command[1]);;
 
-	if (command[0] == NULL) {
-		if (!cd_home(shell->path, shell->env)) {
-			return (false);
-		}
-		return (true);
+	if (chdir(path) != 0) {
+		return (false);
 	}
-	while (*cd_args) {
-		printf("%s\n", *cd_args);
-		if (!execute_cd(shell->path, shell->env, *cd_args)) {
-			printf("return false 1\n");
-			return (false);
-		}
-/*		if (!change_var_env(shell->path, shell->env)) {
-			printf("return false 2\n");
-			return (false);
-			}*/
-		++(cd_args);
-	}
+	print_var_paths(shell->path);
+	my_env(shell);
+	printf("___________________________________________\n");
+	reset_paths_var(shell->path, shell->env);
+	print_var_paths(shell->path);
+	my_env(shell);
 	return (true);
 }
