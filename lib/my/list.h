@@ -35,5 +35,6 @@ void	list_pop(lnode_t *, llist_t *);
 llist_t	*list_create(destroy_func_t *);
 void list_destroy(llist_t *list);
 llist_t *list_init(destroy_func_t *destroyer);
+char **list_to_arr(llist_t *list);
 
 #endif	/* MY_LIST_H */

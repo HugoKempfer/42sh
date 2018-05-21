@@ -5,11 +5,14 @@
 ** concat.c
 */
 
+#include "string.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stddef.h>
 
-static size_t get_arr_size(const char **str)
+void print_dbl_tab(char **buffer);
+
+static size_t get_arr_size(char **str)
 {
 	size_t size = 0;
 
@@ -26,16 +29,15 @@ static size_t get_arr_size(const char **str)
 char *str_concat(char **str)
 {
 	size_t size = get_arr_size(str);
-	char *new_str = malloc(size);
+	char *new_str = calloc(size + 1, size + 1);
 
 	if (!size || !new_str) {
 		free(new_str);
 		return (NULL);
 	}
 	while (*str) {
-		strcpy(new_str, *str);
-		new_str += strlen(str);
+		strcat(new_str, *str);
 		++str;
 	}
-	return (new_str - size);
+	return (new_str);
 }

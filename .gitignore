@@ -3,6 +3,7 @@
 
 # debug mode
 debug
+valgrind_mod
 
 # Prerequisites
 *.d

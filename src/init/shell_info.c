@@ -18,7 +18,7 @@ shell_info_t *init_shell_info(void)
 		return (NULL);
 	}
 	infos->processes = list_init(NULL);
-	infos->global_vars = list_init(NULL);
+	infos->special_vars = list_init(NULL);
 	infos->local_vars = list_init(NULL);
 	infos->env = list_init(NULL);
 	return (infos);
