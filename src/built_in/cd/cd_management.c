@@ -46,27 +46,6 @@ static int reset_paths_var(path_t *paths_var, llist_t *env)
 	return (true);
 }
 
-static void print_var_paths(path_t *path, llist_t *env)
-{
-	lnode_t *node = NULL;
-
-	printf("oldpwd : %s\n", path->oldpwd);
-	printf("pwd : %s\n", path->pwd);
-	printf("home : %s\n", path->home);
-	node = env_get_node(env, "PWD=");
-	if (node) {
-		printf("env pwd : %s\n", (char*)node->data);
-	}
-	node = env_get_node(env, "OLDPWD=");
-	if (node) {
-		printf("env oldpwd : %s\n", (char*)node->data);
-	}
-	node = env_get_node(env, "HOME=");
-	if (node) {
-		printf("env home : %s\n", (char*)node->data);
-	}
-}
-
 static char *chdir_path(llist_t *env, path_t *paths_var, char *command)
 {
 	char *path = NULL;
@@ -90,18 +69,13 @@ static char *chdir_path(llist_t *env, path_t *paths_var, char *command)
 
 int cd_management(char **command, shell_info_t *shell)
 {
-	printf("ayooo\n");
 	char *path = chdir_path(shell->env, shell->path, command[1]);
+
 	if (chdir(path) != 0) {
-		printf("chdir en NULL\n");
 		return (false);
 	}
-	print_var_paths(shell->path, shell->env);
 	if (!reset_paths_var(shell->path, shell->env)) {
 		return (false);
 	}
-	printf("---------------------------------------\n"); 
-	print_var_paths(shell->path, shell->env);
-	printf("_____________\n"); 
 	return (true);
 }
