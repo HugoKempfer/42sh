@@ -32,6 +32,6 @@ path_t *init_shell_path(void)
 	}
 	shell_path->home = pw->pw_dir;
 	shell_path->pwd = pwd;
-	shell_path->oldpwd = pwd;
+	shell_path->oldpwd = strdup(pwd);
 	return (shell_path);
 }

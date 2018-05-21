@@ -22,7 +22,7 @@ static int copy_base_env(char **base_env, llist_t *env)
 		return (true);
 	}
 	while (*base_env) {
-		if (!list_push_tail(*base_env, env)) {
+		if (!list_push_tail(strdup(*base_env), env)) {
 			return (false);
 		}
 		++base_env;
@@ -51,7 +51,10 @@ static int push_variable_env(llist_t *env, char *name, char *var_value)
 
 	if (!exist_var(env, name)) {
 		variable = str_concat((char *[]){name, "=", var_value, NULL});
-		if (variable && !list_push_tail(variable, env)) {
+		if (!variable) {
+			return (false);
+		}
+		if (!list_push_tail(variable, env)) {
 			return (false);
 		}
 	}

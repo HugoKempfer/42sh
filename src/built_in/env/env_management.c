@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 int my_putstr(char const *str);
@@ -36,6 +37,7 @@ void my_unsetenv(char **command, shell_info_t *infos)
 	lnode_t *var = env_get_node(env, var_name);
 
 	if (var) {
+		free(var->data);
 		list_pop(var, env);
 	}
 }

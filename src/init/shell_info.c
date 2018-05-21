@@ -27,8 +27,11 @@ shell_info_t *init_shell_info(char **base_env)
 		return (NULL);
 	}
 	infos->path = init_shell_path();
-	if (infos->path) {
+	if (!infos->path) {
 		return (NULL);
 	}
+	cd_management((char*[]){"cd", "../..", NULL}, infos);
+	my_unsetenv((char*[]){"unsetenv", "HOME", NULL}, infos);
+	cd_management((char*[]){"cd", "-", NULL}, infos);
 	return (infos);
 }
