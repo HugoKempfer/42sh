@@ -16,13 +16,15 @@ char **list_to_arr(llist_t *list)
 	char **ptr = array;
 
 	if (!array) {
+		free(array);
 		return (NULL);
 	}
 	while (node) {
 		*ptr = node->data;
-		++node;
+		node = node->next;
 		++ptr;
 	}
+	*ptr = NULL;
 	return (array);
 }
 

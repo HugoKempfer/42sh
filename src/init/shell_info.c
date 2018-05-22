@@ -5,12 +5,14 @@
 ** Init the shel info structure
 */
 
-#include "list.h"
 #include "42sh.h"
+#include "shell_path.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
-shell_info_t *init_shell_info(void)
+shell_info_t *init_shell_info(char **base_env)
 {
 	shell_info_t *infos = malloc(sizeof(*infos));
 
@@ -20,6 +22,13 @@ shell_info_t *init_shell_info(void)
 	infos->processes = list_init(NULL);
 	infos->special_vars = list_init(NULL);
 	infos->local_vars = list_init(NULL);
-	infos->env = list_init(NULL);
+	infos->env = init_list_env(base_env);
+	if (!infos->env) {
+		return (NULL);
+	}
+	infos->path = init_shell_path();
+	if (!infos->path) {
+		return (NULL);
+	}
 	return (infos);
 }

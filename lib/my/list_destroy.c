@@ -28,7 +28,7 @@ void	list_pop(lnode_t *node, llist_t *list)
 			node->prev->next = node->next;
 			list->tail = node->prev;
 		}
-		else if (!node->prev && node->next){
+		else if (!node->prev && node->next) {
 			node->next->prev = node->prev;
 			list->head = node->next;
 		}

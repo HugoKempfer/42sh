@@ -5,7 +5,7 @@
 ## Standard Makefile configuration
 ##
 
-SRC	=	$(wildcard src/*.c) $(wildcard ./src/*/*.c) $(wildcard ./lib/*/*.c)
+SRC	=	$(wildcard src/*.c) $(wildcard ./src/*/*.c) $(wildcard ./lib/*/*.c) $(wildcard src/*/*/*.c)
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -14,16 +14,16 @@ NAME	=	42sh
 GCC	=	gcc
 
 ifneq		(,$(wildcard ./debug))
-CFLAGS	=	-fsanitize=address -Wall -Wextra -ggdb3 -pedantic -Wduplicated-cond \
+CFLAGS	=	-ggdb3 -pedantic -Wduplicated-cond \
 		-Wduplicated-branches -Wlogical-op -Wrestrict \
 		-Wnull-dereference -Wjump-misses-init -Wdouble-promotion \
 		-Wshadow -Wformat=2 -fno-omit-frame-pointer
 
-LDFLAGS	=	-fsanitize=address -fno-omit-frame-pointer
+LDFLAGS	=	-fno-omit-frame-pointer
 endif
 
 ifneq		(,$(wildcard ./valgrind_mod))
-CFLAGS	=	-Wall -Wextra -g -pedantic -Wduplicated-cond \
+CFLAGS	=	-g -pedantic -Wduplicated-cond \
 		-Wduplicated-branches -Wlogical-op -Wrestrict \
 		-Wnull-dereference -Wjump-misses-init -Wdouble-promotion \
 		-Wshadow -Wformat=2 -fno-omit-frame-pointer

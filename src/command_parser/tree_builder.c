@@ -50,6 +50,7 @@ static int build_tree_branches(llist_t *tokens, tnode_t *head)
 	else if (!(add_expressions_branch(tokens, head))) {
 		return (false);
 	}
+	return (true);
 }
 
 /* Build a whole command tree and push it into the process list */

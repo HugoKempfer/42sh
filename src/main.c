@@ -6,6 +6,7 @@
 */
 
 #include "lexer.h"
+#include "42sh.h"
 #include "parser.h"
 #include "my.h"
 #include "strings.h"
@@ -14,9 +15,8 @@
 #include "list.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <signal.h> //TODO del this shit
 
-static char *SUROUNDINGS[] = {
+const static char *SUROUNDINGS[] = {
 	"\"\"",
 	"()",
 	"[]",
@@ -24,7 +24,7 @@ static char *SUROUNDINGS[] = {
 	NULL
 };
 
-static char SENTINEL_CHAR[] = {
+const static char SENTINEL_CHAR[] = {
 	'<',
 	'>',
 	'|',
@@ -32,7 +32,8 @@ static char SENTINEL_CHAR[] = {
 	'&',
 	-1
 };
-static char SEPARATORS[] = {
+
+const static char SEPARATORS[] = {
 	'\0',
 	' ',
 	'\t',
@@ -91,20 +92,26 @@ static void print_tree(shell_info_t *infos)
 }
 
 int exec_binary(char **command, shell_info_t *infos, tree_metadata_t *meta);
-int main(int unused ac, char unused **av)
+
+int main(int unused ac, char unused **av, char **env)
 {
+	shell_info_t *info = init_shell_info(env);
 	char *str = NULL;
 	char **command = NULL;
 	llist_t *tokens = NULL;
-	shell_info_t *info = init_shell_info();
 	tree_metadata_t metadata = {'\0'};
 
 	exec_binary(av + 1, info, &metadata);
-	//do {
-	//	str = prompt();
-	//	command = subdivise_str(str, (cutter_charset_t){SEPARATORS, SENTINEL_CHAR, SUROUNDINGS});
-	//	tokens = tokenize_command(command);
-	//	build_trees_from_tokens(tokens, info);
-	//} while (prompt);
+	const cutter_charset_t cutter = {SEPARATORS, SENTINEL_CHAR, SUROUNDINGS};
+	do {
+		str = prompt();
+		command = subdivise_str(str, cutter);
+		tokens = tokenize_command(command);
+		printf("nb tokens [%d]\n", tokens->nb_nodes);
+		print(tokens);
+		build_trees_from_tokens(tokens, info);
+		printf("Nb trees [%d]\n", info->processes->nb_nodes);
+		print_tree(info);
+	} while (prompt);
 	return (0);
 }

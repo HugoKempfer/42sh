@@ -9,6 +9,7 @@
 #include "binary_exec.h"
 #include "metadata.h"
 #include "string.h"
+#include "shell_path.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -18,31 +19,30 @@
 #include <sys/wait.h>
 #include <stddef.h>
 
-static char SEPARATORS[] = {':', '\n', '\0', -1};
+static const char SEPARATORS[] = {':', '\n', '\0', -1};
+static const char KEPT[] = {-1};
+static const char *SURROUNDINGS[] = {NULL};
 static char *BASE_PATH[] = {
 	"/bin",
 	"/usr/bin",
-	"/usr/local/bin"
+	"/usr/local/bin",
+	NULL
 };
 
-/* Create the list of binary path from the env er by default bin path */
+/* Create the list of binary path from the env by default bin path */
 static char **get_binary_path(char *binary, shell_info_t *infos)
 {
 	char **path;
-	//char *env_path = env_get_value("PATH");
+	char *env_path = env_get_value(infos->env, "PATH");
 	char *tmp;
 	int it = 0;
-	cutter_charset_t charset = {SEPARATORS, "", (char *[]){NULL}};
+	cutter_charset_t charset = {SEPARATORS, KEPT, SURROUNDINGS};
 
-	//path = (env_path ? subdivise_str(env_path, charset) : BASE_PATH);
-	path = BASE_PATH;
-	if (!path) {
-		return (NULL);
-	}
-	while (it < (int)ARRAY_SIZE(BASE_PATH)) {
+	path = (env_path ? subdivise_str(env_path, charset) : BASE_PATH);
+	while (path[it]) {
 		tmp = path[it];
 		path[it] = str_concat((char *[]){path[it], "/", binary, NULL});
-		//free(tmp);
+		path != BASE_PATH ? free(tmp) : 0; //TODO change this shit
 		if (!path[it]) {
 			return (NULL);
 		}
@@ -50,23 +50,18 @@ static char **get_binary_path(char *binary, shell_info_t *infos)
 	}
 	return (path);
 }
-void print_dbl_tab(char **buffer)
-{
-	while (*buffer) {
-		++(buffer);
-	}
-}
+
 /* Check if at least one of the path is valid */
 static char *get_binary_access(char *binary_name, shell_info_t *infos)
 {
 	char **binary_path = get_binary_path(binary_name, infos);
-	print_dbl_tab(binary_path);
 	char **ptr = binary_path;
 	char *valid_access = NULL;
 
 	if (!binary_path) {
 		return (NULL);
 	}
+	print_dbl_tab(binary_path);
 	while (*ptr) {
 		if (!access(*ptr, X_OK)) {
 			valid_access = strdup(*ptr);

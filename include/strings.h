@@ -13,9 +13,9 @@
 typedef struct cutter_charset_s cutter_charset_t;
 
 struct cutter_charset_s {
-	char *separators;
-	char *kept_separators;
-	char **surroundings;
+	const char *separators;
+	const char *kept_separators;
+	const char **surroundings;
 };
 
 char **subdivise_str(char *, cutter_charset_t);
@@ -24,8 +24,8 @@ void destroy_str_array(char **buffer);
 int get_nb_lines(char **buffer);
 char *alloc_n_str(char *str, int size);
 char **add_line(char **buffer, char *line);
-int get_end_of_str(const char *str, char *);
+int get_end_of_str(const char *str, const char *);
 char *remove_surroundings(char *str);
-char *str_concat(char **str);
+char *str_concat(char **);
 
 #endif /* ifndef STRING_H */

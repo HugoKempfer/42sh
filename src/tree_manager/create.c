@@ -41,7 +41,6 @@ int create_and_link(tnode_t *parent, tnode_data_t data, int position)
 	tnode_t *node = create_tnode(data);
 
 	if (!(node) || !(parent)) {
-		printf("Parent is [%p]\n", parent);
 		free(node);
 		return (false);
 	}

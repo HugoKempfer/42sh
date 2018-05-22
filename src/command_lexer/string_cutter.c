@@ -23,7 +23,7 @@ static int is_in_arr(char const c, char const *arr)
 	return (false);
 }
 
-static char *is_surrounding(char c, char **arr)
+static const char *is_surrounding(char c, const char **arr)
 {
 	int it = 0;
 

@@ -17,7 +17,7 @@ char *remove_surroundings(char *str)
 	return (new);
 }
 
-int get_end_of_str(const char *str, char *surroundings)
+int get_end_of_str(const char *str, const char *surroundings)
 {
 	int it = 1;
 	int count = 1;
