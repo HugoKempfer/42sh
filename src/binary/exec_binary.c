@@ -115,9 +115,10 @@ int exec_binary(char **command, shell_info_t *infos, tree_metadata_t *meta)
 		return (-1);
 	}
 	child_pid = fork();
-	update_info(child_pid, infos, meta);
 	if (!child_pid) {
 		execve(binary_path, command, env);
+		return (false);
 	}
+	update_info(child_pid, infos, meta);
 	return (get_ps_status(child_pid, infos, meta));
 }
