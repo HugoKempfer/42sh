@@ -52,7 +52,7 @@ static char **get_binary_path(char *binary, shell_info_t *infos)
 }
 
 /* Check if at least one of the path is valid */
-static char *get_binary_access(char *binary_name, shell_info_t *infos)
+char *get_binary_access(char *binary_name, shell_info_t *infos)
 {
 	char **binary_path = get_binary_path(binary_name, infos);
 	char **ptr = binary_path;
@@ -76,13 +76,13 @@ static char *get_binary_access(char *binary_name, shell_info_t *infos)
 	return (valid_access);
 }
 
-static void update_info(pid_t pid, shell_info_t *infos, tree_metadata_t *meta)
+void update_info(pid_t pid, shell_info_t *infos, tree_metadata_t *meta)
 {
 	meta->pid = pid;
 	meta->state = ACTIVE;
 }
 
-static int get_ps_status(pid_t pid, shell_info_t *infos, tree_metadata_t *meta)
+int get_ps_status(pid_t pid, shell_info_t *infos, tree_metadata_t *meta)
 {
 	int status;
 
@@ -109,7 +109,7 @@ int exec_binary(char **command, shell_info_t *infos, tree_metadata_t *meta)
 
 	if (!binary_path) {
 		fprintf(stderr, "%s: Command not found.\n", *command);
-		return (-1);
+		return (false);
 	}
 	if (!env) {
 		return (-1);
@@ -120,5 +120,6 @@ int exec_binary(char **command, shell_info_t *infos, tree_metadata_t *meta)
 		return (false);
 	}
 	update_info(child_pid, infos, meta);
+	free(env);
 	return (get_ps_status(child_pid, infos, meta));
 }

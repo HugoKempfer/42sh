@@ -36,7 +36,7 @@ int process_tree(shell_infos_t *infos, tree_metadata_t *meta)
 	redirector_pt_t *function;
 	tnode_t *head = metadata->head;
 
-	if (pipe(pfd) == -1 || dup(pfd[0], 1) == -1) {
+	if (pipe(pfd) == -1 || dup2(pfd[0], 1) == -1) {
 		return (false);
 	}
 	close(pfd[1]);

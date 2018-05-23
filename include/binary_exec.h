@@ -13,5 +13,6 @@
 
 int exec_binary(char **command, shell_info_t *infos, tree_metadata_t *meta);
 int handle_ps_errors(int status, shell_info_t *infos, tree_metadata_t *meta);
+char *get_binary_access(char *binary_name, shell_info_t *infos);
 
 #endif /* ifndef BINARY_EXEC_H */
