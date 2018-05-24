@@ -15,37 +15,37 @@
 #include <unistd.h>
 
 static int process_second_expression(tnode_t *parent_right, shell_info_t *infos,
-		tree_metadata_t *meta, redirectors_pipes_t pipes)
+		tree_metadata_t *meta, redirector_pipes_t pipes)
 {
 	redirector_pt_t *function;
 
 	if (!redirection_exec_binary(parent_right, meta, infos, pipes)) {
 		return (false);
 	}
-	close(pfd[0]);
-	close(pfd[1]);
+	close(pipes.current[0]);
+	close(pipes.current[1]);
 	return (true);
 }
 
 int redirection_pipe(tnode_t *parent, shell_info_t *infos,
-		int parent_pfd[2], tree_metadata_t *meta)
+		int *parent_pfd, tree_metadata_t *meta)
 {
-	int pdf[2];
+	int pfd[2];
 	redirector_pt_t *function;
-	reidrectors_pipes_t pipes;
+	redirector_pipes_t pipes;
 
 	if (pipe(pfd) == -1) {
 		return (false);
 	}
 	pipes.parent_pfd = parent_pfd;
-	pipes.pfd = pfd;
-	if (parent->left->type == COMMAND) {
-		redirection_exec_binary(tnode_t *node, meta, )
+	pipes.current = pfd;
+	if (parent->left->data.type == COMMAND) {
+		if (!redirection_exec_binary(parent->left, meta, infos, pipes)) {
+			return (false);
+		}
 	} else {
-		function = get_redirector_func(parent_left->left);
+		function = get_redirector_func(parent->left->data.type);
 		if (!function(parent, infos, pfd, meta)) {
-			close(pfd[0]);
-			close(pfd[1]);
 			return (false);
 		}
 	}

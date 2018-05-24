@@ -41,16 +41,12 @@ int process_tree(shell_infos_t *infos, tree_metadata_t *meta)
 	}
 	close(pfd[1]);
 	function = get_redirector_func(head->left->type);
-	if (!function || !function(head->left->left, head->left->right, pfd)) {
-		close(pfd[1]);
-		close(pfd[0]);
+	if (!function || !function(head->left, infos, pfd, meta)) {
 		if (head->left->type == COMMAND) {
 			return (exec_binary(head->left.data->str, infos, meta));
 		}
 		return (false);
 	}
-	close(pfd[1]);
 	close(pfd[0]);
 	return (true);
 }
-
