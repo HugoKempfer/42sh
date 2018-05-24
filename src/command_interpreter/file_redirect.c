@@ -34,7 +34,7 @@ static int execute_expression(tnode_t *parent, shell_info_t *infos, int *pfd,
 	redirector_func_t *function;
 
 	if (parent->type == COMMAND) {
-		if (!redirection_exec_binary(parent, meta, infos, pipe)) {
+		if (!redirection_exec_binary(parent, meta, infos, pfd)) {
 			return (false);
 		}
 	}
