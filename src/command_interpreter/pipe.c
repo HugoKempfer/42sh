@@ -15,7 +15,7 @@
 #include <unistd.h>
 
 static int process_second_expression(tnode_t *parent_right, shell_info_t *infos,
-		tree_metadata_t *meta, redirector_pipes_t pipes)
+		tree_metadata_t *meta, int pipes[2])
 {
 	redirector_pt_t *function;
 
@@ -27,27 +27,41 @@ static int process_second_expression(tnode_t *parent_right, shell_info_t *infos,
 	return (true);
 }
 
+static int process_first_expresion(tnode_t *parent, shell_info_t *infos,
+		tree_metadata_t *meta, reidrector_pipes_t *pipes)
+{
+	int binary_pipes[2];
+
+	if (parent->left->data.type != COMMAND) {
+		binary_pipes[0] = -1;
+		binary_pipes[1] = pipes[OUT];
+		function = get_redirector_func(parent->left->data.type);
+		if (!function(parent, infos, pfd, meta)) {
+			return (false);
+		}
+		return (true);
+	}
+	else if (!redirection_exec_binary(parent->left, meta, infos, pipes)) {
+		return (false);
+	}
+	return (true);
+}
+
 int redirection_pipe(tnode_t *parent, shell_info_t *infos,
 		int *parent_pfd, tree_metadata_t *meta)
 {
 	int pfd[2];
+	int pipes[2];
 	redirector_pt_t *function;
 	redirector_pipes_t pipes;
 
 	if (pipe(pfd) == -1) {
 		return (false);
 	}
-	pipes.parent_pfd = parent_pfd;
+	pipes.parent = parent_pfd;
 	pipes.current = pfd;
-	if (parent->left->data.type == COMMAND) {
-		if (!redirection_exec_binary(parent->left, meta, infos, pipes)) {
-			return (false);
-		}
-	} else {
-		function = get_redirector_func(parent->left->data.type);
-		if (!function(parent, infos, pfd, meta)) {
-			return (false);
-		}
+	if (!process_first_expression(parent->left, infos, meta, pipes)) {
+		return (false);
 	}
 	return (process_second_expression(parent->right, infos, meta, pipes));
 }

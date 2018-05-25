@@ -28,7 +28,7 @@ struct redirector_pipes_s {
 };
 
 int redirection_exec_binary(tnode_t *cmd_node, tree_metadata_t *meta,
-		shell_info_t *infos, redirector_pipes_t pipes);
+		shell_info_t *infos, int pipes[2]);
 redirector_pt_t *get_redirector_func(enum tnode_type type);
 
 #endif /* ifndef REDIRECTIONS_H */

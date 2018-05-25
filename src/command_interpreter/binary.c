@@ -16,18 +16,21 @@
 #include <unistd.h>
 
 static void exec_process(char **env, char *binary_path, char **command,
-		redirector_pipes_t pipes)
+		int pipes[2])
 {
 
 	close(pipes.ps[1]);
-	if (dup2(pipes.ps[0], 0) == -1 || dup2(pipes.parent_pfd[1], 1) == -1) {
+	if (pipes[IN] != -1 && dup2(IN ,pipes[IN])) {
+		return (false);
+	}
+	if (dup2(OUT, pipes[OUT]) == -1) {
 		return;
 	}
 	execve(binary_path, command, env);
 }
 
 static int manage_ps(pid_t pid, shell_info_t *infos, tree_metadata_t *meta,
-		redirector_pipes_t pipes)
+		int pipes[2])
 {
 	int status = get_ps_status(pid, infos, meta);
 
@@ -36,7 +39,7 @@ static int manage_ps(pid_t pid, shell_info_t *infos, tree_metadata_t *meta,
 }
 
 int redirection_exec_binary(tnode_t *cmd_node, tree_metadata_t *meta,
-		shell_info_t *infos, redirector_pipes_t pipes)
+		shell_info_t *infos, int pipes[2])
 {
 	const char *binary_name = *(cmd_node->data.str);
 	char *binary_path = get_binary_access(binary_name, infos);
