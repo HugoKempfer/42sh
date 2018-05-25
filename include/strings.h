@@ -19,7 +19,6 @@ struct cutter_charset_s {
 };
 
 char **subdivise_str(char *, cutter_charset_t);
-char *alloc_str(char *str);
 void destroy_str_array(char **buffer);
 int get_nb_lines(char **buffer);
 char *alloc_n_str(char *str, int size);

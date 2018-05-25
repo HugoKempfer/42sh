@@ -10,7 +10,7 @@
 #include <stddef.h>
 #include <markup.h>
 
-static const mtoken_t TYPE[] = {
+static const mtoken_t token_type[] = {
 	{"{", BLOCK_ENTRY},
 	{"}", BLOCK_END},
 	{";", LINE_END},
@@ -37,7 +37,7 @@ static int get_arr_size(mtoken_t *arr)
 	while (arr && arr[it].token) {
 		it++;
 	}
-	return (it);
+	return (it == 0 ? 0 : it);
 }
 
 static mtoken_t *add_line(mtoken_t *token_arr, mtoken_t *token)
@@ -60,30 +60,30 @@ static mtoken_t *add_line(mtoken_t *token_arr, mtoken_t *token)
 	new[it + 1].token = NULL;
 	free(token);
 	free(token_arr);
-	return (new);
+	return (new != NULL ? new : NULL);
 }
 
 static void define_token_type(mtoken_t *token)
 {
-	int i = 0;
-	int i2 = 0;
+	int it = 0;
+	int it2 = 0;
 	token_type_t type = DEFAULT;
 
-	while (token && token[i].token) {
-		while (TYPE[i2].token && *TYPE[i2].token != *token[i].token) {
-			++(i2);
+	while (token && token[it].token) {
+		while (token_type[it2].token && *token_type[it2].token !=
+				*token[it].token) {
+			it2++;
 		}
-		type = TYPE[i2].type;
-		i2 = 0;
-		if (type != DEFAULT) {
-			token[(i)++].type = type;
-			continue;
+		type = token_type[it2].type;
+		it2 = 0;
+		if (type == DEFAULT) {
+			type = LABEL;
+			if (it > 0 && token[it - 1].type == ASSIGN) {
+				type = VALUE;
+			}
 		}
-		type = LABEL;
-		if (i > 0 && token[i - 1].type == ASSIGN) {
-			type = VALUE;
-		}
-		token[(i)++].type = type;
+		token[it].type = type;
+		it++;
 	}
 }
 
@@ -97,15 +97,15 @@ mtoken_t *markup_lexer(char *str)
 	while (get_next_word(&str[it], &it) != -1) {
 		if (str[it] == '"') {
 			it++;
-			EOL = get_next_occur(str + it, '"');
+			EOL = get_next_occur(&str[it], '"');
 		} else {
-			EOL = get_next_occur(str + it, ' ');
+			EOL = get_next_occur(&str[it], ' ');
 		}
-		tmp = create_token(alloc_str(str + it, EOL), DEFAULT);
+		tmp = create_token(alloc_nstr(&str[it], EOL), DEFAULT);
 		it += EOL;
 		token_arr = add_line(token_arr, tmp);
 	}
-	tmp = create_token(alloc_str("", 0), DEFAULT);
+	tmp = create_token(alloc_nstr("",  0), DEFAULT);
 	token_arr = add_line(token_arr, tmp);
 	define_token_type(token_arr);
 	return (token_arr);

@@ -5,20 +5,30 @@
 ** Function to manage the data files
 */
 
+#include <stdio.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include "libstring.h"
+#include <unistd.h>
+#include <stdlib.h>
 #include "markup.h"
 
-static int hugo_strcpy(char *dest, char *src)
+static int get_len(char *buffer)
 {
-	size_t it = 0;
-	size_t len = my_strlen(src);
+	int it = 0;
+
+	while (buffer[it] != '\0') {
+		it++;
+	}
+	return (it);
+}
+
+static int my_strcpy(char *dest, char *src)
+{
+	int it = 0;
+	int len = get_len(src);
 
 	while (it != len) {
 		dest[it] = src[it];
@@ -28,20 +38,18 @@ static int hugo_strcpy(char *dest, char *src)
 	return (it);
 }
 
-static char *my_realloc(char *old, char *new)
+static char	*my_realloc(char *old, char *new, int size_old, int size_new)
 {
 	char *realloc_arr = NULL;
 	int size = 0;
-	size_t size_old = my_strlen(old);
-	size_t size_new = my_strlen(new);
 
 	realloc_arr = malloc(sizeof(char) * (size_old + size_new + 1));
 	if (!(realloc_arr) || !(old)) {
 		return (NULL);
 	}
-	size += hugo_strcpy(realloc_arr, old);
+	size += my_strcpy(realloc_arr, old);
 	if (new) {
-		size += hugo_strcpy(&realloc_arr[size], new);
+		size += my_strcpy(&realloc_arr[size], new);
 	}
 	realloc_arr[size] = '\0';
 	return (realloc_arr);
@@ -59,10 +67,11 @@ char *fill_buffer(char *path)
 	}
 	while (read(fd, temp, DATA_RD_SIZE) == DATA_RD_SIZE || !buffer) {
 		if (!(buffer)) {
-			buffer = my_realloc(temp, NULL);
+			buffer = my_realloc(temp, NULL, get_len(temp), 0);
 		} else {
 			ptr = buffer;
-			buffer = my_realloc(buffer, temp);
+			buffer = my_realloc(buffer, temp, get_len(buffer),
+					get_len(temp));
 			free(ptr);
 		}
 	}

@@ -30,5 +30,9 @@ shell_info_t *init_shell_info(char **base_env)
 	if (!infos->path) {
 		return (NULL);
 	}
+	infos->alias = init_alias();
+	if (!infos->alias) {
+		return (NULL);
+	}
 	return (infos);
 }

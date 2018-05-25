@@ -11,14 +11,14 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "libstring.h"
 #include "markup.h"
 
-static mnode_t *alloc(mtoken_t *token, char *value, mtype_t type, mnode_t *root)
+static mnode_t *alloc_n_insert(char *label, char *value, mtype_t type,
+		mnode_t *root)
 {
 	mnode_t *node = NULL;
-	char *label_b = alloc_str(token->token, my_strlen(token->token));
-	char *value_b = alloc_str(value, my_strlen(value));
+	char *label_b = alloc_nstr(label, my_strlen(label));
+	char *value_b = alloc_nstr(value, my_strlen(value));
 
 	if (!(label_b) || (value && !(value_b))) {
 		free(label_b);
@@ -39,16 +39,18 @@ static int fill_child(mnode_t *root, mtoken_t *token)
 	int it = 0;
 	mnode_t *ptr = NULL;
 
-	if (!(IS_LABEL(token[0]))) {
-		return (0);
-	}
-	while (token[it].token && !(IS_BLOCK_END(token[it]))) {
-		if (IS_LABEL(token[it]) && IS_BLOCK_ENTRY(token[it + 1])) {
-			ptr = alloc(token + it, NULL, ROOT, root);
+	while (token[it].token && token[0].type == LABEL && token[it].type
+			!= BLOCK_END) {
+		if (token[it].type == LABEL && token[it + 1].type ==
+				BLOCK_ENTRY) {
+			ptr = alloc_n_insert(token[it].token, NULL, ROOT,
+					root);
 			it += 2;
-			it += fill_child(ptr, token + it);
-		} else if (IS_LABEL(token[it]) && IS_VALUE(token[it + 2])) {
-			alloc(token + it, token[it + 2].token, CHILD, root);
+			it += fill_child(ptr, &token[it]);
+		} else if (token[it].type == LABEL && token[it + 2].type ==
+				VALUE) {
+			alloc_n_insert(token[it].token, token[it + 2].token,
+					CHILD, root);
 			it += 2;
 		}
 		it++;

@@ -9,7 +9,20 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-char *alloc_str(char *str, int len)
+int my_strlen(char *str)
+{
+	int it = 0;
+
+	if (!str) {
+		return (0);
+	}
+	while (str && str[it] != '\0') {
+		it++;
+	}
+	return (it);
+}
+
+char *alloc_nstr(char *str, int len)
 {
 	int it = 0;
 	char *string  = NULL;
@@ -41,6 +54,7 @@ int get_next_word(char *str, int *cursor)
 	return (it);
 }
 
+//Function which returns the position of the next occurence of the given char
 int get_next_occur(char *str, char c)
 {
 	int it = 0;
@@ -49,7 +63,23 @@ int get_next_occur(char *str, char c)
 		return (-1);
 	}
 	while (str[it] && (str[it] != c) && (str[it] != '\n')) {
-		++(it);
+		it++;
 	}
 	return (it);
+}
+
+int	my_strcmp(const char *s1, const char *s2)
+{
+	int it = 0;
+
+	if (!s1 || !s2) {
+		return (0);
+	}
+	while (s1[it] == s2[it]) {
+		if (s1[it] == '\0' && s2[it] == '\0') {
+			return (0);
+		}
+		it++;
+	}
+	return (s1[it] - s2[it]);
 }

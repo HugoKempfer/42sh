@@ -1,45 +1,35 @@
 ##
-## EPITECH PROJECT, 2017
-## Makefile
+## EPITECH PROJECT, 2018
+## makefile
 ## File description:
-## make my lib
+## makefile
 ##
 
-SRC	=	my_putstr.c	\
-		my_putchar.c	\
-		my_strcat.c	\
-		my_strlen.c	\
-		is_alpha_num_2d.c	\
-		my_str_custcat.c	\
-		my_putnchar.c	\
-		my_putnbr.c	\
-		my_strcmp.c	\
-		my_strcpy.c	\
-		len.c		\
-		my_strcmp_key.c	\
-		clone.c	\
-		my_strncmp.c
+SRC	=	clone.c		\
+		list_create.c		\
+		list_destroy.c		\
+		list_utils.c		\
+		print_dbl_tab.c 	\
+		string_cutter/concatainer.c 	\
+		string_cutter/str_utils.c 	\
+		string_cutter/string_cutter.c
+
 
 OBJ	=	$(SRC:.c=.o)
 
+CFLAGS 	= 	-I../../include/
+
 NAME	=	libmy.a
 
-AR	=	ar rc
-
-all:		$(NAME)
+all:	$(NAME)
 
 $(NAME):	$(OBJ)
-		$(AR) $(NAME) $(OBJ)
-		cp my.h ../../include
-		cp list.h ../../include
+	ar rc $(NAME) $(OBJ)
 
 clean:
-		rm -f $(OBJ)
+	rm -f $(OBJ)
 
-fclean:		clean
-		rm -f $(NAME)
+fclean: clean
+	rm -f $(NAME)
 
-auteur:
-		echo $(USER) > auteur
-
-re: 		fclean all
+re:	fclean all
