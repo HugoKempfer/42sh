@@ -101,7 +101,7 @@ int main(int unused ac, char unused **av, char **env)
 	llist_t *tokens = NULL;
 	tree_metadata_t metadata = {'\0'};
 
-	exec_binary(av + 1, info, &metadata);
+//	exec_binary(av + 1, info, &metadata);
 	const cutter_charset_t cutter = {SEPARATORS, SENTINEL_CHAR, SUROUNDINGS};
 	do {
 		str = prompt();
