@@ -8,11 +8,6 @@
 #include "markup.h"
 #include "alias.h"
 #include "42sh.h"
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdbool.h>
 
 mnode_t *parse_file(char *filepath);
 
@@ -25,7 +20,9 @@ int fill_list_alias(llist_t *alias, mnode_t *node)
 	}
 	fill_alias->name = node->label;
 	fill_alias->value = node->data.child->value;
-	list_push_tail(fill_alias, alias);
+	if (!list_push_tail(fill_alias, alias)) {
+		return (false);
+	}
 	return (true);
 }
 

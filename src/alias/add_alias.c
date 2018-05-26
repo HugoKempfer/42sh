@@ -8,30 +8,39 @@
 #include "42sh.h"
 #include "list.h"
 #include "alias.h"
-#include <stdbool.h>
-#include <stddef.h>
+#include "my.h"
 
-lnode_t *get_the_node(llist_t *alias, char *str)
+int create_new_alias(llist_t *alias, char **tab)
 {
-	lnode_t *node = alias->head;
+	alias_t *fill_alias = malloc(sizeof(alias_t));
 
-	while (node) {
-		if (!strcmp(str, ((alias_t *)(node->data))->name)) {
-			return (node);
-		}
-		node = node->next;
+	if (!fill_alias) {
+		return (false);
 	}
-	return (NULL);
+	fill_alias->name = tab[1];
+	fill_alias->value = tab[2];
+	if (!list_push_tail(fill_alias, alias)) {
+		return (false);
+	}
+	return (true);
+
 }
 
-llist_t *process_alias(shell_info_t *infos, char *str)
+int add_alias(char **tab, shell_info_t *infos)
 {
-	llist_t *alias_list = list_init(NULL);
-	lnode_t *node = get_the_node(infos->alias, str);
+	llist_t *alias = infos->alias;
+	int len = size_dbl_tab(tab);
+	lnode_t *node = NULL;
 
-	if (!node || !alias_list) {
-		return (NULL);
+	if (len < 3) {
+		return (false);
 	}
-	alias_list->head = node;
-	return (alias_list);
+	node = get_the_node(alias, tab[1]);
+	if (!node){
+		create_new_alias(alias, tab);
+	}
+	else {
+		((alias_t *)(node->data))->value = tab[2];
+	}
+	return (true);
 }
