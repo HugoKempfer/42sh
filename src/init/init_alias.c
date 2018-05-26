@@ -36,7 +36,7 @@ llist_t *init_alias(void)
 	mnode_t *node = get_node("alias/", root)->data.root->head;
 	int check = 0;
 
-	if (!root) {
+	if (!root || !alias) {
 		return (NULL);
 	}
 	while (node) {
