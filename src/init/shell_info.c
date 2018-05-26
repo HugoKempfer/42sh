@@ -5,12 +5,13 @@
 ** Init the shel info structure
 */
 
-#include "42sh.h"
 #include "shell_path.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+
+llist_t *init_alias(void);
 
 shell_info_t *init_shell_info(char **base_env)
 {
