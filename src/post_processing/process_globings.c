@@ -1,26 +1,16 @@
 /*
 ** EPITECH PROJECT, 2018
-** glob.c
+** 42sh
 ** File description:
-** glob.c
+** process_globings
 */
 
 #include "list.h"
 #include <stdio.h>
 #include <glob.h>
 
-llist_t *arr_to_list(char **buffer)
-{
-	llist_t *list = list_init(NULL);
-
-	while (*buffer) {
-		list_push_tail(*buffer, list);
-		++buffer;
-	}
-	return (list);
-}
-
-llist_t *globings(char *str)
+llist_t *process_globings(unused shell_info_t *infos,
+			  unused tree_metadata_t *meta, char *str)
 {
 	glob_t paths;
 	int it = 0;
@@ -30,7 +20,6 @@ llist_t *globings(char *str)
 		fprintf(stderr, "%s: No match.", str);
 		return (0);
 	}
-//	globfree(&paths);
+	globfree(&paths);
 	return (arr_to_list(paths.gl_pathv));
 }
-

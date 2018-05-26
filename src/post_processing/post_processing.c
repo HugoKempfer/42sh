@@ -16,30 +16,28 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-static const post_processing_t POST_PROCESS[] = {
-	{&is_backticks, &process_backticks};
-	{&is_alias, &process_alias};
-	{&is_variable, &process_variable};
-	{&is_globings, &process_globings};
-	{&is_double_coat, &process_double_coat};
-	{&is_simple_coat, &process_simple_coat}
+static const post_processing_t POST_PROCESS[] =
+{
+//	{&is_backticks, &process_backticks};
+//	{&is_variable, &process_variable};
+	{is_globings, process_globings},
+	{&is_double_coat, &process_coats},
+	{&is_simple_coat, &process_coats}
 };
 
-static llist_t *get_new_lexems(shell_info_t *infos, metadata_t *meta,
-				char *data_command)
+static int get_new_lexems(shell_info_t *infos, tree_metadata_t *meta,
+			       char *lexem, llist_t **l_lexem)
 {
 	int it = 0;
-	llist_t *l_lexem = NULL;
-	lnode_t *lexem = NULL;
 
-	while (it < (int)ARR_SIZE(POST_PROCESS)) {
-		if (POST_PROCESS[it].specific_command(infos), data_command) {
-			l_lexem = POST_PROCESS[it].process_values(infos, meta);
-			return (l_lexems);
+	while (it < (int)ARRAY_SIZE(POST_PROCESS)) {
+		if (POST_PROCESS[it].command_analyser(infos, lexem)) {
+			*l_lexem = POST_PROCESS[it].process_values(infos, meta, lexem);
+			return (*l_lexem) ? true : false;
 		}
 		it++;
 	}
-	return (NULL);
+	return (true);
 }
 
 static void introduce_new_lexems(llist_t *new_lexems, lnode_t *lexem)
@@ -50,10 +48,26 @@ static void introduce_new_lexems(llist_t *new_lexems, lnode_t *lexem)
 	if (tmp) {
 		tmp->prev = new_lexems->tail;
 	}
-	free(new_lexems);
 }
+/*
+static int introduce_alias(shell_info_t *infos, lnode_t *lexem)
+{
+	llist_t *new_lexem = NULL;
 
-static char **update_command(shell_info_t *infos, metadata_t *metadata,
+	if (is_alias(infos, lexem)) {
+		new_lexem = process_alias(infos, lexem->data);
+		if (!new_lexem) {
+			return (false);
+		}
+		introduce_new_lexems(new_lexem, lexem);
+		list_pop(lexem, new_lexem);
+		lexem = new_lexem->tail->next;
+		free(new_lexem);
+	}
+	return (true);
+}
+*/
+static char **update_command(shell_info_t *infos, tree_metadata_t *metadata,
 			char **command_str)
 {
 	llist_t *command = arr_dup_to_list(command_data);
@@ -61,12 +75,14 @@ static char **update_command(shell_info_t *infos, metadata_t *metadata,
 	llist_t *new_lexems = NULL;
 
 	destroy_str_array(command_data);
+//	introduce_alias(infos, lexem);
 	while (lexem) {
-		new_lexems = get_new_lexems(infos, metadata, lexem->str);
+		get_new_lexems(infos, metadata, lexem->str, &new_lexems);
 		if (new_lexems) {
-			list_pop(lexem, command);
-			lexem = new_lexems->head;
 			introduce_new_lexems(new_lexems, lexem);
+			list_pop(lexem, command);
+			lexem = new_lexems->tail;
+			free(new_lexems);
 		}
 		lexem = lexem->next;
 	}

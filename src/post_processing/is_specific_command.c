@@ -16,33 +16,76 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdbool.h>
-
-int is_backticks(unused shell_info_t *infos, char *command)
+/*
+int is_alias(shell_info_t *infos, char *lexem)
 {
-	return (true);
+	llist_t *alias_list = infos->alias;
+	lnode_t *alias_node = alias_list->head;
+
+	while (alias_node) {
+		if (!strcmp(alias_node->data->name, lexem)) {
+			return (true);
+		}
+		alias_node = alias_node->next;
+	}
+	return (false);
 }
 
-int is_alias(shell_info_t *infos, char *command)
+int is_variable(shell_info_t *infos, char *lexem)
 {
-	return (true);
+	llist_t *var_list = infos->local_vars;
+	lnode_t *var_node = var_list->head;
+
+	while (var_node) {
+		if (!strcmp(var_node->data->name, lexem)) {
+			return (true);
+		}
+		var_node = var_node->next;
+	}
+	return (false);
+	}*/
+int is_globings(unused shell_info_t *infos, char *lexem)
+{
+	while (*lexem) {
+		if (*lexem == '*' || *lexem == '?') {
+			return (true);
+		}
+		if (*lexem == '[' && *(lexem + 4) == ']') {
+			return (true);
+		}
+	}
+	return (false);
 }
 
-int is_variable(shell_info_t *infos, char *command)
+int is_surrondings(char *str, char c)
 {
-	return (true);
+	if (*str == c && *(str + strlen(str) - 1) == c) {
+		return (true);
+	}
+	return (false);
 }
 
-int is_globings(unused shell_info_t *infos, char *command)
+int is_double_coat(unused shell_info_t *infos, char *lexem)
 {
-	return (true);
+	if (is_surrondings(lexem, '"')) {
+		return (true);
+	}
+	return (false);
 }
 
-int is_double_coat(unused shell_info_t *infos, char *command)
+int is_simple_coat(unused shell_info_t *infos, char *lexem)
 {
-	return (true);
+	if (is_surrondings(lexem, '\'')) {
+		return (true);
+	}
+	return (false);
+
 }
 
-int is_simple_coat(unused shell_info_t *infos, char *command)
+int is_backticks(unused shell_info_t *infos, char *lexem)
 {
-	return (true);
+	if (is_surrondings(lexem, '`')) {
+		return (true);
+	}
+	return (false);
 }
