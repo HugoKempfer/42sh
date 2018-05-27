@@ -36,11 +36,8 @@ llist_t *process_coats(unused shell_info_t *infos,
 	if (!list || !new_lexem) {
 		return (NULL);
 	}
-	node = list_create_node(new_lexem);
-	if (!node) {
+	if (!list_push_tail(new_lexem, list)) {
 		return (NULL);
 	}
-	list->head = node;
-	list->tail = node;
 	return (list);
 }

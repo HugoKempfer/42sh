@@ -21,6 +21,7 @@ const static char *SUROUNDINGS[] = {
 	"\"\"",
 	"()",
 	"``",
+	"\'\'",
 	NULL
 };
 
@@ -48,21 +49,16 @@ const static char SEPARATORS[] = {
 
 char *prompt(void);
 
-static void print_da(char **arr)
-{
-	while (arr && *arr) {
-		printf("[%s] ", *arr);
-		++(arr);
-	}
-	printf("\n");
-}
-
 void print(llist_t *tokens)
 {
 	lnode_t *node = tokens->head;
 
 	while (node) {
 		printf("[%d]\n", ((token_t *)(node->data))->type);
+		if (((token_t *)(node->data))->type == COMMAND) {
+			print_dbl_tab(((token_t *)(node->data))->value);
+		}
+		printf("\n");
 		node = node->next;
 	}
 }
@@ -70,10 +66,10 @@ void print(llist_t *tokens)
 void print_tree(tnode_t *head)
 {
 	while (head) {
-		head->left ? printf("Left [%d]", head->left->data.type) : 0;
-		head->left ? print_da(head->left->data.str) : 0;
-		head->right ? printf("Right [%d]", head->right->data.type) : 0;
-		head->right ? print_da(head->right->data.str) : 0;
+		head->left ? printf("Left [%d]\n", head->left->data.type) : 0;
+		head->left ? print_dbl_tab(head->left->data.str) : 0;
+		head->right ? printf("Right [%d]\n", head->right->data.type) : 0;
+		head->right ? print_dbl_tab(head->right->data.str) : 0;
 		head = head->left;
 	}
 }
@@ -94,14 +90,16 @@ int main(int unused ac, char unused **av, char **env)
 		str = prompt();
 		command = subdivise_str(str, cutter);
 		tokens = tokenize_command(command);
-		printf("nb tokens [%d]\n", tokens->nb_nodes);
 //		print(tokens);
 		build_trees_from_tokens(tokens, info);
-		if (!trees_post_processing(info, ((tree_metadata_t*)(info->processes->tail->data)), ((tree_metadata_t*)(info->processes->tail->data))->head)) {
+		print_tree(((tree_metadata_t *)(info->processes->tail->data))->head);
+		printf("_____________________________________\n");
+		if (!tree_post_processing(info, ((tree_metadata_t*)(info->processes->tail->data)), ((tree_metadata_t*)(info->processes->tail->data))->head)) {
 			printf("ntm post processing failed\n");
 			return (false);
 		}
-//		printf("Nb trees [%d]\n", info->processes->nb_nodes);
+		printf("_____________________________________\n");
+		print_tree(((tree_metadata_t *)(info->processes->tail->data))->head);
 //		print_tree(info);
 	} while (prompt);
 	return (0);

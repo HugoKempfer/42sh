@@ -18,9 +18,8 @@ llist_t *process_globings(unused shell_info_t *infos,
 {
 	glob_t paths;
 	int it = 0;
-	printf("ayo on est dans globings\n");
+
 	if (glob(str, 0, NULL, &paths) != 0) {
-		printf("ERRRROOOOR\n");
 		return (NULL);
 	}
 	if (paths.gl_pathc == 0) {
