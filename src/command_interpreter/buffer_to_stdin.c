@@ -6,9 +6,10 @@
 */
 
 #include "redirections.h"
+#include "tools.h"
 #include "binary_tree.h"
 #include "42sh.h"
-#include "strings.h"
+#include "string.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -19,54 +20,63 @@
 #include <fcntl.h>
 #include <errno.h>
 
-//static int execute_expression(tnode_t *parent, shell_info_t *infos, int *pfd,
-//		tree_metadata_t *meta)
-//{
-//	redirector_func_t *function;
-//
-//	if (parent->type == COMMAND) {
-//		if (!redirection_exec_binary(parent, meta, infos, pfd)) {
-//			return (false);
-//		}
-//	}
-//	function = get_redirector_func(parent->type);
-//	if (!function || !function(parent, infos, pfd, meta)) {
-//		return (false);
-//	}
-//	return (true);
-//}
-//
-//static char **get_buffer(char *end_str)
-//{
-//	char *line;
-//	char **buffer = NULL;
-//	size_t len;
-//	ssize_t nread = 0;
-//
-//	while (nread != -1 && strcmp(line, end_str)) {
-//		line = NULL;
-//		write(1, "? ", 2);
-//		nread = getline(&line, &len, stdin);
-//		buffer = add_line(buffer, line);
-//		if (!buffer) {
-//			return (false);
-//		}
-//	}
-//}
-//
-//int redirect_buff_to_stdin(tnode_t *parent, shell_info_t *infos,
-//		int *parent_pfd, tree_metadata_t *meta)
-//{
-//	char **buffer = get_buffer(*(parent->right->data.str));
-//	int pfd[2];
-//
-//	if (file_fd == -1 || pipe(pfd) == -1 || dup2(pfd[1], file_fd) == -1) {
-//		return (false);
-//	}
-//	if (!execute_expression(parent->left, infos, pfd, meta)) {
-//		return (false);
-//	}
-//	close(file_fd);
-//	return (true);
-//}
-//
+static int execute_expression(tnode_t *parent, shell_info_t *infos,
+		tree_metadata_t *meta, int io_fd[3])
+{
+	if (parent->data.type == COMMAND) {
+		if (!redirection_exec_binary(parent, meta, infos, io_fd)) {
+			return (false);
+		}
+	}
+	return (true);
+}
+
+static char *custom_prompt(void)
+{
+	char *line = NULL;
+	size_t len;
+
+	fputs("? ", stdout);
+	if (getline(&line, &len, stdin) == -1) {
+		free(line);
+		return (NULL);
+	}
+	return (line);
+}
+
+static void fill_pipe_buffer(int *pfd, char *end_str)
+{
+	char *line = NULL;
+
+	do {
+		line = NULL;
+		line = custom_prompt();
+		if (!strncmp(line, end_str, strlen(end_str))) {
+			break;
+		}
+		if (line) {
+			write(pfd[1], line, strlen(line));
+		}
+	} while (line);
+}
+
+int redirection_buffer_to_stdin(tnode_t *parent, shell_info_t *infos,
+		int *parent_pfd, tree_metadata_t *metadata)
+{
+	int pfd[2];
+	int io_fd[3];
+
+	if (pipe(pfd) == -1) {
+		return (false);
+	}
+	fill_pipe_buffer(pfd, *(parent->right->data.str));
+	close(pfd[1]);
+	io_fd[IN] = pfd[0];
+	io_fd[OUT] = parent_pfd[1];
+	io_fd[TO_CLOSE] = pfd[1];
+	if (!execute_expression(parent->left, infos, metadata, io_fd)) {
+		return (false);
+	}
+	close(pfd[0]);
+	return (true);
+}
