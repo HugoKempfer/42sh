@@ -26,7 +26,6 @@ int handle_ps_errors(int status, shell_info_t *infos, tree_metadata_t *meta)
 		case SIGILL:
 			fprintf(stderr, "Illegal instruction\n");
 		default:
-			fprintf(stderr, "DAMMNn\n");
 			break;
 	}
 	return (false);
