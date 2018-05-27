@@ -33,6 +33,7 @@ static int execute_expression(tnode_t *parent, shell_info_t *infos,
 		tree_metadata_t *meta, int file_fd)
 {
 	int io_fd[3];
+	int binary_fd[2] = {0, file_fd};
 	redirector_pt_t *function;
 
 	io_fd[IN] = -1;
@@ -47,7 +48,7 @@ static int execute_expression(tnode_t *parent, shell_info_t *infos,
 		}
 	}
 	function = get_redirector_func(parent->data.type);
-	if (!function || !function(parent, infos, (int [2]){0, 1}, meta)) {
+	if (!function || !function(parent, infos, binary_fd, meta)) {
 		return (false);
 	}
 	return (true);
