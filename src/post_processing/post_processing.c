@@ -44,12 +44,11 @@ static int get_new_lexems(shell_info_t *infos, tree_metadata_t *meta,
 		if (POST_PROCESS[it].command_analyser(infos, lexem) == true) {
 			printf("ok command analyser a return true\n");
 			*l_lexem = POST_PROCESS[it].process_values(infos, meta, lexem);
-			printf("on a affecté une liste\n");
-			print_list(*l_lexem);
 			return (*l_lexem) ? true : false;
 		}
 		it++;
 	}
+	*l_lexem = NULL;
 	return (true);
 }
 
@@ -94,20 +93,17 @@ static char **update_command(shell_info_t *infos, tree_metadata_t *metadata,
 	llist_t *new_lexems = NULL;
 
 	destroy_str_array(command_str);
-	if (!introduce_alias(infos, lexem)) {
-		return (false);
-	}
+/*	if (!introduce_alias(infos, lexem))
+	return (false);*/
 	while (lexem) {
-		if (!get_new_lexems(infos, metadata, lexem->data, &new_lexems)) {
-			return (false);
-		}
+		if (!get_new_lexems(infos, metadata, lexem->data, &new_lexems))
+			return (NULL);
 		if (new_lexems) {
 			command->nb_nodes += new_lexems->nb_nodes;
 			introduce_new_lexems(command, new_lexems, lexem);
 			list_pop(lexem, command);
 			lexem = new_lexems->tail;
 			free(new_lexems);
-			new_lexems = NULL;
 		}
 		lexem = lexem->next;
 	}
@@ -118,31 +114,22 @@ int post_processing(shell_info_t *infos, tree_metadata_t *metadata,
 			tnode_t *tree_node)
 {
 	char **command = NULL;
-	enum tnode_type type;
-	int compteur = 0;
-	printf("%d\n", tree_node->left->data.type);
+
 	while (tree_node) {
-		type = (tree_node->left) ? tree_node->left->data.type : -1;
-		if (tree_node->left && type == COMMAND) {
-			print_dbl_tab(tree_node->left->data.str);
-			command = tree_node->left->data.str;
-			command = update_command(infos, metadata, command);
+		if (tree_node->left && tree_node->left->data.type == COMMAND) {
+			command = update_command(infos, metadata, tree_node->left->data.str);
 			if (!command) {
-				printf("left est null\n");
 				return (false);
 			}
+			print_dbl_tab(command);
 		}
-		type = (tree_node->right) ? tree_node->right->data.type : -1;
-		if (tree_node->right && type == COMMAND) {
-			print_dbl_tab(tree_node->right->data.str);
-			command = tree_node->right->data.str;
-			command = update_command(infos, metadata, command);
+		if (tree_node->right && tree_node->right->data.type == COMMAND) {
+			command = update_command(infos, metadata, tree_node->right->data.str);
 			if (!command) {
-				printf("right est null\n");
 				return (false);
 			}
+			print_dbl_tab(command);
 		}
-		printf("before changing tree branch\n");
 		tree_node = tree_node->left;
 	}
 	return (true);

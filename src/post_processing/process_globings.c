@@ -19,12 +19,12 @@ llist_t *process_globings(unused shell_info_t *infos,
 	glob_t paths;
 	int it = 0;
 
-	printf("we are in globing function\n");
-	glob(str, 0, NULL, &paths);
+	if (glob(str, 0, NULL, &paths) != 0) {
+		return (NULL);
+	}
 	if (paths.gl_pathc == 0) {
 		fprintf(stderr, "%s: No match.", str);
 		return (NULL);
 	}
-	print_dbl_tab(paths.gl_pathv);
 	return (arr_to_list(paths.gl_pathv));
 }
