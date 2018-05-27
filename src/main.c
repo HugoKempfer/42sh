@@ -13,28 +13,23 @@
 #include "strings.h"
 #include "tools.h"
 #include "metadata.h"
+#include "post_processing.h"
 #include "list.h"
+#include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-
-char *prompt(void);
-int process_manager(shell_info_t *infos);
-
-static void print_da(char **arr)
+static void signal_handler(int handler)
 {
-	while (arr && *arr) {
-		printf("[%s]\n", *arr);
-		++(arr);
-	}
+	signal(SIGINT, signal_handler);
+	write(1, "\n42sh> ", 7);
 }
-
-int shell_runtime(shell_info_t *infos);
 
 int main(int unused ac, char unused **av, char **env)
 {
 	shell_info_t *infos = init_shell_info(env);
 
+	signal(SIGINT, signal_handler);
 	shell_runtime(infos);
 	return (0);
 }

@@ -20,8 +20,9 @@ int size_dbl_tab(char **buffer)
 
 void print_dbl_tab(char **buffer)
 {
-	while (*buffer) {
-		printf("%s\n", *buffer);
+	printf("print dbl tab\n");
+	while (buffer && *buffer) {
+		printf("[%s]\n", *buffer);
 		++(buffer);
 	}
 }

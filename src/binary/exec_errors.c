@@ -19,12 +19,13 @@ int handle_ps_errors(int status, shell_info_t *infos, tree_metadata_t *meta)
 	switch (WTERMSIG(status)) {
 		case SIGSEGV:
 			fprintf(stderr, "Segmentation fault\n");
-			break;
+			return (139);
 		case SIGFPE:
 			fprintf(stderr, "Floating exception\n");
-			break;
+			return (136);
+		case SIGILL:
+			fprintf(stderr, "Illegal instruction\n");
 		default:
-			fprintf(stderr, "DAMMNn\n");
 			break;
 	}
 	return (false);
