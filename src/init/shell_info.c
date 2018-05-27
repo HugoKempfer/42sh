@@ -25,7 +25,6 @@ shell_info_t *init_shell_info(char **base_env)
 	infos->special_vars = list_init(NULL);
 	infos->local_vars = list_init(NULL);
 	infos->env = init_list_env(base_env);
-	infos->alias = list_init(NULL); //fonction qui init list alias que jordan doit push
 	if (!infos->env) {
 		return (NULL);
 	}
