@@ -59,6 +59,8 @@ static int do_command_parsing(shell_info_t *infos)
 
 	if (!prompt) {
 		return (false);
+	} else if (raw_command && !strcmp(raw_command, "\n")) {
+		return (true);
 	}
 	cut_command = subdivise_str(raw_command, cutter);
 	if (!cut_command) {
