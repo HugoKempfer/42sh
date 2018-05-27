@@ -92,6 +92,7 @@ static void print_tree(shell_info_t *infos)
 }
 
 int exec_binary(char **command, shell_info_t *infos, tree_metadata_t *meta);
+int check_syntax_command(llist_t *tokens);
 
 int main(int unused ac, char unused **av, char **env)
 {
@@ -107,6 +108,9 @@ int main(int unused ac, char unused **av, char **env)
 		str = prompt();
 		command = subdivise_str(str, cutter);
 		tokens = tokenize_command(command);
+		if (!check_syntax_command(tokens)) {
+			continue;;
+		}
 		printf("nb tokens [%d]\n", tokens->nb_nodes);
 		print(tokens);
 		build_trees_from_tokens(tokens, info);
