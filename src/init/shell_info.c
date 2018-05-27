@@ -24,6 +24,7 @@ shell_info_t *init_shell_info(char **base_env)
 	infos->processes = list_init(NULL);
 	infos->special_vars = list_init(NULL);
 	infos->local_vars = list_init(NULL);
+	infos->history = list_init(NULL);
 	infos->env = init_list_env(base_env);
 	if (!infos->env) {
 		return (NULL);

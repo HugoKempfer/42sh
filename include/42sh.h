@@ -25,7 +25,7 @@ struct shell_info_s {
 	llist_t *local_vars;
 	llist_t *alias;
 	llist_t *env;
-	llist_t *alias;
+	llist_t *history;
 	path_t *path;
 };
 
