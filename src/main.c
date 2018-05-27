@@ -103,16 +103,12 @@ int main(int unused ac, char unused **av, char **env)
 	llist_t *tokens = NULL;
 	tree_metadata_t metadata = {'\0'};
 
-//	exec_binary(av + 1, info, &metadata);
 	const cutter_charset_t cutter = {SEPARATORS, SENTINEL_CHAR, SUROUNDINGS};
 	do {
 		str = prompt();
 		command = subdivise_str(str, cutter);
-		print_dbl_tab(command);
 		tokens = tokenize_command(command);
-		//print(tokens);
 		build_trees_from_tokens(tokens, info);
-		//print_tree(info);
 		process_tree(info, info->processes->head->data);
 	} while (prompt);
 	return (0);

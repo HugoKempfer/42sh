@@ -58,7 +58,6 @@ int redirection_to_file(tnode_t *parent, shell_info_t *infos,
 {
 	int file_fd = open_file(*(parent->right->data.str), O_WRONLY);
 
-	fprintf(stderr, "Write file\n");
 	if (file_fd == -1) {
 		return (false);
 	}
@@ -74,7 +73,6 @@ int redirection_to_file_append(tnode_t *parent, shell_info_t *infos,
 {
 	int file_fd = open_file(*(parent->right->data.str), O_WRONLY | O_APPEND);
 
-	fprintf(stderr, "Write file append\n");
 	if (file_fd == -1) {
 		return (false);
 	}
