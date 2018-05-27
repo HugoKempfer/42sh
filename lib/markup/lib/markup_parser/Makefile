@@ -31,7 +31,6 @@ $(NAME):	$(OBJ)
 	$(AR) $(NAME) $(OBJ)
 	@echo "Markup parser library built"
 	cp $(NAME) ../../../../build/$(NAME)
-	cp include/markup.h ../../../../include/
 
 clean:
 	$(RM) $(OBJ)
@@ -39,7 +38,6 @@ clean:
 
 fclean:	clean
 	$(RM) $(NAME)
-	rm ../../../../include/markup.h
 	@echo "Fclean done !"
 
 re: fclean all
