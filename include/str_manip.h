@@ -5,8 +5,8 @@
 ** Header for useful string management functions
 */
 
-#ifndef STRING_H
-#define STRING_H
+#ifndef STR_MANIP_H
+#define STR_MANIP_H
 
 #include <string.h>
 #include "list.h"
@@ -31,4 +31,4 @@ llist_t *arr_to_list(char **);
 llist_t *arr_dup_to_list(char **);
 char **list_to_arr(llist_t *);
 void print_dbl_tab(char **);
-#endif /* ifndef STRING_H */
+#endif /* ifndef STR_MANIP_H */

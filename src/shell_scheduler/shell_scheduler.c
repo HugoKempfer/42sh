@@ -6,7 +6,7 @@
 */
 
 #include "42sh.h"
-#include "strings.h"
+#include "str_manip.h"
 #include "metadata.h"
 #include "list.h"
 #include <stdio.h>

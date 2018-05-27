@@ -8,7 +8,7 @@
 #include "list.h"
 #include "lexer.h"
 #include "tools.h"
-#include "strings.h"
+#include "str_manip.h"
 
 /* Always put the doubly separator at the top */
 static const token_type_list_t TYPES[] = {

@@ -5,7 +5,7 @@
 ** manage the var funcs
 */
 
-#include "strings.h"
+#include "str_manip.h"
 #include "functions.h"
 #include "list.h"
 #include "var.h"

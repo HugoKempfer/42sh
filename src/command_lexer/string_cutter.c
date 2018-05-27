@@ -7,7 +7,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
-#include "strings.h"
+#include "str_manip.h"
 #include "tools.h"
 
 static int is_in_arr(char const c, char const *arr)

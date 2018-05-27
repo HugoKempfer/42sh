@@ -8,7 +8,7 @@
 #include "list.h"
 #include "lexer.h"
 #include "tools.h"
-#include "strings.h"
+#include "str_manip.h"
 #include <stdbool.h>
 
 int print_error_redirection(int prev, int current)

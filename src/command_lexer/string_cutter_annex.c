@@ -6,7 +6,7 @@
 */
 
 #include "tools.h"
-#include "strings.h"
+#include "str_manip.h"
 
 char *remove_surroundings(char *str)
 {
