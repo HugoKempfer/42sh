@@ -8,7 +8,7 @@
 #include "42sh.h"
 #include "binary_exec.h"
 #include "metadata.h"
-#include "string.h"
+#include "str_manip.h"
 #include "shell_path.h"
 #include <stdio.h>
 #include <stdlib.h>

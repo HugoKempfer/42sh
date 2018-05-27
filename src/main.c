@@ -10,7 +10,6 @@
 #include "42sh.h"
 #include "parser.h"
 #include "my.h"
-#include "strings.h"
 #include "tools.h"
 #include "metadata.h"
 #include "post_processing.h"
