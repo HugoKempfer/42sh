@@ -7,6 +7,7 @@
 
 #include "42sh.h"
 #include "list.h"
+#include "tools.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -38,19 +39,23 @@ char *env_get_value(llist_t *env, char *var_name)
 	return ((char *)(node->data) + (strlen(var_name) + 1));
 }
 
-void my_unsetenv(char **command, shell_info_t *infos)
+int my_unsetenv(shell_info_t *infos, char **command)
 {
 	llist_t *env = infos->env;
 	char *var_name = command[1];
 	lnode_t *var = env_get_node(env, var_name);
 
+	if (!var) {
+		return (false);
+	}
 	if (var) {
 		free(var->data);
 		list_pop(var, env);
 	}
+	return (true);
 }
 
-int my_setenv(char **command, shell_info_t *infos)
+int my_setenv(shell_info_t *infos, char **command)
 {
 	llist_t *env = infos->env;
 	char *var_name = command[1];
@@ -74,7 +79,7 @@ int my_setenv(char **command, shell_info_t *infos)
 	return (true);
 }
 
-void my_env(shell_info_t *infos)
+int my_env(shell_info_t *infos, unused char **command)
 {
 	llist_t *env = infos->env;
 	lnode_t *node = env->head;
@@ -84,4 +89,5 @@ void my_env(shell_info_t *infos)
 		write(1, "\n", 1);
 		node = node->next;
 	}
+	return (true);
 }
