@@ -12,7 +12,7 @@
 char **list_to_arr(llist_t *list)
 {
 	lnode_t *node = list->head;
-	char **array = malloc(sizeof(*array) * list->nb_nodes);
+	char **array = malloc(sizeof(*array) * (list->nb_nodes + 1));
 	char **ptr = array;
 
 	if (!array) {
