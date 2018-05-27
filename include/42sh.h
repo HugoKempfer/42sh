@@ -23,6 +23,7 @@ struct shell_info_s {
 	llist_t *processes;
 	llist_t *special_vars;
 	llist_t *local_vars;
+	llist_t *alias;
 	llist_t *env;
 	path_t *path;
 };

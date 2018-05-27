@@ -8,6 +8,7 @@
 #include "list.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 char **list_to_arr(llist_t *list)
 {
@@ -28,7 +29,29 @@ char **list_to_arr(llist_t *list)
 	return (array);
 }
 
-lnode_t	*list_index(int nb_nodes, lnode_t *beacon_node)
+llist_t *arr_to_list(char **buffer)
+{
+	llist_t *list = list_init(NULL);
+
+	while (*buffer) {
+		list_push_tail(*buffer, list);
+		++buffer;
+	}
+	return (list);
+}
+
+llist_t *arr_dup_to_list(char **buffer)
+{
+	llist_t *list = list_init(NULL);
+
+	while (*buffer) {
+		list_push_tail(strdup(*buffer), list);
+		++buffer;
+	}
+	return (list);
+}
+
+lnode_t *list_index(int nb_nodes, lnode_t *beacon_node)
 {
 	if (nb_nodes != 0 && beacon_node->next != NULL) {
 		return (list_index(nb_nodes - 1, beacon_node->next));

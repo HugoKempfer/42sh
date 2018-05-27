@@ -13,23 +13,10 @@
 #include "strings.h"
 #include "tools.h"
 #include "metadata.h"
+#include "post_processing.h"
 #include "list.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-
-char *prompt(void);
-int process_manager(shell_info_t *infos);
-
-static void print_da(char **arr)
-{
-	while (arr && *arr) {
-		printf("[%s]\n", *arr);
-		++(arr);
-	}
-}
-
-int shell_runtime(shell_info_t *infos);
 
 int main(int unused ac, char unused **av, char **env)
 {
