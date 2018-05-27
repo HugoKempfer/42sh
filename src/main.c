@@ -109,7 +109,7 @@ int main(int unused ac, char unused **av, char **env)
 		command = subdivise_str(str, cutter);
 		tokens = tokenize_command(command);
 		if (!check_syntax_command(tokens)) {
-			continue;;
+			continue;
 		}
 		printf("nb tokens [%d]\n", tokens->nb_nodes);
 		print(tokens);
