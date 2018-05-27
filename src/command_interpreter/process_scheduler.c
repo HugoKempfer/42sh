@@ -33,16 +33,16 @@ redirector_pt_t *get_redirector_func(enum tnode_type type)
 
 int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 {
-	int pfd[2];
+	int pfd[2]= {-1, -1};
 	redirector_pt_t *function;
 	tnode_t *head = meta->head;
 
 	//if (pipe(pfd) == -1) {
 	//	return (false);
 	//}
-	pfd[1] = 1;
-	pfd[0] = 0;
-	printf("PIPE ROOT [%d] [%d]\n", pfd[0], pfd[1]);
+	//dup2(pfd[1], 1);
+	//close(pfd[0]);
+	//close(pfd[1]);
 	function = get_redirector_func(head->left->data.type);
 	if (!function || !function(head->left, infos, pfd, meta)) {
 		if (head->left->data.type == COMMAND) {
@@ -50,6 +50,5 @@ int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 		}
 		return (false);
 	}
-//	dup2(1, pfd[0]);
 	return (true);
 }

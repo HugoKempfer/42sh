@@ -39,4 +39,5 @@ int get_ps_status(pid_t pid, shell_info_t *infos, tree_metadata_t *meta);
 /* Redirection Functions */
 int redirection_pipe(tnode_t *parent, shell_info_t *infos,
 		int *parent_pfd, tree_metadata_t *meta);
+
 #endif /* ifndef REDIRECTIONS_H */

@@ -18,17 +18,26 @@
 static void exec_process(char **env, char *binary_path, char **command,
 		int pipes[3])
 {
+	fprintf(stderr, "PIPI [%d][%d][%d]\n", pipes[IN], pipes[OUT], pipes[TO_CLOSE]);
 	if (pipes[IN] != -1) {
-		if (dup2(pipes[IN], IN) == -1) {
+		fprintf(stderr, "Piping IN\n");
+		if (dup2(pipes[IN], 0) == -1) {
 			return;
 		}
 		close(pipes[IN]);
 	}
-	if (dup2(pipes[OUT], 1) == -1) {
-		return;
+	if (pipes[OUT] != -1) {
+		fprintf(stderr, "Piping OUT\n");
+		if (dup2(pipes[OUT], 1) == -1) {
+			return;
+		}
+		close(pipes[OUT]);
 	}
 	close(pipes[TO_CLOSE]);
-	close(pipes[OUT]);
+	//if (dup2(pipes[OUT], 1) == -1) {
+	//	return;
+	//}
+	//close(pipes[OUT]);
 	execve(binary_path, command, env);
 }
 
@@ -38,6 +47,7 @@ static int manage_ps(pid_t pid, shell_info_t *infos, tree_metadata_t *meta,
 	int status = get_ps_status(pid, infos, meta);
 
 	fprintf(stderr, "END\n");
+	printf("status [%d]\n", status);
 	return (status);
 }
 

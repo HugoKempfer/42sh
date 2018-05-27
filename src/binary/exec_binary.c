@@ -88,7 +88,9 @@ int get_ps_status(pid_t pid, shell_info_t *infos, tree_metadata_t *meta)
 
 	printf("META [%p]\n", meta);
 	if (!(meta->is_job)) {
+		fprintf(stderr, "WAITING\n");
 		waitpid(pid, &status, 0);
+		fprintf(stderr, "END WAITING\n");
 	} else {
 		return (false);
 	}
