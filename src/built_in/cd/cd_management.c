@@ -42,7 +42,7 @@ static int reset_paths_var(path_t *paths_var, llist_t *env)
 	}
 	if (!reset_path_var_env(env, "OLDPWD=", paths_var->oldpwd)) {
 		return (false);
-	}	
+	}
 	return (true);
 }
 
@@ -67,7 +67,7 @@ static char *chdir_path(llist_t *env, path_t *paths_var, char *command)
 	return (path);
 }
 
-int cd_management(char **command, shell_info_t *shell)
+int cd_management(shell_info_t *shell, char **command)
 {
 	char *path = chdir_path(shell->env, shell->path, command[1]);
 
