@@ -10,6 +10,13 @@
 #include "tools.h"
 #include "strings.h"
 #include <stdbool.h>
+/*int print_error_command(int prev_type, int current_type)
+{
+	if (prev_type == current_type && prev_type == PIPE) {
+		fprintf(stderr, "Invalid null command.");
+	}
+	return (true);
+}
 
 int check_type(int prev_type, int current_type)
 {
@@ -33,6 +40,34 @@ int check_syntax_command(llist_t *tokens)
 			return (false);
 		}
 		prev_type = ((token_t *)(node->data))->type;
+		node = node->next;
+	}
+	return (true);
+}*/
+
+int compare_type(int current_type, int second_type, llist_t *tokens)
+{
+	if (current_type == second_type && current_type == COMMAND) {
+		return (false);
+
+	}
+	if (tokens->nb_nodes == 2 && )
+
+}
+
+int check_syntax_command(llist_t *tokens)
+{
+	lnode_t *node = tokens->head;
+	int check = 0;
+	int current_type = ((token_t *)(node->data))->type;
+	int second_type = 0;
+
+	while (node->next) {
+		second_type = ((token_t *)(node->next->data))->type;
+		check = compare_type(current_type, second_type, tokens);
+		if(!check) {
+			return (false);
+		}
 		node = node->next;
 	}
 	return (true);
