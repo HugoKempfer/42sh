@@ -39,12 +39,9 @@ int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 	redirector_pt_t *function;
 	tnode_t *head = meta->head;
 
-	printf("THE type is [%d]\n", head->left->data.type);
 	function = get_redirector_func(head->left->data.type);
 	if (!function || !function(head->left, infos, pfd, meta)) {
-		printf("NOT A FUNCTION\n");
 		if (head->left->data.type == COMMAND) {
-			printf("COMMAND :/\n");
 			return (exec_binary(head->left->data.str, infos, meta));
 		}
 		return (false);

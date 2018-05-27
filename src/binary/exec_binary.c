@@ -61,7 +61,6 @@ char *get_binary_access(char *binary_name, shell_info_t *infos)
 	if (!binary_path) {
 		return (NULL);
 	}
-	print_dbl_tab(binary_path);
 	while (*ptr) {
 		if (!access(*ptr, X_OK)) {
 			valid_access = strdup(*ptr);
@@ -86,11 +85,8 @@ int get_ps_status(pid_t pid, shell_info_t *infos, tree_metadata_t *meta)
 {
 	int status = 0;
 
-	printf("META [%p]\n", meta);
 	if (!(meta->is_job)) {
-		fprintf(stderr, "WAITING\n");
 		waitpid(pid, &status, 0);
-		fprintf(stderr, "END WAITING\n");
 	} else {
 		return (false);
 	}

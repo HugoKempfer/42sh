@@ -21,7 +21,7 @@
 
 static int open_file(char *file_path, int flags)
 {
-	int fd = open(file_path, flags | O_CREAT, 0755);
+	int fd = open(file_path, flags | O_CREAT, 0600);
 
 	if (fd == -1) {
 		fprintf(stderr, "%s: %s\n", file_path, strerror(errno));
@@ -30,29 +30,24 @@ static int open_file(char *file_path, int flags)
 }
 
 static int execute_expression(tnode_t *parent, shell_info_t *infos,
-		tree_metadata_t *meta, redirector_pipes_t pipes)
+		tree_metadata_t *meta, int file_fd)
 {
 	int io_fd[3];
 	redirector_pt_t *function;
 
 	io_fd[IN] = -1;
-	io_fd[OUT] = pipes.current[1];
-	io_fd[TO_CLOSE] = pipes.current[0];
+	io_fd[OUT] = file_fd;
+	io_fd[TO_CLOSE] = -1;
 	if (parent->data.type == COMMAND) {
 		if (!redirection_exec_binary(parent, meta, infos, io_fd)) {
 			return (false);
 		}
+		else {
+			return (true);
+		}
 	}
 	function = get_redirector_func(parent->data.type);
-	if (!function || !function(parent, infos, pipes.current, meta)) {
-		return (false);
-	}
-	return (true);
-}
-
-static int write_file(int file_fd, int current_pfd[2])
-{
-	if (dup2(file_fd, current_pfd[0]) == -1) {
+	if (!function || !function(parent, infos, (int [2]){0, 1}, meta)) {
 		return (false);
 	}
 	return (true);
@@ -61,45 +56,31 @@ static int write_file(int file_fd, int current_pfd[2])
 int redirection_to_file(tnode_t *parent, shell_info_t *infos,
 		int *parent_pfd, tree_metadata_t *metadata)
 {
-	int pfd[2];
-	int file_fd = open_file(*(parent->left->data.str), O_WRONLY);
-	redirector_pipes_t pipes;
+	int file_fd = open_file(*(parent->right->data.str), O_WRONLY);
 
 	fprintf(stderr, "Write file\n");
-	if (file_fd == -1 || pipe(pfd) == -1) {
+	if (file_fd == -1) {
 		return (false);
 	}
-	pipes.current = pfd;
-	pipes.parent = parent_pfd;
-	if (!execute_expression(parent->left, infos, metadata, pipes)) {
+	if (!execute_expression(parent->left, infos, metadata, file_fd)) {
 		return (false);
 	}
-	close(pfd[1]);
-	write_file(file_fd, pfd);
 	close(file_fd);
-	close(pfd[0]);
 	return (true);
 }
 
 int redirection_to_file_append(tnode_t *parent, shell_info_t *infos,
 		int *parent_pfd, tree_metadata_t *metadata)
 {
-	int pfd[2];
-	int file_fd = open_file(*(parent->left->data.str), O_WRONLY | O_APPEND);
-	redirector_pipes_t pipes;
+	int file_fd = open_file(*(parent->right->data.str), O_WRONLY | O_APPEND);
 
 	fprintf(stderr, "Write file append\n");
-	if (file_fd == -1 || pipe(pfd) == -1) {
+	if (file_fd == -1) {
 		return (false);
 	}
-	pipes.current = pfd;
-	pipes.parent = parent_pfd;
-	if (!execute_expression(parent->left, infos, metadata, pipes)) {
+	if (!execute_expression(parent->left, infos, metadata, file_fd)) {
 		return (false);
 	}
-	close(pfd[1]);
-	write_file(file_fd, pfd);
 	close(file_fd);
-	close(pfd[0]);
 	return (true);
 }

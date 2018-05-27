@@ -108,12 +108,11 @@ int main(int unused ac, char unused **av, char **env)
 	do {
 		str = prompt();
 		command = subdivise_str(str, cutter);
+		print_dbl_tab(command);
 		tokens = tokenize_command(command);
-		printf("nb tokens [%d]\n", tokens->nb_nodes);
-		print(tokens);
+		//print(tokens);
 		build_trees_from_tokens(tokens, info);
-		printf("Nb trees [%d]\n", info->processes->nb_nodes);
-		print_tree(info);
+		//print_tree(info);
 		process_tree(info, info->processes->head->data);
 	} while (prompt);
 	return (0);

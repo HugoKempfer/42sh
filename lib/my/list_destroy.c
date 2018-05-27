@@ -10,7 +10,6 @@
 
 static void list_destroy_node(lnode_t *node, llist_t *list)
 {
-	printf("List destroy node\n");
 	if (list->destroyer) {
 		(list->destroyer)(node->data);
 	}
