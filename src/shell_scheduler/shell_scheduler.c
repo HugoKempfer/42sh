@@ -73,7 +73,6 @@ static int do_command_parsing(shell_info_t *infos)
 	return (true);
 }
 
-
 int shell_runtime(shell_info_t *infos)
 {
 	int state = true;

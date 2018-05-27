@@ -39,6 +39,7 @@ SRC	=	src/process_manager/manage_processes.c \
 		src/built_in/env/env_management.c 		\
 		src/command_parser/tree_builder.c 		\
 		src/command_parser/branch_builder.c 		\
+		src/command_parser/branch_builder_annex.c 		\
 		src/shell_scheduler/shell_scheduler.c 		\
 		src/prompt/prompt.c 		\
 		src/tree_manager/create.c 		\

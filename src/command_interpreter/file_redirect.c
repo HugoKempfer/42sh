@@ -72,7 +72,8 @@ int redirection_to_file(tnode_t *parent, shell_info_t *infos,
 int redirection_to_file_append(tnode_t *parent, shell_info_t *infos,
 		int *parent_pfd, tree_metadata_t *metadata)
 {
-	int file_fd = open_file(*(parent->right->data.str), O_WRONLY | O_APPEND);
+	int file_fd = open_file(*(parent->right->data.str), O_WRONLY |
+			O_APPEND);
 
 	if (file_fd == -1) {
 		return (false);

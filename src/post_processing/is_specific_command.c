@@ -32,21 +32,7 @@ int is_alias(shell_info_t *infos, char *lexem)
 	}
 	return (false);
 }
-/*
-int is_variable(shell_info_t *infos, char *lexem)
-{
-	llist_t *var_list = infos->local_vars;
-	lnode_t *var_node = var_list->head;
 
-	while (var_node) {
-		if (!strcmp(((var_t *)(var_node->data))->name, lexem)) {
-			return (true);
-		}
-		var_node = var_node->next;
-	}
-	return (false);
-}
-*/
 int is_globings(unused shell_info_t *infos, char *lexem)
 {
 	while (*lexem) {

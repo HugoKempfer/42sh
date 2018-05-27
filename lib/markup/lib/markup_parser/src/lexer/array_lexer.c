@@ -105,7 +105,7 @@ mtoken_t *markup_lexer(char *str)
 		it += EOL;
 		token_arr = add_line(token_arr, tmp);
 	}
-	tmp = create_token(alloc_nstr("",  0), DEFAULT);
+	tmp = create_token(alloc_nstr("", 0), DEFAULT);
 	token_arr = add_line(token_arr, tmp);
 	define_token_type(token_arr);
 	return (token_arr);

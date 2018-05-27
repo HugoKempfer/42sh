@@ -12,17 +12,7 @@
 #include "42sh.h"
 #include "tools.h"
 
-void print(llist_t *tokens); //TODO del this
-
-static int push_tnode(token_t *token, tnode_t *head, int position)
-{
-	tnode_data_t data = {token->type, token->value};
-
-	if (!(create_and_link(head, data, position))) {
-		return (false);
-	}
-	return (true);
-}
+int push_tnode(token_t *token, tnode_t *head, int position);
 
 static inline int is_last_command(lnode_t *node)
 {
