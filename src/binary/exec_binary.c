@@ -84,8 +84,9 @@ void update_info(pid_t pid, shell_info_t *infos, tree_metadata_t *meta)
 
 int get_ps_status(pid_t pid, shell_info_t *infos, tree_metadata_t *meta)
 {
-	int status;
+	int status = 0;
 
+	printf("META [%p]\n", meta);
 	if (!(meta->is_job)) {
 		waitpid(pid, &status, 0);
 	} else {

@@ -14,34 +14,39 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static int process_second_expression(tnode_t *parent_right, shell_info_t *infos,
-		tree_metadata_t *meta, int pipes[2])
+static int process_second_expression(tnode_t *parent, shell_info_t *infos,
+		tree_metadata_t *meta, redirector_pipes_t pipes)
 {
 	redirector_pt_t *function;
+	int io_fd[3];
 
-	if (!redirection_exec_binary(parent_right, meta, infos, pipes)) {
+	io_fd[IN] = pipes.current[0];
+	io_fd[OUT] = pipes.parent[1];
+	io_fd[TO_CLOSE] = pipes.current[1];
+	if (!redirection_exec_binary(parent, meta, infos, io_fd)) {
 		return (false);
 	}
-	close(pipes.current[0]);
-	close(pipes.current[1]);
 	return (true);
 }
 
-static int process_first_expresion(tnode_t *parent, shell_info_t *infos,
-		tree_metadata_t *meta, reidrector_pipes_t *pipes)
+static int process_first_expression(tnode_t *parent, shell_info_t *infos,
+		tree_metadata_t *meta, redirector_pipes_t pipes)
 {
-	int binary_pipes[2];
+	printf("PIPE FUNCTION [%d] [%d]\n", pipes.parent[0], pipes.parent[1]);
+	int io_fd[3];
+	redirector_pt_t *function;
 
-	if (parent->left->data.type != COMMAND) {
-		binary_pipes[0] = -1;
-		binary_pipes[1] = pipes[OUT];
-		function = get_redirector_func(parent->left->data.type);
-		if (!function(parent, infos, pfd, meta)) {
+	io_fd[IN] = -1;
+	io_fd[OUT] = pipes.current[1];
+	io_fd[TO_CLOSE] = pipes.current[0];
+	if (parent && parent->data.type != COMMAND) {
+		function = get_redirector_func(parent->data.type);
+		if (!function(parent, infos, pipes.current, meta)) {
 			return (false);
 		}
 		return (true);
 	}
-	else if (!redirection_exec_binary(parent->left, meta, infos, pipes)) {
+	else if (!redirection_exec_binary(parent, meta, infos, io_fd)) {
 		return (false);
 	}
 	return (true);
@@ -51,7 +56,7 @@ int redirection_pipe(tnode_t *parent, shell_info_t *infos,
 		int *parent_pfd, tree_metadata_t *meta)
 {
 	int pfd[2];
-	int pipes[2];
+	int status;
 	redirector_pt_t *function;
 	redirector_pipes_t pipes;
 
@@ -63,5 +68,8 @@ int redirection_pipe(tnode_t *parent, shell_info_t *infos,
 	if (!process_first_expression(parent->left, infos, meta, pipes)) {
 		return (false);
 	}
-	return (process_second_expression(parent->right, infos, meta, pipes));
+	status = process_second_expression(parent->right, infos, meta, pipes);
+	close(pipes.current[0]);
+	close(pipes.current[1]);
+	return (status);
 }

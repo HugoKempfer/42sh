@@ -20,6 +20,7 @@ static tree_metadata_t *init_tree_metadata(void)
 	if (!(metadata)) {
 		return (NULL);
 	}
+	metadata->is_job = false;
 	return (metadata);
 }
 

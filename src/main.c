@@ -5,6 +5,7 @@
 ** main.c
 */
 
+#include "redirections.h"
 #include "lexer.h"
 #include "42sh.h"
 #include "parser.h"
@@ -92,6 +93,7 @@ static void print_tree(shell_info_t *infos)
 }
 
 int exec_binary(char **command, shell_info_t *infos, tree_metadata_t *meta);
+redirector_pt_t *get_redirector_func(enum tnode_type type);
 
 int main(int unused ac, char unused **av, char **env)
 {
@@ -101,7 +103,7 @@ int main(int unused ac, char unused **av, char **env)
 	llist_t *tokens = NULL;
 	tree_metadata_t metadata = {'\0'};
 
-	exec_binary(av + 1, info, &metadata);
+//	exec_binary(av + 1, info, &metadata);
 	const cutter_charset_t cutter = {SEPARATORS, SENTINEL_CHAR, SUROUNDINGS};
 	do {
 		str = prompt();
@@ -112,6 +114,7 @@ int main(int unused ac, char unused **av, char **env)
 		build_trees_from_tokens(tokens, info);
 		printf("Nb trees [%d]\n", info->processes->nb_nodes);
 		print_tree(info);
+		process_tree(info, info->processes->head->data);
 	} while (prompt);
 	return (0);
 }

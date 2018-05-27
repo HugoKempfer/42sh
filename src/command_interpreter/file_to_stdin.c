@@ -6,6 +6,7 @@
 */
 
 #include "redirections.h"
+#include "binary_exec.h"
 #include "binary_tree.h"
 #include "42sh.h"
 #include <stdbool.h>
@@ -15,6 +16,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <string.h>
 #include <fcntl.h>
 #include <errno.h>
 
@@ -31,14 +33,14 @@ static int open_file(char *file_path)
 static int execute_expression(tnode_t *parent, shell_info_t *infos, int *pfd,
 		tree_metadata_t *meta)
 {
-	redirector_func_t *function;
+	redirector_pt_t *function;
 
-	if (parent->type == COMMAND) {
+	if (parent->data.type == COMMAND) {
 		if (!redirection_exec_binary(parent, meta, infos, pfd)) {
 			return (false);
 		}
 	}
-	function = get_redirector_func(parent->type);
+	function = get_redirector_func(parent->data.type);
 	if (!function || !function(parent, infos, pfd, meta)) {
 		return (false);
 	}
