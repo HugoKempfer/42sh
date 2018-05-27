@@ -5,10 +5,11 @@
 ** Functions to put a file in stdin
 */
 
+
 #include "redirections.h"
-#include "binary_exec.h"
 #include "binary_tree.h"
 #include "42sh.h"
+#include "string.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -16,13 +17,12 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <string.h>
 #include <fcntl.h>
 #include <errno.h>
 
-static int open_file(char *file_path)
+static int open_file(char *file_path, int flags)
 {
-	int fd = open(file_path, O_RDONLY);
+	int fd = open(file_path, flags);
 
 	if (fd == -1) {
 		fprintf(stderr, "%s: %s\n", file_path, strerror(errno));
@@ -30,33 +30,27 @@ static int open_file(char *file_path)
 	return (fd);
 }
 
-static int execute_expression(tnode_t *parent, shell_info_t *infos, int *pfd,
-		tree_metadata_t *meta)
+static int execute_expression(tnode_t *parent, shell_info_t *infos,
+		tree_metadata_t *meta, int io_fd[3])
 {
-	redirector_pt_t *function;
-
 	if (parent->data.type == COMMAND) {
-		if (!redirection_exec_binary(parent, meta, infos, pfd)) {
+		if (!redirection_exec_binary(parent, meta, infos, io_fd)) {
 			return (false);
 		}
-	}
-	function = get_redirector_func(parent->data.type);
-	if (!function || !function(parent, infos, pfd, meta)) {
-		return (false);
 	}
 	return (true);
 }
 
-int redirect_file_to_stdin(tnode_t *parent, shell_info_t *infos,
-		int *parent_pfd, tree_metadata_t *meta)
+int redirection_file_to_bin(tnode_t *parent, shell_info_t *infos,
+		int *parent_pfd, tree_metadata_t *metadata)
 {
-	int file_fd = open_file(*(parent->right->data.str));
-	int pfd[2];
+	int file_fd = open_file(*(parent->right->data.str), O_RDONLY);
+	int io_fd[3] = {file_fd, parent_pfd[1], parent_pfd[0]};
 
-	if (file_fd == -1 || pipe(pfd) == -1 || dup2(pfd[1], file_fd) == -1) {
+	if (file_fd == -1) {
 		return (false);
 	}
-	if (!execute_expression(parent->left, infos, pfd, meta)) {
+	if (!execute_expression(parent->left, infos, metadata, io_fd)) {
 		return (false);
 	}
 	close(file_fd);

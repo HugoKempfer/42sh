@@ -17,7 +17,8 @@
 static const redirection_func_index_t REDIRECTORS[] = {
 	{&redirection_pipe, PIPE},
 	{&redirection_to_file_append, D_SUP},
-	{&redirection_to_file, SUP}
+	{&redirection_to_file, SUP},
+	{&redirection_file_to_bin, INF},
 };
 
 redirector_pt_t *get_redirector_func(enum tnode_type type)
