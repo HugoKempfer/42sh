@@ -27,5 +27,7 @@ llist_t *process_coats(unused shell_info_t *infos,
 		       unused tree_metadata_t *metadata, char *lexem);
 int post_processing(shell_info_t *infos, tree_metadata_t *metadata,
 		    tnode_t *tree_node);
+int trees_post_processing(shell_info_t *infos, tree_metadata_t *metadata,
+			  tnode_t *tree_node);
 
 #endif /* POST_PROCESSING */

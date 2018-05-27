@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+void print_tree(tnode_t *head);
+
 static const post_processing_t POST_PROCESS[] =
 {
 //	{&is_backticks, &process_backticks};
@@ -110,27 +112,57 @@ static char **update_command(shell_info_t *infos, tree_metadata_t *metadata,
 	return (list_to_arr(command));
 }
 
-int post_processing(shell_info_t *infos, tree_metadata_t *metadata,
-			tnode_t *tree_node)
+static int process_node_command(tnode_t *son_node, shell_info_t *infos,
+				tree_metadata_t *metadata)
 {
 	char **command = NULL;
 
-	while (tree_node) {
-		if (tree_node->left && tree_node->left->data.type == COMMAND) {
-			command = update_command(infos, metadata, tree_node->left->data.str);
-			if (!command) {
-				return (false);
-			}
-			print_dbl_tab(command);
+	if (son_node && son_node->data.type == COMMAND) {
+		command = update_command(infos, metadata, son_node->data.str);
+		if (!command) {
+			return (false);
 		}
-		if (tree_node->right && tree_node->right->data.type == COMMAND) {
-			command = update_command(infos, metadata, tree_node->right->data.str);
-			if (!command) {
-				return (false);
-			}
-			print_dbl_tab(command);
+		son_node->data.str = command;
+	}
+	return (true);
+}
+
+int tree_post_process(shell_info_t *infos, tree_metadata_t *metadata,
+			tnode_t *tree_node)
+{
+	while (tree_node) {
+		if (!process_node_command(tree_node->left, infos, metadata)) {
+			return (false);
+		}
+		if (!process_node_command(tree_node->right, infos, metadata)) {
+			return (false);
 		}
 		tree_node = tree_node->left;
+	}
+	return (true);
+}
+
+int trees_post_processing(shell_info_t *infos, tree_metadata_t *metadata,
+			tnode_t *tree_node)
+{
+	llist_t *trees_list = infos->processes;
+	lnode_t *tree = trees_list->tail;
+	tree_metadata_t *meta_tree = NULL;
+	int compteur = 0;
+
+	while (tree) {
+		printf("%d\n", ++compteur);
+		meta_tree = tree->data;
+		printf("________________________\n");
+		print_tree(meta_tree->head);
+		printf("________________________\n");
+		if (!tree_post_process(infos, metadata, meta_tree->head)) {
+			return (false);
+		}
+		printf("________________________\n");
+		print_tree(meta_tree->head);
+		printf("________________________\n");
+		tree = tree->prev;
 	}
 	return (true);
 }

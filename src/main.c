@@ -20,7 +20,6 @@
 const static char *SUROUNDINGS[] = {
 	"\"\"",
 	"()",
-	"[]",
 	"``",
 	NULL
 };
@@ -52,9 +51,10 @@ char *prompt(void);
 static void print_da(char **arr)
 {
 	while (arr && *arr) {
-		printf("[%s]\n", *arr);
+		printf("[%s] ", *arr);
 		++(arr);
 	}
+	printf("\n");
 }
 
 void print(llist_t *tokens)
@@ -67,19 +67,9 @@ void print(llist_t *tokens)
 	}
 }
 
-static void print_tree(shell_info_t *infos)
+void print_tree(tnode_t *head)
 {
-	lnode_t *node = infos->processes->head;
-	tree_metadata_t *metadata;
-	tnode_t *head;
-
-	metadata = node->data;
-	head = metadata->head->left;
 	while (head) {
-		printf("PARENT [%d]\n", head->data.type);
-		if (head->data.str) {
-			print_da(head->data.str);
-		}
 		head->left ? printf("Left [%d]", head->left->data.type) : 0;
 		head->left ? print_da(head->left->data.str) : 0;
 		head->right ? printf("Right [%d]", head->right->data.type) : 0;
@@ -107,8 +97,7 @@ int main(int unused ac, char unused **av, char **env)
 		printf("nb tokens [%d]\n", tokens->nb_nodes);
 //		print(tokens);
 		build_trees_from_tokens(tokens, info);
-//		print_tree(info);
-		if (!post_processing(info, ((tree_metadata_t*)(info->processes->tail->data)), ((tree_metadata_t*)(info->processes->tail->data))->head)) {
+		if (!trees_post_processing(info, ((tree_metadata_t*)(info->processes->tail->data)), ((tree_metadata_t*)(info->processes->tail->data))->head)) {
 			printf("ntm post processing failed\n");
 			return (false);
 		}
