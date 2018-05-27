@@ -5,7 +5,7 @@
 ** Handle the binary execution errors
 */
 
-#include "string.h"
+#include "str_manip.h"
 #include "42sh.h"
 #include "metadata.h"
 #include <stdio.h>

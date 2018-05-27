@@ -42,7 +42,6 @@ static char **get_binary_path(char *binary, shell_info_t *infos)
 	while (path[it]) {
 		tmp = path[it];
 		path[it] = str_concat((char *[]){path[it], "/", binary, NULL});
-		path != BASE_PATH ? free(tmp) : 0; //TODO change this shit
 		if (!path[it]) {
 			return (NULL);
 		}

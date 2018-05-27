@@ -6,6 +6,7 @@
 */
 
 #include "42sh.h"
+#include "str_manip.h"
 #include "list.h"
 #include "tools.h"
 #include <unistd.h>

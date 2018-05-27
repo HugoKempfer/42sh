@@ -6,6 +6,7 @@
 */
 
 #include "42sh.h"
+#include "str_manip.h"
 #include "shell_path.h"
 #include <stddef.h>
 #include <stdlib.h>

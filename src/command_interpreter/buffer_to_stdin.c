@@ -9,7 +9,7 @@
 #include "tools.h"
 #include "binary_tree.h"
 #include "42sh.h"
-#include "string.h"
+#include "str_manip.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>

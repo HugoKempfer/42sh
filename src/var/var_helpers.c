@@ -8,6 +8,7 @@
 #include "functions.h"
 #include "list.h"
 #include "var.h"
+#include <string.h>
 
 bool set_var(llist_t *var_list, const char *name, const char *value)
 {

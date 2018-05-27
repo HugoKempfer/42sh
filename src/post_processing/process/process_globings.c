@@ -8,7 +8,7 @@
 #include "42sh.h"
 #include "metadata.h"
 #include "list.h"
-#include "string.h"
+#include "str_manip.h"
 #include "tools.h"
 #include <stdio.h>
 #include <glob.h>

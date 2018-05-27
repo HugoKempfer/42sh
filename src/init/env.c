@@ -6,9 +6,9 @@
 */
 
 #include "42sh.h"
+#include "str_manip.h"
 #include "shell_path.h"
 #include "list.h"
-#include "string.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>

@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+int shell_runtime(shell_info_t *infos);
+
 static void signal_handler(int handler)
 {
 	signal(SIGINT, signal_handler);

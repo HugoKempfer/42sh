@@ -6,6 +6,7 @@
 */
 
 #include "str_manip.h"
+#include <stdio.h>
 #include "functions.h"
 #include "list.h"
 #include "var.h"
@@ -17,7 +18,7 @@ char *find_value_var(llist_t *var_list, char *name)
 
 	while (node) {
 		if (!strcmp(name, ((var_t *)(node->data))->name)) {
-			return (((var_t *)(node->data))->value);
+			return ((char *)(((var_t *)(node->data))->value));
 		}
 		node = node->next;
 	}

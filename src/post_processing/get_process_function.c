@@ -10,7 +10,7 @@
 #include "post_processing.h"
 #include "alias.h"
 #include "tools.h"
-#include "string.h"
+#include "str_manip.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
