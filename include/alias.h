@@ -19,7 +19,8 @@
 
 typedef struct alias_s alias_t;
 
-struct alias_s {
+struct alias_s
+{
 	char *name;
 	char *value;
 };

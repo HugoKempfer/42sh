@@ -5,7 +5,7 @@
 ## Standard Makefile configuration
 ##
 
-SRC	=	$(wildcard src/*.c) $(wildcard ./src/*/*.c) $(wildcard ./lib/*/*.c) $(wildcard src/*/*/*.c)
+SRC	=	$(wildcard src/*.c) $(wildcard ./src/*/*.c) $(wildcard src/*/*/*.c)
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -33,11 +33,11 @@ endif
 
 CFLAGS	+=	-I./include/
 
-LDFLAGS	+=	-L./lib/my/ -lmy -lm
+LDFLAGS	+=	-L./lib/my/ -lmy -lm -L./lib/markup/build/ -lmarkup_parser
 
 .SILENT:
 
-$(NAME):	libmy $(OBJ)
+$(NAME):	libmy $(OBJ) libjson $(OBJ)
 		$(GCC) -o $(NAME) $(OBJ) $(LDFLAGS) $(CFLAGS)
 
 libmy:
@@ -46,13 +46,20 @@ libmy:
 libmy_fclean:
 		$(MAKE) fclean -C ./lib/my/
 
+libjson:
+		$(MAKE) -C ./lib/markup/
+
+libjson_fclean:
+		$(MAKE) fclean -C ./lib/markup/
+
 all:		$(NAME)
 
 clean:
 		$(MAKE) clean -C ./lib/my/
+		$(MAKE) clean -C ./lib/markup/
 		rm -f $(OBJ)
 
-fclean:		libmy_fclean clean
+fclean:		libmy_fclean clean libjson_fclean clean
 		rm -f $(NAME)
 
 re: 		fclean all
