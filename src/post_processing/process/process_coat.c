@@ -30,7 +30,6 @@ llist_t *process_coats(unused shell_info_t *infos,
 			unused tree_metadata_t *metadata, char *lexem)
 {
 	llist_t *list = list_init(NULL);
-	lnode_t *node = NULL;
 	char *new_lexem = release_surroundings(lexem);
 
 	if (!list || !new_lexem) {

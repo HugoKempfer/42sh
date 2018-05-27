@@ -32,7 +32,7 @@ int is_alias(shell_info_t *infos, char *lexem)
 	}
 	return (false);
 }
-
+/*
 int is_variable(shell_info_t *infos, char *lexem)
 {
 	llist_t *var_list = infos->local_vars;
@@ -46,7 +46,7 @@ int is_variable(shell_info_t *infos, char *lexem)
 	}
 	return (false);
 }
-
+*/
 int is_globings(unused shell_info_t *infos, char *lexem)
 {
 	while (*lexem) {
@@ -58,44 +58,6 @@ int is_globings(unused shell_info_t *infos, char *lexem)
 			return (true);
 		}
 		++(lexem);
-	}
-	return (false);
-}
-
-int is_surrondings(char *str, char c)
-{
-//	printf("c : %c\n", c);
-//	printf("[%c]\n", *str);
-//	printf("[%c]\n", *(str + (strlen(str) - 1)));
-	if (*str == c && *(str + (strlen(str) - 1)) == c) {
-		return (true);
-	}
-	return (false);
-}
-
-int is_double_coat(unused shell_info_t *infos, char *lexem)
-{
-	if (is_surrondings(lexem, '"')) {
-		printf("DBL COAT !!!!!!\n");
-		return (true);
-	}
-	return (false);
-}
-
-int is_simple_coat(unused shell_info_t *infos, char *lexem)
-{
-	if (is_surrondings(lexem, '\'')) {
-		printf("SIMPLE COAT !!!!!!\n");
-		return (true);
-	}
-	return (false);
-
-}
-
-int is_backticks(unused shell_info_t *infos, char *lexem)
-{
-	if (is_surrondings(lexem, '`')) {
-		return (true);
 	}
 	return (false);
 }

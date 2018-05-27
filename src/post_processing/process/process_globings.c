@@ -17,11 +17,8 @@ llist_t *process_globings(unused shell_info_t *infos,
 			  unused tree_metadata_t *meta, char *str)
 {
 	glob_t paths;
-	int it = 0;
 
-	if (glob(str, 0, NULL, &paths) != 0) {
-		return (NULL);
-	}
+	glob(str, 0, NULL, &paths);
 	if (paths.gl_pathc == 0) {
 		fprintf(stderr, "%s: No match.", str);
 		return (NULL);

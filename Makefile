@@ -14,7 +14,7 @@ NAME	=	42sh
 GCC	=	gcc
 
 ifneq		(,$(wildcard ./debug))
-CFLAGS	=	-ggdb3 -pedantic -Wduplicated-cond \
+CFLAGS	=	-ggdb3 -pedantic -Wduplicated-cond -Wall -Wextra\
 		-Wduplicated-branches -Wlogical-op -Wrestrict \
 		-Wnull-dereference -Wjump-misses-init -Wdouble-promotion \
 		-Wshadow -Wformat=2 -fno-omit-frame-pointer

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2018
 ** 42sh
 ** File description:
-** post_processing
+** tree_post_processing principals function
 */
 
 #include "42sh.h"
@@ -17,36 +17,8 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-void print_tree(tnode_t *head);
-
-static const post_processing_t POST_PROCESS[] =
-{
-//	{&is_backticks, &process_backticks};
-//	{&is_variable, &process_variable};
-	{&is_globings, &process_globings},
-	{&is_double_coat, &process_coats},
-	{&is_simple_coat, &process_coats}
-};
-
-static int get_new_lexems(shell_info_t *infos, tree_metadata_t *meta,
-			       char *lexem, llist_t **l_lexem)
-{
-	int it = 0;
-	int size_tab = ARRAY_SIZE(POST_PROCESS);
-
-	while (it < size_tab) {
-		if (POST_PROCESS[it].command_analyser(infos, lexem) == true) {
-			printf("ok command analyser a return true\n");
-			*l_lexem = POST_PROCESS[it].process_values(infos, meta, lexem);
-			return (*l_lexem) ? true : false;
-		}
-		it++;
-	}
-	*l_lexem = NULL;
-	return (true);
-}
-
-static void introduce_new_lexems(llist_t *command, llist_t *new_lexems, lnode_t *lexem)
+void introduce_new_lexems(llist_t *command, llist_t *new_lexems,
+				lnode_t *lexem)
 {
 	lnode_t *tmp = lexem->next;
 
@@ -61,8 +33,8 @@ static void introduce_new_lexems(llist_t *command, llist_t *new_lexems, lnode_t 
 	}
 }
 
-static int introduce_alias(llist_t *command, lnode_t **lexem,
-			   shell_info_t *infos)
+int introduce_alias(llist_t *command, lnode_t **lexem,
+			shell_info_t *infos)
 {
 	llist_t *new_lexem = NULL;
 	char *name = (*lexem)->data;
@@ -72,12 +44,11 @@ static int introduce_alias(llist_t *command, lnode_t **lexem,
 		command->nb_nodes += 1;
 		introduce_new_lexems(command, new_lexem, *lexem);
 		list_pop(*lexem, command);
-		*lexem = new_lexem->tail;
+		*lexem = new_lexem->head;
 		free(new_lexem);
 	}
 	return (true);
 }
-
 
 static char **update_command(shell_info_t *infos, tree_metadata_t *metadata,
 			char **command_str)
@@ -96,7 +67,7 @@ static char **update_command(shell_info_t *infos, tree_metadata_t *metadata,
 			command->nb_nodes += new_lexems->nb_nodes;
 			introduce_new_lexems(command, new_lexems, lexem);
 			list_pop(lexem, command);
-			lexem = new_lexems->tail;
+			lexem = new_lexems->head;
 			free(new_lexems);
 		}
 		lexem = lexem->next;
