@@ -37,12 +37,6 @@ int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 	redirector_pt_t *function;
 	tnode_t *head = meta->head;
 
-	//if (pipe(pfd) == -1) {
-	//	return (false);
-	//}
-	//dup2(pfd[1], 1);
-	//close(pfd[0]);
-	//close(pfd[1]);
 	function = get_redirector_func(head->left->data.type);
 	if (!function || !function(head->left, infos, pfd, meta)) {
 		if (head->left->data.type == COMMAND) {

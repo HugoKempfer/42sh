@@ -70,8 +70,8 @@ int redirection_pipe(tnode_t *parent, shell_info_t *infos,
 	if (!process_first_expression(parent->left, infos, meta, pipes)) {
 		return (false);
 	}
+	close(pipes.current[1]);
 	status = process_second_expression(parent->right, infos, meta, pipes);
 	close(pipes.current[0]);
-	close(pipes.current[1]);
 	return (status);
 }
