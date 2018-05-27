@@ -9,6 +9,7 @@
 #define STRING_H
 
 #include <string.h>
+#include "list.h"
 
 typedef struct cutter_charset_s cutter_charset_t;
 
@@ -27,5 +28,8 @@ char **add_line(char **buffer, char *line);
 int get_end_of_str(const char *str, const char *);
 char *remove_surroundings(char *str);
 char *str_concat(char **);
-
+llist_t *arr_to_list(char **);
+llist_t *arr_dup_to_list(char **);
+char **list_to_arr(llist_t *);
+void print_dbl_tab(char **);
 #endif /* ifndef STRING_H */

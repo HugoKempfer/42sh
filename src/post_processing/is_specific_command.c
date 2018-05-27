@@ -50,9 +50,10 @@ int is_globings(unused shell_info_t *infos, char *lexem)
 		if (*lexem == '*' || *lexem == '?') {
 			return (true);
 		}
-		if (*lexem == '[' && *(lexem + 4) == ']') {
+		if (*lexem == '[' && strlen(lexem) >= 4  && *lexem + 4 == ']') {
 			return (true);
 		}
+		++(lexem);
 	}
 	return (false);
 }

@@ -12,6 +12,7 @@
 #include "strings.h"
 #include "tools.h"
 #include "metadata.h"
+#include "post_processing.h"
 #include "list.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -72,22 +73,18 @@ static void print_tree(shell_info_t *infos)
 	tree_metadata_t *metadata;
 	tnode_t *head;
 
-	while (node) {
-		metadata = node->data;
-		head = metadata->head->left;
-		printf("Printing tree ----------------------\n");
-		while (head) {
-			head->left ? printf("Left [%d]", head->left->data.type) : 0;
-			head->left ? print_da(head->left->data.str) : 0;
-			head->right ? printf("Right [%d]", head->right->data.type) : 0;
-			head->right ? print_da(head->right->data.str) : 0;
-			printf("PARENT [%d]\n", head->data.type);
-			if (head->data.str) {
-				print_da(head->data.str);
-			}
-			head = head->left;
+	metadata = node->data;
+	head = metadata->head->left;
+	while (head) {
+		printf("PARENT [%d]\n", head->data.type);
+		if (head->data.str) {
+			print_da(head->data.str);
 		}
-		node = node->next;
+		head->left ? printf("Left [%d]", head->left->data.type) : 0;
+		head->left ? print_da(head->left->data.str) : 0;
+		head->right ? printf("Right [%d]", head->right->data.type) : 0;
+		head->right ? print_da(head->right->data.str) : 0;
+		head = head->left;
 	}
 }
 
@@ -108,10 +105,15 @@ int main(int unused ac, char unused **av, char **env)
 		command = subdivise_str(str, cutter);
 		tokens = tokenize_command(command);
 		printf("nb tokens [%d]\n", tokens->nb_nodes);
-		print(tokens);
+//		print(tokens);
 		build_trees_from_tokens(tokens, info);
-		printf("Nb trees [%d]\n", info->processes->nb_nodes);
-		print_tree(info);
+//		print_tree(info);
+		if (!post_processing(info, ((tree_metadata_t*)(info->processes->tail->data)), ((tree_metadata_t*)(info->processes->tail->data))->head)) {
+			printf("ntm post processing failed\n");
+			return (false);
+		}
+//		printf("Nb trees [%d]\n", info->processes->nb_nodes);
+//		print_tree(info);
 	} while (prompt);
 	return (0);
 }

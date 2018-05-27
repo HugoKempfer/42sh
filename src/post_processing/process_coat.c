@@ -8,6 +8,7 @@
 #include "42sh.h"
 #include "metadata.h"
 #include "post_processing.h"
+#include "list.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,7 +18,7 @@
 
 char *release_surroundings(char *str)
 {
-	char *new_str = strndup(str + 1, (my_strlen(str) - 2));
+	char *new_str = strndup(str + 1, (strlen(str) - 2));
 
 	if (!new_str) {
 		return (NULL);
@@ -28,14 +29,14 @@ char *release_surroundings(char *str)
 llist_t *process_coats(unused shell_info_t *infos,
 			unused tree_metadata_t *metadata, char *lexem)
 {
-	llist_t *list = init_list(NULL);
+	llist_t *list = list_init(NULL);
 	lnode_t *node = NULL;
-	char *new_lexem = realease_surrondings(lexem);
+	char *new_lexem = release_surroundings(lexem);
 
 	if (!list || !new_lexem) {
 		return (NULL);
 	}
-	node = create_node(new_lexem);
+	node = list_create_node(new_lexem);
 	if (!node) {
 		return (NULL);
 	}
