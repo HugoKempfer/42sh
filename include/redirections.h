@@ -40,4 +40,8 @@ int get_ps_status(pid_t pid, shell_info_t *infos, tree_metadata_t *meta);
 int redirection_pipe(tnode_t *parent, shell_info_t *infos,
 		int *parent_pfd, tree_metadata_t *meta);
 
+int redirection_to_file_append(tnode_t *parent, shell_info_t *infos,
+		int *parent_pfd, tree_metadata_t *metadata);
+int redirection_to_file(tnode_t *parent, shell_info_t *infos,
+		int *parent_pfd, tree_metadata_t *metadata);
 #endif /* ifndef REDIRECTIONS_H */

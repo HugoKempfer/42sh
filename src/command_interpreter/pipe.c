@@ -20,7 +20,6 @@ static int process_second_expression(tnode_t *parent, shell_info_t *infos,
 	redirector_pt_t *function;
 	int io_fd[3];
 
-	fprintf(stderr, "SECOND EXP\n");
 	io_fd[IN] = pipes.current[0];
 	io_fd[OUT] = pipes.parent[1];
 	io_fd[TO_CLOSE] = pipes.current[1];
@@ -33,8 +32,6 @@ static int process_second_expression(tnode_t *parent, shell_info_t *infos,
 static int process_first_expression(tnode_t *parent, shell_info_t *infos,
 		tree_metadata_t *meta, redirector_pipes_t pipes)
 {
-	//printf("PIPE FUNCTION [%d] [%d]\n", pipes.parent[0], pipes.parent[1]);
-	fprintf(stderr, "FIRST EXP\n");
 	int io_fd[3];
 	redirector_pt_t *function;
 

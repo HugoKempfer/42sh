@@ -15,7 +15,9 @@
 #include <stdlib.h>
 
 static const redirection_func_index_t REDIRECTORS[] = {
-	{&redirection_pipe, PIPE}
+	{&redirection_pipe, PIPE},
+	{&redirection_to_file_append, D_SUP},
+	{&redirection_to_file, SUP}
 };
 
 redirector_pt_t *get_redirector_func(enum tnode_type type)
@@ -23,8 +25,8 @@ redirector_pt_t *get_redirector_func(enum tnode_type type)
 	size_t it = 0;
 
 	while (it < (size_t)ARRAY_SIZE(REDIRECTORS)) {
-		if (type == REDIRECTORS->type) {
-			return (REDIRECTORS->fptr);
+		if (type == REDIRECTORS[it].type) {
+			return (REDIRECTORS[it].fptr);
 		}
 		++it;
 	}
@@ -37,9 +39,12 @@ int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 	redirector_pt_t *function;
 	tnode_t *head = meta->head;
 
+	printf("THE type is [%d]\n", head->left->data.type);
 	function = get_redirector_func(head->left->data.type);
 	if (!function || !function(head->left, infos, pfd, meta)) {
+		printf("NOT A FUNCTION\n");
 		if (head->left->data.type == COMMAND) {
+			printf("COMMAND :/\n");
 			return (exec_binary(head->left->data.str, infos, meta));
 		}
 		return (false);
