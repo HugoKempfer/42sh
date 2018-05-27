@@ -14,6 +14,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+int process_manager(shell_info_t *infos);
+int build_trees_from_tokens(llist_t *tokens, shell_info_t *shell_info);
+
 static const redirection_func_index_t REDIRECTORS[] = {
 	{&redirection_pipe, PIPE},
 	{&redirection_to_file_append, D_SUP},
