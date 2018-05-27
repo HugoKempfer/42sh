@@ -13,15 +13,6 @@
 #include <string.h>
 #include <stdio.h>
 
-alias_t *init_alias(char *name, char *value)
-{
-	alias_t *alias = malloc(sizeof(alias_t) * 1);
-	printf("NAMMMMMMMMMMME : %s\n", name);
-	alias->name = strdup(name);
-	alias->value = strdup(value);
-	return (alias);
-}
-
 shell_info_t *init_shell_info(char **base_env)
 {
 	shell_info_t *infos = malloc(sizeof(*infos));
@@ -33,10 +24,7 @@ shell_info_t *init_shell_info(char **base_env)
 	infos->special_vars = list_init(NULL);
 	infos->local_vars = list_init(NULL);
 	infos->env = init_list_env(base_env);
-	infos->alias = list_init(NULL);
-	list_push_tail(init_alias("HUGO", "PD"), infos->alias);
-	list_push_tail(init_alias("JORDAN", "ENCULE"), infos->alias);
-	list_push_tail(init_alias("FANFAN", "TEUTEU"), infos->alias);
+	infos->alias = list_init(NULL); //fonction qui init list alias que jordan doit push
 	if (!infos->env) {
 		return (NULL);
 	}

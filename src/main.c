@@ -92,14 +92,6 @@ int main(int unused ac, char unused **av, char **env)
 		tokens = tokenize_command(command);
 //		print(tokens);
 		build_trees_from_tokens(tokens, info);
-		print_tree(((tree_metadata_t *)(info->processes->tail->data))->head);
-		printf("_____________________________________\n");
-		if (!tree_post_processing(info, ((tree_metadata_t*)(info->processes->tail->data)), ((tree_metadata_t*)(info->processes->tail->data))->head)) {
-			printf("ntm post processing failed\n");
-			return (false);
-		}
-		printf("_____________________________________\n");
-		print_tree(((tree_metadata_t *)(info->processes->tail->data))->head);
 //		print_tree(info);
 	} while (prompt);
 	return (0);
