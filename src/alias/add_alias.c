@@ -35,7 +35,7 @@ int add_alias(char **tab, shell_info_t *infos)
 	if (len < 3) {
 		return (false);
 	}
-	node = get_the_node(alias, tab[1]);
+	node = get_alias_node(alias, tab[1]);
 	if (!node){
 		create_new_alias(alias, tab);
 	}

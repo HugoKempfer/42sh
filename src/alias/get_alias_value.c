@@ -9,7 +9,7 @@
 #include "list.h"
 #include "alias.h"
 
-lnode_t *get_the_node(llist_t *alias, char *str)
+lnode_t *get_alias_node(llist_t *alias, char *str)
 {
 	lnode_t *node = alias->head;
 
@@ -30,7 +30,7 @@ llist_t *process_alias(shell_info_t *infos, char *str)
 	if (!alias_list) {
 		return (NULL);
 	}
-	node = get_the_node(infos->alias, str);
+	node = get_alias_node(infos->alias, str);
 	if (!node) {
 		return (NULL);
 	}
