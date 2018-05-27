@@ -10,10 +10,27 @@
 #include "tools.h"
 #include "strings.h"
 #include <stdbool.h>
-/*int print_error_command(int prev_type, int current_type)
+
+int print_error_redirection(int prev, int current)
 {
-	if (prev_type == current_type && prev_type == PIPE) {
-		fprintf(stderr, "Invalid null command.");
+	if (prev >= SEMI_COLON && prev <= INF && prev != PIPE) {
+		fprintf(stderr, "Missing name for redirect.\n");
+	}
+	else if (current >= SEMI_COLON && current <= INF && current != PIPE) {
+		fprintf(stderr, "Missing name for redirect.\n");
+	} else {
+		fprintf(stderr, "Invalid null command.\n");
+	}
+	return (true);
+}
+
+int print_syntax_error(int type)
+{
+	if (type == OR || type == AND || type == PIPE) {
+		fprintf(stderr, "Invalid null command.\n");
+	}
+	else if (type >= SEMI_COLON && type <= INF) {
+		fprintf(stderr, "Missing name for redirect.\n");
 	}
 	return (true);
 }
@@ -24,6 +41,7 @@ int check_type(int prev_type, int current_type)
 		return (false);
 	}
 	if ((prev_type >= OR && prev_type <= INF) && current_type != COMMAND) {
+		print_error_redirection(prev_type, current_type);
 		return (false);
 	}
 	return (true);
@@ -34,40 +52,19 @@ int check_syntax_command(llist_t *tokens)
 	lnode_t *node = tokens->head;
 	int prev_type = ((token_t *)(node->data))->type;
 
+	if (((token_t *)(node->data))->type != COMMAND) {
+		return (false);
+	}
 	node = node->next;
 	while (node) {
 		if (!check_type(prev_type, ((token_t *)(node->data))->type)) {
 			return (false);
 		}
-		prev_type = ((token_t *)(node->data))->type;
-		node = node->next;
-	}
-	return (true);
-}*/
-
-int compare_type(int current_type, int second_type, llist_t *tokens)
-{
-	if (current_type == second_type && current_type == COMMAND) {
-		return (false);
-
-	}
-	if (tokens->nb_nodes == 2 && )
-
-}
-
-int check_syntax_command(llist_t *tokens)
-{
-	lnode_t *node = tokens->head;
-	int check = 0;
-	int current_type = ((token_t *)(node->data))->type;
-	int second_type = 0;
-
-	while (node->next) {
-		second_type = ((token_t *)(node->next->data))->type;
-		check = compare_type(current_type, second_type, tokens);
-		if(!check) {
+		if (((token_t *)(node->data))->type != COMMAND && !node->next) {
+			print_syntax_error(((token_t *)(node->data))->type);
 			return (false);
 		}
+		prev_type = ((token_t *)(node->data))->type;
 		node = node->next;
 	}
 	return (true);
