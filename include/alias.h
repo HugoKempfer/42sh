@@ -23,5 +23,5 @@ struct alias_s
 	char *value;
 };
 
-lnode_t *get_the_node(llist_t *alias, char *str);
+lnode_t *get_alias_node(llist_t *alias, char *str);
 #endif /* ALIAS_H_ */
