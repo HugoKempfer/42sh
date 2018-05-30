@@ -86,8 +86,7 @@ int my_env(shell_info_t *infos, unused char **command)
 	lnode_t *node = env->head;
 
 	while (node) {
-		printf("%s", (char *)node->data);
-		write(1, "\n", 1);
+		puts((char *)node->data);
 		node = node->next;
 	}
 	return (true);

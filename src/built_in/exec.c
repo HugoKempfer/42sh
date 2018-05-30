@@ -5,18 +5,24 @@
 ** Exec built-ins
 */
 
-#include "binary_exec.h"
+#include "built_in_exec.h"
+#include "tools.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 static const builtin_index_t BUILTINS[] = {
-	{cd, "cd"},
+	{cd_management, "cd"},
 	{my_setenv, "setenv"},
 	{my_unsetenv, "unsetenv"},
-	{my_env, "env"},
-	{setvar, "set_var"},
-	{remove_var, "remove_var"}
+	{my_env, "env"}
+//	{setvar, "set_var"},
+//	{remove_var, "remove_var"}
 };
 
-builtin_index_t *get_builtin_func(char *name)
+built_in_fptr *get_builtin_func(char *name)
 {
 	int it = 0;
 
@@ -28,11 +34,4 @@ builtin_index_t *get_builtin_func(char *name)
 	}
 	return (NULL);
 }
-
-int exec_builtin(builtin_index_t *fptr, shell_info_t *infos, char **command)
-{
-	if (!fptr(infos, command)) {
-		return (false);
-	}
-	return (true);
 

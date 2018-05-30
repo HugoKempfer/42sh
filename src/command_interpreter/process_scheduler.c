@@ -4,6 +4,7 @@
 ** Manage the sub_processes fd's connexions
 */
 
+#include "built_in_exec.h"
 #include "redirections.h"
 #include "binary_tree.h"
 #include "binary_exec.h"
@@ -38,16 +39,30 @@ redirector_pt_t *get_redirector_func(enum tnode_type type)
 	return (NULL);
 }
 
+int execute_command(shell_info_t *infos, tree_metadata_t *meta)
+{
+	char **command = meta->head->left->data.str;
+	built_in_fptr *fptr = get_builtin_func(command[0]);
+
+	if (fptr && !fptr(infos, command)) {
+		return (false);
+	} else if (!fptr && !exec_binary(command, infos, meta)) {
+		return (false);
+	}
+	return (true);
+}
+
 int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 {
 	int pfd[2]= {-1, -1};
 	redirector_pt_t *function;
 	tnode_t *head = meta->head;
+	int builtin = 0;
 
 	function = get_redirector_func(head->left->data.type);
 	if (!function || !function(head->left, infos, pfd, meta)) {
 		if (head->left->data.type == COMMAND) {
-			return (exec_binary(head->left->data.str, infos, meta));
+			return (execute_command(infos, meta));
 		}
 		return (false);
 	}

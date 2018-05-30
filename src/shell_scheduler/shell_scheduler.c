@@ -68,9 +68,6 @@ static int do_command_parsing(shell_info_t *infos)
 		return (false);
 	}
 	tokens = tokenize_command(cut_command);
-	if (!check_syntax_error(tokens)) {
-		return (false);
-	}
 	if (!tokens || !build_trees_from_tokens(tokens, infos)) {
 		return (false);
 	}
