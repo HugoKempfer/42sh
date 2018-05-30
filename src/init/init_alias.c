@@ -39,7 +39,7 @@ llist_t *init_alias(void)
 	node = get_node("alias/", root)->data.root->head;
 	while (node) {
 		check = fill_list_alias(alias, node);
-		if(!check) {
+		if (!check) {
 			return (NULL);
 		}
 		node = node->next;

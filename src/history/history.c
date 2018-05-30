@@ -17,26 +17,28 @@ int export_history(shell_info_t *infos)
 {
 	FILE *file = fopen("history", "a");
 	llist_t *history = infos->history;
-	lnode_t *node = history->tail;
+	lnode_t *node = history->head;
+	char *line = NULL;
 
 	if (!file) {
 		return (84);
 	}
 	while (node) {
-		fwrite((char *)node->data, sizeof((char *)node->data), 1, file);
-		fwrite("\n", 1, 1, file);
+		line = node->data;
+		fwrite(line, strlen(line), 1, file);
+		free(line);
 		node = node->next;
 	}
+	free(line);
 	fclose(file);
 	return (0);
-
 }
 
-int stock_history(shell_info_t *infos, char *str)
+int stock_history(shell_info_t *infos, char *command)
 {
 	llist_t *history = infos->history;
 
-	if (!list_push_tail(str, history)) {
+	if (!list_push_tail(command, history)) {
 		return (false);
 	}
 	return (true);
@@ -48,4 +50,3 @@ char *last_line(shell_info_t *infos)
 
 	return ((char *)history->tail->data);
 }
-

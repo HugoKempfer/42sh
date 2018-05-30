@@ -70,7 +70,6 @@ char *get_binary_access(char *binary_name, shell_info_t *infos)
 	if (!access(binary_name, X_OK)) {
 		valid_access = binary_name;
 	}
-	//destroy_str_array(binary_path);
 	return (valid_access);
 }
 

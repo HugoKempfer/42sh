@@ -49,6 +49,22 @@ const static char SEPARATORS[] = {
 	'&',
 	-1
 };
+int check_syntax_command(llist_t *tokens);
+
+static int do_syntax_build_tree(shell_info_t *infos, llist_t *tokens)
+{
+	if (!tokens) {
+		return (MISTAKE);
+	}
+	if (!check_syntax_command(tokens)) {
+		return (SYNTAX);
+	}
+	if (!build_trees_from_tokens(tokens, infos)) {
+		return (MISTAKE);
+	}
+	return (EXEC);
+}
+int stock_history(shell_info_t *infos, char *command);
 
 static int do_command_parsing(shell_info_t *infos)
 {
@@ -58,30 +74,32 @@ static int do_command_parsing(shell_info_t *infos)
 	cutter_charset_t cutter = {SEPARATORS, SENTINEL_CHAR, SUROUNDINGS};
 
 	if (!prompt) {
-		return (false);
+		return (MISTAKE);
 	} else if (raw_command && !strcmp(raw_command, "\n")) {
-		return (true);
+		return (SYNTAX);
 	}
 	cut_command = subdivise_str(raw_command, cutter);
 	if (!cut_command) {
-		return (false);
+		return (MISTAKE);
 	}
+	stock_history(infos, raw_command);
 	tokens = tokenize_command(cut_command);
-	if (!tokens || !build_trees_from_tokens(tokens, infos)) {
-		return (false);
-	}
-	return (true);
+	return (do_syntax_build_tree(infos, tokens));
 }
 
 int shell_runtime(shell_info_t *infos)
 {
 	int state = true;
+	int step = 0;
 
 	while (state) {
-		if (!do_command_parsing(infos)) {
+		step = do_command_parsing(infos);
+		if (step == EXEC) {
+			process_manager(infos);
+		}
+		else if (step == MISTAKE) {
 			return (false);
 		}
-		process_manager(infos);
 	}
 	return (true);
 }

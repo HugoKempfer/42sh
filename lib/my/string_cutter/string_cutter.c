@@ -64,13 +64,11 @@ static int get_eow(char *str)
 	}
 	if (*str == '"') {
 		return (get_end_of_str(str));
-	}
-	else if (is_in_arr(*str, SENTINEL_CHAR)) {
+	} else if (is_in_arr(*str, SENTINEL_CHAR)) {
 		while (is_in_arr(str[it], SENTINEL_CHAR)) {
 			++it;
 		}
-	}
-	else {
+	} else {
 		while (!(is_in_arr(str[it], SEPARATORS))) {
 			++it;
 		}
@@ -97,7 +95,6 @@ static int get_next_word(char *str, int *cursor)
 	*cursor += it;
 	return (it);
 }
-
 
 char **subdivise_str(char *str)
 {

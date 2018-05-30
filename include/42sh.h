@@ -8,6 +8,10 @@
 #ifndef SH_H
 #define SH_H
 
+#define EXEC 		1
+#define MISTAKE 	2
+#define SYNTAX		3
+
 #include "list.h"
 
 typedef struct shell_info_s shell_info_t;
