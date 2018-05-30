@@ -40,7 +40,7 @@ redirector_pt_t *get_redirector_func(enum tnode_type type)
 	return (NULL);
 }
 
-int execute_command(shell_info_t *infos, tree_metadata_t *meta)
+/*int execute_command(shell_info_t *infos, tree_metadata_t *meta)
 {
 	char **command = meta->head->left->data.str;
 	built_in_fptr *fptr = get_builtin_func(command[0]);
@@ -52,7 +52,7 @@ int execute_command(shell_info_t *infos, tree_metadata_t *meta)
 	}
 	return (true);
 }
-
+*/
 int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 {
 	int pfd[2]= {-1, -1};
@@ -64,7 +64,7 @@ int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 	function = get_redirector_func(head->left->data.type);
 	if (!function || !function(head->left, infos, pfd, meta)) {
 		if (head->left->data.type == COMMAND) {
-			return (execute_command(infos, meta));
+			return (exec_binary(head->left->data.str, infos, meta));
 		}
 		return (false);
 	}

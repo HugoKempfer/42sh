@@ -75,12 +75,12 @@ int cd_management(shell_info_t *shell, char **command)
 	int chdir_value = chdir(path);
 
 	if (chdir_value == -1 && errno == ENOENT) {
-		fprintf(stderr, "%s: Aucun fichier ou dossier de ce type.\n",
+		fprintf(stderr, "%s: No such file or directory.\n",
 			command[1]);
 		return (false);
 	}
 	if (chdir_value == -1) {
-		fprintf(stderr, "%s: N'est pas un dossier.\n", command[1]);
+		fprintf(stderr, "%s: Not a directory.\n", command[1]);
 		return (false);
 	}
 	if (!reset_paths_var(shell->path, shell->env)) {
