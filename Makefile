@@ -45,9 +45,7 @@ SRC	=	src/process_manager/manage_processes.c \
 		src/tree_manager/create.c 		\
 		src/binary/exec_binary.c 		\
 		src/binary/exec_errors.c 		\
-		src/alias/add_alias.c 			\
-		src/alias/get_alias_node.c
-
+		src/alias/add_alias.c 
 
 OBJ	=	$(SRC:.c=.o)
 

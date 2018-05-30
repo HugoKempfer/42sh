@@ -10,6 +10,19 @@
 #include "alias.h"
 #include "my.h"
 
+lnode_t *get_alias_node(llist_t *alias, char *str)
+{
+	lnode_t *node = alias->head;
+
+	while (node) {
+		if (!strcmp(str, ((alias_t *)(node->data))->name)) {
+			return (node);
+		}
+		node = node->next;
+	}
+	return (NULL);
+}
+
 int create_new_alias(llist_t *alias, char **tab)
 {
 	alias_t *fill_alias = malloc(sizeof(alias_t));
@@ -51,7 +64,7 @@ int check_new_value(llist_t *alias, char *value)
 	return (true);
 }
 
-int add_alias(char **tab, shell_info_t *infos)
+int add_alias(shell_info_t *infos, char **tab)
 {
 	llist_t *alias = infos->alias;
 	int len = size_dbl_tab(tab);
