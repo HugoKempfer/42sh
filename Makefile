@@ -30,12 +30,11 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/command_lexer/str_utils.c 				\
 		src/command_lexer/string_cutter_annex.c 		\
 		src/command_lexer/string_cutter.c 			\
-		src/var/var_management.c 				\
-		src/var/var_helpers.c 					\
 		src/main.c 						\
 		src/syntax_check/check_syntax_error.c 			\
 		src/built_in/echo/echo.c 				\
 		src/built_in/cd/cd_management.c 			\
+		src/built_in/var/var_management.c			\
 		src/built_in/env/env_management.c			\
 		src/built_in/exec.c					\
 		src/command_parser/tree_builder.c 			\

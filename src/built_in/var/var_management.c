@@ -5,11 +5,11 @@
 ** helpers for managing local/global shell variables
 */
 
+#include "42sh.h"
 #include "functions.h"
 #include "list.h"
 #include "var.h"
 #include <string.h>
-#include "42sh.h"
 
 size_t grid_len(char **grid)
 {
