@@ -16,6 +16,7 @@
 #include <unistd.h>
 
 int process_tree(shell_info_t *infos, tree_metadata_t *meta);
+int tree_post_processing(shell_info_t *infos, tree_metadata_t *metadata);
 
 static lnode_t *get_next_tree(lnode_t *current, llist_t *ps)
 {

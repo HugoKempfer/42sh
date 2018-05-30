@@ -18,6 +18,7 @@
 int process_tree(shell_info_t *infos, tree_metadata_t *meta);
 int process_manager(shell_info_t *infos);
 int build_trees_from_tokens(llist_t *tokens, shell_info_t *shell_info);
+int check_syntax_command(llist_t *tokens);
 char *prompt(void);
 
 const static char *SUROUNDINGS[] = {
@@ -67,6 +68,9 @@ static int do_command_parsing(shell_info_t *infos)
 		return (false);
 	}
 	tokens = tokenize_command(cut_command);
+	if (!check_syntax_error(tokens)) {
+		return (false);
+	}
 	if (!tokens || !build_trees_from_tokens(tokens, infos)) {
 		return (false);
 	}
