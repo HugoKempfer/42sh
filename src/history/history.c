@@ -29,7 +29,6 @@ int export_history(shell_info_t *infos)
 		free(line);
 		node = node->next;
 	}
-	free(line);
 	fclose(file);
 	return (0);
 }
