@@ -21,4 +21,5 @@
 #define ARRAY_SIZE(a)	(sizeof(a) / sizeof(a[0]))
 #define unused	__attribute__((unused))
 
+int size_dbl_tab(char **);
 #endif /* ifndef TOOLS_H */

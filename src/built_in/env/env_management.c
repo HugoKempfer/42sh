@@ -40,51 +40,17 @@ char *env_get_value(llist_t *env, char *var_name)
 	return ((char *)(node->data) + (strlen(var_name) + 1));
 }
 
-int my_unsetenv(shell_info_t *infos, char **command)
+int my_env(shell_info_t *infos, char **command)
 {
-	llist_t *env = infos->env;
-	char *var_name = command[1];
-	lnode_t *var = env_get_node(env, var_name);
-
-	if (!var) {
-		return (false);
-	}
-	if (var) {
-		free(var->data);
-		list_pop(var, env);
-	}
-	return (true);
-}
-
-int my_setenv(shell_info_t *infos, char **command)
-{
-	llist_t *env = infos->env;
-	char *var_name = command[1];
-	char *var_value = command[2];
-	lnode_t *node = env_get_node(env, var_name);
-	char *var = str_concat((char *[]){var_name, "=", var_value, NULL});
-
-	if (!var) {
-		return (false);
-	}
-	if (!strcmp(var_name, "HOME")) {
-		infos->path->home = var + strlen("HOME=");
-	}
-	if (node) {
-		node->data = var;
-	} else {
-		if (!list_push_tail(var, env)) {
-			return (false);
-		}
-	}
-	return (true);
-}
-
-int my_env(shell_info_t *infos, unused char **command)
-{
+	int nb_args = size_dbl_tab(command);
 	llist_t *env = infos->env;
 	lnode_t *node = env->head;
 
+	if (nb_args > 1) {
+		fprintf(stderr, "env: « %s »: "
+		"Aucun fichier ou dossier de ce type\n", command[1]);
+		return (false);
+	}
 	while (node) {
 		puts((char *)node->data);
 		node = node->next;

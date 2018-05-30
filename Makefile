@@ -36,6 +36,8 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/built_in/cd/cd_management.c 			\
 		src/built_in/var/var_management.c			\
 		src/built_in/env/env_management.c			\
+		src/built_in/env/setenv.c				\
+		src/built_in/env/unsetenv.c				\
 		src/built_in/exec.c					\
 		src/command_parser/tree_builder.c 			\
 		src/command_parser/branch_builder.c 			\

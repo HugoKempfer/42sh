@@ -8,6 +8,7 @@
 #include "42sh.h"
 #include "str_manip.h"
 #include "shell_path.h"
+#include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -71,8 +72,15 @@ static char *chdir_path(llist_t *env, path_t *paths_var, char *command)
 int cd_management(shell_info_t *shell, char **command)
 {
 	char *path = chdir_path(shell->env, shell->path, command[1]);
+	int chdir_value = chdir(path);
 
-	if (chdir(path) != 0) {
+	if (chdir_value == -1 && errno == ENOENT) {
+		fprintf(stderr, "%s: Aucun fichier ou dossier de ce type.\n",
+			command[1]);
+		return (false);
+	}
+	if (chdir_value == -1) {
+		fprintf(stderr, "%s: N'est pas un dossier.\n", command[1]);
 		return (false);
 	}
 	if (!reset_paths_var(shell->path, shell->env)) {

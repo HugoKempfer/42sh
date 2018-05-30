@@ -18,8 +18,8 @@ static const builtin_index_t BUILTINS[] = {
 	{my_setenv, "setenv"},
 	{my_unsetenv, "unsetenv"},
 	{my_env, "env"}
-//	{setvar, "set_var"},
-//	{remove_var, "remove_var"}
+//	{set_var, "set"},
+//	{remove_var, "unset"}
 };
 
 built_in_fptr *get_builtin_func(char *name)
