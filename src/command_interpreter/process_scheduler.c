@@ -6,6 +6,7 @@
 
 #include "built_in_exec.h"
 #include "redirections.h"
+#include "post_processing.h"
 #include "binary_tree.h"
 #include "binary_exec.h"
 #include "42sh.h"
@@ -59,6 +60,7 @@ int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 	tnode_t *head = meta->head;
 	int builtin = 0;
 
+//	tree_post_processing(infos, meta, head);
 	function = get_redirector_func(head->left->data.type);
 	if (!function || !function(head->left, infos, pfd, meta)) {
 		if (head->left->data.type == COMMAND) {

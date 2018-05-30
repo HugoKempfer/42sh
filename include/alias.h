@@ -25,7 +25,6 @@ struct alias_s
 	char *value;
 };
 
-lnode_t *get_alias_node(llist_t *alias, char *str);
 int get_new_lexems(shell_info_t *infos, tree_metadata_t *meta,
 		char *lexem, llist_t **l_lexem);
 void introduce_new_lexems(llist_t *command, llist_t *new_lexems,
