@@ -6,13 +6,14 @@
 ##
 
 SRC	=	src/process_manager/manage_processes.c			\
-		src/init/init_var_s.c					\
+		src/init/init_var.c					\
 		src/init/env.c 						\
 		src/init/shell_info.c 					\
 		src/init/shell_path.c 					\
 		src/post_processing/is_specific_command.c 		\
 		src/post_processing/process/process_globings.c 		\
 		src/post_processing/process/process_alias.c 		\
+		src/post_processing/process/process_var.c 		\
 		src/post_processing/process/process_coat.c 		\
 		src/post_processing/is_specific_surrondings.c 		\
 		src/post_processing/tree_post_processing.c 		\
@@ -34,10 +35,11 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/built_in/echo/echo.c 				\
 		src/built_in/cd/cd_management.c 			\
 		src/built_in/cd/reset_path_var.c			\
-		src/built_in/var/var_management.c			\
 		src/built_in/env/env_management.c			\
 		src/built_in/env/setenv.c				\
 		src/built_in/env/unsetenv.c				\
+		src/built_in/var/set_var.c				\
+		src/built_in/var/unset_var.c				\
 		src/built_in/exec.c					\
 		src/command_parser/tree_builder.c 			\
 		src/command_parser/branch_builder.c 			\

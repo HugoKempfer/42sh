@@ -12,6 +12,7 @@
 #include "tools.h"
 #include "post_processing.h"
 #include "alias.h"
+#include "var.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,6 +30,22 @@ int is_alias(shell_info_t *infos, char *lexem)
 			return (true);
 		}
 		alias_node = alias_node->next;
+	}
+	return (false);
+}
+
+int is_var(shell_info_t *infos, char *lexem)
+{
+	llist_t *var_list = infos->local_vars;
+	lnode_t *var_node = var_list->head;
+	const char *name = NULL;
+
+	while (var_node) {
+		name = ((var_t *)(var_node->data))->name;
+		if (*lexem == '$' && !strcmp(name, lexem + 1)) {
+			return (true);
+		}
+		var_node = var_node->next;
 	}
 	return (false);
 }

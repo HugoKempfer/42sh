@@ -29,7 +29,6 @@ int	var_manager(shell_info_t *info, char **command);
 void	print_the_var(lnode_t *node, char **command);
 void	print_the_list(shell_info_t *info);
 llist_t	*retrieve_the_node(llist_t *var_list, char *name);
-llist_t *process_value(llist_t *var_list, char *name);
 lnode_t *find_node_var(llist_t *var_list, char *name);
 size_t	grid_len(char **grid);
 int	is_setting_the_var(char **cmd, char **value, shell_info_t *info);
