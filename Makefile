@@ -9,7 +9,6 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/init/init_var_s.c					\
 		src/init/env.c 						\
 		src/init/shell_info.c 					\
-		src/init/init_alias.c 					\
 		src/init/shell_path.c 					\
 		src/post_processing/is_specific_command.c 		\
 		src/post_processing/process/process_globings.c 		\
@@ -39,8 +38,6 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/built_in/env/env_management.c			\
 		src/built_in/env/setenv.c				\
 		src/built_in/env/unsetenv.c				\
-		src/built_in/alias/add_alias.c				\
-		src/built_in/alias/print_alias_value.c			\
 		src/built_in/exec.c					\
 		src/command_parser/tree_builder.c 			\
 		src/command_parser/branch_builder.c 			\
@@ -50,6 +47,9 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/tree_manager/create.c 				\
 		src/binary/exec_binary.c 				\
 		src/binary/exec_errors.c
+#		src/init/init_alias.c 					\
+#		src/built_in/alias/add_alias.c				\
+#		src/built_in/alias/print_alias_value.c			\
 
 
 OBJ	=	$(SRC:.c=.o)
