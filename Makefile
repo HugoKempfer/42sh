@@ -34,6 +34,7 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/syntax_check/check_syntax_error.c 			\
 		src/built_in/echo/echo.c 				\
 		src/built_in/cd/cd_management.c 			\
+		src/built_in/cd/reset_path_var.c			\
 		src/built_in/var/var_management.c			\
 		src/built_in/env/env_management.c			\
 		src/built_in/env/setenv.c				\

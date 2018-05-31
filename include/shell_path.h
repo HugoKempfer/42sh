@@ -18,5 +18,6 @@ int my_setenv(shell_info_t *infos, char **command);
 int my_unsetenv(shell_info_t *infos, char **command);
 int cd_management(shell_info_t *shell, char **command);
 char *env_get_value(llist_t *env, char *var_name);
+int reset_paths_var(path_t *paths_var, llist_t *env);
 
 #endif /* ifndef SHELL_PATH */
