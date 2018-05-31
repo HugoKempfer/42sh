@@ -57,7 +57,7 @@ int is_globings(unused shell_info_t *infos, char *lexem)
 			return (true);
 		}
 		if (*lexem == '['
-		&& strlen(lexem) >= 4  && *(lexem + 4) == ']') {
+		&& strlen(lexem) >= 4 && *(lexem + 4) == ']') {
 			return (true);
 		}
 		++(lexem);

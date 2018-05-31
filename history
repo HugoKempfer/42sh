@@ -11,3 +11,5 @@ cat Makefile
 echo $?
 /tmp/a.out
 echo $?
+ls
+clear

@@ -50,6 +50,7 @@ const static char SEPARATORS[] = {
 	'&',
 	-1
 };
+
 int check_syntax_command(llist_t *tokens);
 
 static int do_syntax_build_tree(shell_info_t *infos, llist_t *tokens)
@@ -65,6 +66,7 @@ static int do_syntax_build_tree(shell_info_t *infos, llist_t *tokens)
 	}
 	return (EXEC);
 }
+
 int stock_history(shell_info_t *infos, char *command);
 
 static int do_command_parsing(shell_info_t *infos)

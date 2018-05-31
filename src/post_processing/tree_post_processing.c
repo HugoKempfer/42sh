@@ -58,8 +58,6 @@ static char **update_command(shell_info_t *infos, tree_metadata_t *metadata,
 	llist_t *new_lexems = NULL;
 
 	destroy_str_array(command_str);
-//	if (!introduce_alias(command, &lexem, infos))
-//		return (false);
 	while (lexem) {
 		if (!get_new_lexems(infos, metadata, lexem->data, &new_lexems))
 			return (NULL);

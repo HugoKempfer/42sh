@@ -49,7 +49,8 @@ static int execute_trees(shell_info_t *infos)
 
 	while (current) {
 		current = infos->processes->head;
-		if (!tree_post_processing(infos, current->data, ((tree_metadata_t *)(current->data))->head)) {
+		if (!tree_post_processing(infos, current->data,
+		((tree_metadata_t *)(current->data))->head)) {
 			return (false);
 		}
 		exec_state = process_tree(infos, current->data);

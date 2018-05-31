@@ -1,6 +1,7 @@
 /*
 ** EPITECH PROJECT, 2018
 ** 42sh** File description:
+** File description:
 ** Manage the sub_processes fd's connexions
 */
 
