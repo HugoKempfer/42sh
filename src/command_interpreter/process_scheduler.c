@@ -58,9 +58,7 @@ int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 	int pfd[2]= {-1, -1};
 	redirector_pt_t *function;
 	tnode_t *head = meta->head;
-	int builtin = 0;
 
-//	tree_post_processing(infos, meta, head);
 	function = get_redirector_func(head->left->data.type);
 	if (!function || !function(head->left, infos, pfd, meta)) {
 		if (head->left->data.type == COMMAND) {

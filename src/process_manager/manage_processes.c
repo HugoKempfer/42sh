@@ -8,6 +8,7 @@
 #include "42sh.h"
 #include "str_manip.h"
 #include "metadata.h"
+#include "post_processing.h"
 #include "list.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,7 +17,6 @@
 #include <unistd.h>
 
 int process_tree(shell_info_t *infos, tree_metadata_t *meta);
-int tree_post_processing(shell_info_t *infos, tree_metadata_t *metadata);
 
 static lnode_t *get_next_tree(lnode_t *current, llist_t *ps)
 {
@@ -49,7 +49,10 @@ static int execute_trees(shell_info_t *infos)
 
 	while (current) {
 		current = infos->processes->head;
-		exec_state = process_tree(infos, infos->processes->head->data);
+		if (!tree_post_processing(infos, current->data, ((tree_metadata_t *)(current->data))->head)) {
+			return (false);
+		}
+		exec_state = process_tree(infos, current->data);
 		current = get_next_tree(current, infos->processes);
 		if (!exec_state) {
 			return (false);
