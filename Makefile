@@ -7,6 +7,7 @@
 
 SRC	=	src/process_manager/manage_processes.c			\
 		src/init/init_var.c					\
+		src/init/init_alias.c					\
 		src/init/env.c 						\
 		src/init/shell_info.c 					\
 		src/init/shell_path.c 					\
@@ -33,6 +34,8 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/command_lexer/string_cutter.c 			\
 		src/main.c 						\
 		src/syntax_check/check_syntax_error.c 			\
+		src/built_in/alias/add_alias.c 				\
+		src/built_in/alias/print_alias_value.c 				\
 		src/built_in/echo/echo.c 				\
 		src/built_in/cd/cd_management.c 			\
 		src/built_in/cd/reset_path_var.c			\

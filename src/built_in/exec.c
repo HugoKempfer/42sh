@@ -20,6 +20,7 @@ static const builtin_index_t BUILTINS[] = {
 	{my_unsetenv, "unsetenv"},
 	{my_env, "env"},
 	{set_var, "set"},
+	{add_alias, "alias"},
 	{my_echo, "echo"},
 	{remove_var, "unset"}
 };

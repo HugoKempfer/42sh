@@ -1,15 +1,12 @@
-ls |
-< Makefile cat
+alias toto ls
+toto
 ls
 clear
-ls | wc
 ls
 clear
-exit
-exit
-cat Makefile
-echo $?
-/tmp/a.out
-echo $?
+ls
+ls
+ls
+c
 ls
 clear

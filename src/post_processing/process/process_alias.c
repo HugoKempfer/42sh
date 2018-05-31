@@ -11,7 +11,7 @@
 #include "list.h"
 #include "tools.h"
 
-char **get_alias_value(llist_t *alias, char *name)
+char *get_alias_value(llist_t *alias, char *name)
 {
 	lnode_t *node = alias->head;
 
@@ -27,13 +27,10 @@ char **get_alias_value(llist_t *alias, char *name)
 llist_t *process_alias(shell_info_t *infos, char *name)
 {
 	llist_t *alias_list = list_init(NULL);
-	char **alias_value = get_alias_value(infos->alias, name);
+	char *alias_value = get_alias_value(infos->alias, name);
 
-	while (*alias_value) {
-		if (!list_push_tail(*alias_value, alias_list)) {
-			return (NULL);
-		}
-		++(alias_value);
+	if (!list_push_tail(alias_value, alias_list)) {
+		return (NULL);
 	}
 	return (alias_list);
 }
