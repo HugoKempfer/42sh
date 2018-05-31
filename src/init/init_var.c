@@ -5,9 +5,9 @@
 ** init the var struct with linked lists
 */
 
-#include "functions.h"
 #include "list.h"
 #include "var.h"
+#include <stdlib.h>
 
 var_t *init_struct_var(char const *name, const char *value)
 {
@@ -20,13 +20,3 @@ var_t *init_struct_var(char const *name, const char *value)
 	var->value = value;
 	return (var);
 }
-
-/*llist_t *create_var_list(void)
-{
-	llist_t *var_list = list_init(NULL);
-
-	if (!var_list) {
-		return (NULL);
-	}
-	return (var_list);
-}*/
