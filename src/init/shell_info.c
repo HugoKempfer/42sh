@@ -13,6 +13,7 @@
 #include <stdio.h>
 
 llist_t *init_alias(llist_t *alias);
+void destroy_tree(void *data);
 
 shell_info_t *init_shell_info(char **base_env)
 {

@@ -17,6 +17,23 @@
 
 int process_tree(shell_info_t *infos, tree_metadata_t *meta);
 int tree_post_processing(shell_info_t *infos, tree_metadata_t *metadata);
+/*
+void destroy_tree(void *data)
+{
+	tree_metadata_t *meta = (tree_metadata_t *)data;
+	tnode_t *head = meta->head;
+
+	if( head->left) {
+		if (head->left->data.type == COMMAND) {
+			free(head->left->data.str);
+		}
+	}
+	if (head->right) {
+		if (head->right->data.type == COMMAND) {
+			free(head->right->data.str);
+		}
+	}
+}*/
 
 static lnode_t *get_next_tree(lnode_t *current, llist_t *ps)
 {
