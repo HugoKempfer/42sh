@@ -40,6 +40,7 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/built_in/env/setenv.c				\
 		src/built_in/env/unsetenv.c				\
 		src/built_in/alias/add_alias.c				\
+		src/built_in/alias/print_alias_value.c			\
 		src/built_in/exec.c					\
 		src/command_parser/tree_builder.c 			\
 		src/command_parser/branch_builder.c 			\

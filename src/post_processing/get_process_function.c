@@ -21,7 +21,6 @@ static const post_processing_t POST_PROCESS[] =
 {
 //	{&is_backticks, &process_backticks};
 //	{&is_variable, &process_variable};
-	{&is_alias, &process_alias},
 	{&is_globings, &process_globings},
 	{&is_double_coat, &process_coats},
 	{&is_simple_coat, &process_coats}

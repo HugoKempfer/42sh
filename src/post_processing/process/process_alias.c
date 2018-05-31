@@ -24,7 +24,7 @@ char *get_alias_value(llist_t *alias, char *name)
 	return (NULL);
 }
 
-llist_t *process_alias(shell_info_t *infos, unused tree_metadata_t *meta,  char *name)
+llist_t *process_alias(shell_info_t *infos,  char *name)
 {
 	llist_t *alias_list = list_init(NULL);
 	char *alias_value = get_alias_value(infos->alias, name);

@@ -33,7 +33,7 @@ void introduce_new_lexems(llist_t *command, llist_t *new_lexems,
 	}
 }
 
-/*int introduce_alias(llist_t *command, lnode_t **lexem,
+int introduce_alias(llist_t *command, lnode_t **lexem,
 			shell_info_t *infos)
 {
 	llist_t *new_lexem = NULL;
@@ -49,7 +49,7 @@ void introduce_new_lexems(llist_t *command, llist_t *new_lexems,
 	}
 	return (true);
 }
-*/
+
 static char **update_command(shell_info_t *infos, tree_metadata_t *metadata,
 			char **command_str)
 {
@@ -58,8 +58,8 @@ static char **update_command(shell_info_t *infos, tree_metadata_t *metadata,
 	llist_t *new_lexems = NULL;
 
 	destroy_str_array(command_str);
-//	if (!introduce_alias(command, &lexem, infos))
-//		return (false);
+	if (!introduce_alias(command, &lexem, infos))
+		return (false);
 	while (lexem) {
 		if (!get_new_lexems(infos, metadata, lexem->data, &new_lexems))
 			return (NULL);
