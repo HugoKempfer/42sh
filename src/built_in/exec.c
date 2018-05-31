@@ -14,6 +14,7 @@
 #include <string.h>
 
 static const builtin_index_t BUILTINS[] = {
+	{my_exit, "exit"},
 	{cd_management, "cd"},
 	{my_setenv, "setenv"},
 	{my_unsetenv, "unsetenv"},

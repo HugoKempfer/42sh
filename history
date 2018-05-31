@@ -5,3 +5,5 @@ clear
 ls | wc
 ls
 clear
+exit
+exit
