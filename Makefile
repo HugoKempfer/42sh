@@ -51,7 +51,8 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/prompt/prompt.c 					\
 		src/tree_manager/create.c 				\
 		src/binary/exec_binary.c 				\
-		src/binary/exec_errors.c
+		src/binary/exec_errors.c				\
+		src/helper/return_code.c
 #		src/init/init_alias.c 					\
 #		src/built_in/alias/add_alias.c				\
 		src/built_in/alias/print_alias_value.c			\

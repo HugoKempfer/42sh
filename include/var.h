@@ -33,5 +33,6 @@ lnode_t *find_node_var(llist_t *var_list, char *name);
 size_t	grid_len(char **grid);
 int	is_setting_the_var(char **cmd, char **value, shell_info_t *info);
 int	is_alpha_num(char *str);
+void update_return_code(shell_info_t *infos, int code);
 
 #endif /* MY_VAR_H */

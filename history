@@ -7,3 +7,7 @@ ls
 clear
 exit
 exit
+cat Makefile
+echo $?
+/tmp/a.out
+echo $?
