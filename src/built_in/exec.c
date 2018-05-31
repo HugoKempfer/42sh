@@ -18,7 +18,7 @@ static const builtin_index_t BUILTINS[] = {
 	{my_setenv, "setenv"},
 	{my_unsetenv, "unsetenv"},
 	{my_env, "env"},
-//	{add_alias, "alias"},
+	{add_alias, "alias"},
 //	{set_var, "set"},
 //	{remove_var, "unset"}
 };
