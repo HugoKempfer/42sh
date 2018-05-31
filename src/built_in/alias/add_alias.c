@@ -10,7 +10,36 @@
 #include "alias.h"
 #include "my.h"
 
-static lnode_t *get_alias_node(llist_t *alias, char *str)
+static char *get_new_value(llist_t *alias, char *value)
+{
+	lnode_t *node = alias->head;
+
+	while (node) {
+		if (!strcmp(value, ((alias_t *)(node->data))->name)) {
+			return (((alias_t *)(node->data))->value);
+		}
+		node = node->next;
+	}
+	return (NULL);
+}
+
+static int check_new_value(llist_t *alias)
+{
+	lnode_t *node = alias->tail;
+	char *value = ((alias_t *)(node->data))->value;
+	char *new_value = get_new_value(alias, value);
+
+	if (new_value) {
+		((alias_t *)(node->data))->value = strdup(new_value);
+		if (!((alias_t *)(node->data))->value) {
+			return (false);
+		}
+	}
+	free(new_value);
+	return (true);
+}
+
+lnode_t *get_alias_node(llist_t *alias, char *str)
 {
 	lnode_t *node = alias->head;
 
@@ -30,37 +59,14 @@ static int create_new_alias(llist_t *alias, char **tab)
 	if (!fill_alias) {
 		return (false);
 	}
-	fill_alias->name = tab[1];
-	fill_alias->value = tab[2];
+	fill_alias->name = strdup(tab[1]);
+	fill_alias->value = strdup(tab[2]);
+	if (!fill_alias->name || !fill_alias->value) {
+		return (false);
+	}
 	if (!list_push_tail(fill_alias, alias)) {
 		return (false);
 	}
-	return (true);
-}
-
-static char *get_new_value(llist_t *alias, char *value)
-{
-	lnode_t *node = alias->head;
-
-	while (node) {
-		if (!strcmp(value, ((alias_t *)(node->data))->name)) {
-			return (((alias_t *)(node->data))->value);
-		}
-		node = node->next;
-	}
-	return (NULL);
-}
-
-static int check_new_value(llist_t *alias, char *value)
-{
-	lnode_t *node = alias->tail;
-	char *new_value = get_new_value(alias, value);
-
-	if (new_value) {
-		((alias_t *)(node->data))->value = new_value;
-	}
-	free(new_value);
-	free(value);
 	return (true);
 }
 
@@ -70,13 +76,17 @@ int add_alias(shell_info_t *infos, char **tab)
 	int len = size_dbl_tab(tab);
 	lnode_t *node = NULL;
 
-	if (len < 3) {
+	if (len == 1) {
 		return (false);
+	}
+	else if (len == 2) {
+		print_value(alias, tab[1]);
+		return (true);
 	}
 	node = get_alias_node(alias, tab[1]);
 	if (!node){
 		create_new_alias(alias, tab);
-		check_new_value(alias, ((alias_t *)(node->data))->value);
+		check_new_value(alias);
 	}
 	else {
 		((alias_t *)(node->data))->value = tab[2];

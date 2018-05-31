@@ -18,17 +18,19 @@ int fill_list_alias(llist_t *alias, mnode_t *node)
 	if (!fill_alias) {
 		return (false);
 	}
-	fill_alias->name = node->label;
-	fill_alias->value = node->data.child->value;
+	fill_alias->name = strdup(node->label);
+	fill_alias->value = strdup(node->data.child->value);
+	if (!fill_alias->name || !fill_alias->value) {
+		return (false);
+	}
 	if (!list_push_tail(fill_alias, alias)) {
 		return (false);
 	}
 	return (true);
 }
 
-llist_t *init_alias(void)
+llist_t *init_alias(llist_t *alias)
 {
-	llist_t *alias = list_init(NULL);
 	mnode_t *root = parse_file("42shrc");
 	mnode_t *node;
 	int check = 0;

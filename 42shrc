@@ -1,5 +1,4 @@
 alias {
-	.. = "cd..";
 	c = "clear";
 	l = "ls -l";
 }

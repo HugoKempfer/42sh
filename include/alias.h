@@ -30,4 +30,6 @@ int get_new_lexems(shell_info_t *infos, tree_metadata_t *meta,
 void introduce_new_lexems(llist_t *command, llist_t *new_lexems,
 			lnode_t *lexem);
 int introduce_alias(llist_t *command, lnode_t **lexem, shell_info_t *infos);
+int print_value(llist_t *alias, char *name);
+lnode_t *get_alias_node(llist_t *alias, char *name);
 #endif /* ALIAS_H_ */

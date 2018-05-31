@@ -18,7 +18,7 @@ static const echo_t FLAGS[] = {
 	{-1, -1},
 };
 
-int find_flag(char carac)
+static int find_flag(char carac)
 {
 	int idx = 0;
 
@@ -34,7 +34,7 @@ int find_flag(char carac)
 	return (0);
 }
 
-int parsing_element(char *str)
+static int parsing_element(char *str)
 {
 	int it = 0;
 
@@ -51,7 +51,7 @@ int parsing_element(char *str)
 	return (0);
 }
 
-int check_error(char **tab)
+static int check_error(char **tab)
 {
 	int it = 0;
 
@@ -59,18 +59,19 @@ int check_error(char **tab)
 		it++;
 	}
 	if (it == 1) {
+		putchar('\n');
 		return (false);
 	}
 	return (true);
 }
 
-int browse_argument(char **tab)
+static int browse_argument(char **tab)
 {
 	int flags = 0;
 	int it = 1;
 
 	if (!check_error(tab)) {
-		return (84);
+		return (false);
 	}
 	if (!strcmp(tab[it], "-n")) {
 		flags = 1;
@@ -84,5 +85,5 @@ int browse_argument(char **tab)
 	if (!flags) {
 		putchar('\n');
 	}
-	return (0);
+	return (true);
 }
