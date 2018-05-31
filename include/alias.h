@@ -22,7 +22,7 @@ typedef struct alias_s alias_t;
 struct alias_s
 {
 	char *name;
-	char **value;
+	char *value;
 };
 
 int get_new_lexems(shell_info_t *infos, tree_metadata_t *meta,

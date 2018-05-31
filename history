@@ -11,3 +11,10 @@ cat Makefile
 echo $?
 /tmp/a.out
 echo $?
+ls
+alias toto ls
+ls
+ls
+alias toto ls
+toto
+alias toto
