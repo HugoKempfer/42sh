@@ -24,7 +24,9 @@ int export_history(shell_info_t *infos);
 static void signal_handler(int handler)
 {
 	signal(SIGINT, signal_handler);
-	write(1, "\n42sh> ", 7);
+	if (isatty(0)) {
+		write(1, "\n42sh> ", 7);
+	}
 }
 
 int main(int unused ac, char unused **av, char **env)
