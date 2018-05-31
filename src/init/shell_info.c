@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 
-llist_t *init_alias(llist_t *alias);
+llist_t *init_alias(void);
 void destroy_tree(void *data);
 
 shell_info_t *init_shell_info(char **base_env)
@@ -31,9 +31,6 @@ shell_info_t *init_shell_info(char **base_env)
 	infos->path = init_shell_path();
 	if (!infos->path)
 		return (NULL);
-	infos->alias = list_init(NULL);
-	infos->alias = init_alias(infos->alias);
-	if (!infos->alias)
-		return (NULL);
+	infos->alias = init_alias();
 	return (infos);
 }

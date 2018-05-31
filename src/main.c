@@ -34,6 +34,9 @@ int main(int unused ac, char unused **av, char **env)
 	shell_info_t *infos = init_shell_info(env);
 
 	signal(SIGINT, signal_handler);
+	if (!infos) {
+		return (84);
+	}
 	shell_runtime(infos);
 	export_history(infos);
 	return (0);

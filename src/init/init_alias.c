@@ -29,14 +29,15 @@ int fill_list_alias(llist_t *alias, mnode_t *node)
 	return (true);
 }
 
-llist_t *init_alias(llist_t *alias)
+llist_t *init_alias(void)
 {
+	llist_t *alias = list_init(NULL);
 	mnode_t *root = parse_file("42shrc");
 	mnode_t *node;
 	int check = 0;
 
 	if (!root || !alias) {
-		return (NULL);
+		return (alias);
 	}
 	node = get_node("alias/", root)->data.root->head;
 	while (node) {
