@@ -5,6 +5,8 @@
 ** main.c
 */
 
+#include "tools.h"
+#include "42sh.h"
 #include "echo.h"
 
 static const echo_t FLAGS[] = {
@@ -65,7 +67,7 @@ static int check_error(char **tab)
 	return (true);
 }
 
-static int browse_argument(char **tab)
+int my_echo(shell_info_t unused *infos, char **tab)
 {
 	int flags = 0;
 	int it = 1;

@@ -27,6 +27,7 @@ int add_alias(shell_info_t *infos, char **tab);
 int set_var(shell_info_t *infos, char **command);
 int remove_var(shell_info_t *infos, char **command);
 int my_exit(shell_info_t *infos, char **command);
+int my_echo(shell_info_t *infos, char **tab);
 built_in_fptr *get_builtin_func(char *name);
 
 #endif /* ifnedef BUILT_IN_EXEC_H */
