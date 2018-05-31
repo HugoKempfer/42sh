@@ -1,0 +1,7 @@
+ls |
+< Makefile cat
+ls
+clear
+ls | wc
+ls
+clear

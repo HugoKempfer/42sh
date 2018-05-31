@@ -45,16 +45,15 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/command_parser/tree_builder.c 			\
 		src/command_parser/branch_builder.c 			\
 		src/command_parser/branch_builder_annex.c 		\
+		src/binary/simple_execution_rooting.c 			\
 		src/shell_scheduler/shell_scheduler.c 			\
 		src/prompt/prompt.c 					\
 		src/tree_manager/create.c 				\
 		src/binary/exec_binary.c 				\
-		src/binary/simple_execution_rooting.c 				\
 		src/binary/exec_errors.c
 #		src/init/init_alias.c 					\
 #		src/built_in/alias/add_alias.c				\
-#		src/built_in/alias/print_alias_value.c			\
-
+		src/built_in/alias/print_alias_value.c			\
 
 OBJ	=	$(SRC:.c=.o)
 

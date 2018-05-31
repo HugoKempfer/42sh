@@ -23,13 +23,14 @@ int is_var(shell_info_t *infos, char *lexem);
 int is_globings(shell_info_t *infos, char *lexem);
 int is_double_coat(shell_info_t *infos, char *lexem);
 int is_simple_coat(shell_info_t *infos, char *lexem);
-llist_t *process_globings(shell_info_t *infos,
-			tree_metadata_t *meta, char *str);
-llist_t *process_coats(shell_info_t *infos,
-			tree_metadata_t *metadata, char *lexem);
+llist_t *process_globings(unused shell_info_t *infos,
+			unused tree_metadata_t *meta, char *str);
+llist_t *process_coats(unused shell_info_t *infos,
+			unused tree_metadata_t *metadata, char *lexem);
 int tree_post_processing(shell_info_t *infos, tree_metadata_t *metadata,
 			tnode_t *tree_node);
 llist_t *process_alias(shell_info_t *infos, char *str);
 llist_t *process_var(shell_info_t *infos, tree_metadata_t *metadata,
 		char *name);
+
 #endif /* POST_PROCESSING */

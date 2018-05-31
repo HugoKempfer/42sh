@@ -52,7 +52,7 @@ int check_syntax_command(llist_t *tokens)
 	lnode_t *node = tokens->head;
 	int prev_type = ((token_t *)(node->data))->type;
 
-	if (((token_t *)(node->data))->type != COMMAND) {
+	if (prev_type != COMMAND) {
 		return (false);
 	}
 	node = node->next;

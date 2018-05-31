@@ -19,6 +19,7 @@
 #include <stdio.h>
 
 int shell_runtime(shell_info_t *infos);
+int export_history(shell_info_t *infos);
 
 static void signal_handler(int handler)
 {
@@ -32,5 +33,6 @@ int main(int unused ac, char unused **av, char **env)
 
 	signal(SIGINT, signal_handler);
 	shell_runtime(infos);
+	export_history(infos);
 	return (0);
 }
