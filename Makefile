@@ -25,6 +25,7 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/command_interpreter/pipe.c 				\
 		src/command_interpreter/binary.c 			\
 		src/command_interpreter/file_redirect.c 		\
+		src/command_interpreter/redirection_ps_rooting.c 		\
 		src/command_lexer/tokenizer.c 				\
 		src/command_lexer/destroy.c 				\
 		src/command_lexer/str_utils.c 				\
@@ -49,6 +50,7 @@ SRC	=	src/process_manager/manage_processes.c			\
 		src/prompt/prompt.c 					\
 		src/tree_manager/create.c 				\
 		src/binary/exec_binary.c 				\
+		src/binary/simple_execution_rooting.c 				\
 		src/binary/exec_errors.c
 
 

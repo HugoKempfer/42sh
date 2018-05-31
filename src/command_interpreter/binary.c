@@ -6,6 +6,7 @@
 */
 
 #include "redirections.h"
+#include "built_in_exec.h"
 #include "binary_exec.h"
 #include "binary_tree.h"
 #include "42sh.h"
@@ -14,6 +15,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+static void handle_builtin_ps(built_in_fptr *func, shell_info_t *infos,
+		char **command, int pipes[3])
+{
+	if (pipes[IN] != -1) {
+		if (dup2(pipes[IN], 0) == -1) {
+			return;
+		}
+		close(pipes[IN]);
+	}
+	if (pipes[OUT] != -1) {
+		if (dup2(pipes[OUT], 1) == -1) {
+			return;
+		}
+		close(pipes[OUT]);
+	}
+	if (pipes[TO_CLOSE] != -1) {
+		close(pipes[TO_CLOSE]);
+	}
+	exit(func(infos, command));
+}
+
+int redirection_exec_builtin(built_in_fptr *func, shell_info_t *infos,
+		char **command, int pipes[3])
+{
+	pid_t child_pid = fork();
+
+	if (!child_pid) {
+		handle_builtin_ps(func, infos, command, pipes);
+		return (false);
+	}
+	return (true);
+}
 
 static void exec_process(char **env, char *binary_path, char **command,
 		int pipes[3])

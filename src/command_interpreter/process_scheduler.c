@@ -18,6 +18,8 @@
 
 int process_manager(shell_info_t *infos);
 int build_trees_from_tokens(llist_t *tokens, shell_info_t *shell_info);
+int simple_exec_rooting(char **command, shell_info_t *infos,
+		tree_metadata_t *meta);
 
 static const redirection_func_index_t REDIRECTORS[] = {
 	{&redirection_pipe, PIPE},
@@ -40,29 +42,17 @@ redirector_pt_t *get_redirector_func(enum tnode_type type)
 	return (NULL);
 }
 
-/*int execute_command(shell_info_t *infos, tree_metadata_t *meta)
-{
-	char **command = meta->head->left->data.str;
-	built_in_fptr *fptr = get_builtin_func(command[0]);
-
-	if (fptr && !fptr(infos, command)) {
-		return (false);
-	} else if (!fptr && !exec_binary(command, infos, meta)) {
-		return (false);
-	}
-	return (true);
-}
-*/
 int process_tree(shell_info_t *infos, tree_metadata_t *meta)
 {
 	int pfd[2]= {-1, -1};
 	redirector_pt_t *function;
 	tnode_t *head = meta->head;
+	char **command = head->left->data.str;
 
 	function = get_redirector_func(head->left->data.type);
 	if (!function || !function(head->left, infos, pfd, meta)) {
 		if (head->left->data.type == COMMAND) {
-			return (exec_binary(head->left->data.str, infos, meta));
+			return (simple_exec_rooting(command, infos, meta));
 		}
 		return (false);
 	}

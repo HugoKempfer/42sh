@@ -7,6 +7,7 @@
 
 #include "42sh.h"
 #include "binary_exec.h"
+#include "built_in_exec.h"
 #include "metadata.h"
 #include "str_manip.h"
 #include "shell_path.h"
@@ -92,6 +93,8 @@ int get_ps_status(pid_t pid, shell_info_t *infos, tree_metadata_t *meta)
 	if (WIFEXITED(status)) {
 		meta->return_code = WEXITSTATUS(status);
 		return (true);
+	} else {
+		meta->return_code = 84;
 	}
 	if (WIFSIGNALED(status)) {
 		return (handle_ps_errors(status, infos, meta));
