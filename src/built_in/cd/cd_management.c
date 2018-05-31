@@ -8,6 +8,8 @@
 #include "42sh.h"
 #include "str_manip.h"
 #include "shell_path.h"
+#include "str_manip.h"
+#include "tools.h"
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -16,49 +18,35 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-static int reset_path_var_env(llist_t *env, char *var_name, char *var_path)
-{
-	lnode_t *var = NULL;
-	char *new_var_path = NULL;
 
-	var = env_get_node(env, var_name);
-	if (var) {
-		free(var->data);
-		new_var_path = str_concat((char*[]){var_name, var_path, NULL});
-		if (!new_var_path) {
+static char *get_path_home(llist_t *env, path_t *paths_var, char *cmd)
+{
+	lnode_t *home_var = NULL;
+	char *path = NULL;
+
+	home_var = env_get_node(env, "HOME=");
+	if (home_var) {
+		path = (char*)home_var->data + strlen("HOME=");
+	} else {
+		path = paths_var->home;
+	}
+	if (cmd) {
+		path = str_concat((char *[]){paths_var->home, cmd + 1, NULL});
+		if (!path) {
 			return (false);
 		}
-		var->data = new_var_path;
 	}
-	return (true);
-}
-
-static int reset_paths_var(path_t *paths_var, llist_t *env)
-{
-	free(paths_var->oldpwd);
-	paths_var->oldpwd = strdup(paths_var->pwd);
-	free(paths_var->pwd);
-	paths_var->pwd = getcwd(NULL, 0);
-	if (!reset_path_var_env(env, "PWD=", paths_var->pwd)) {
-		return (false);
-	}
-	if (!reset_path_var_env(env, "OLDPWD=", paths_var->oldpwd)) {
-		return (false);
-	}
-	return (true);
+	return (path);
 }
 
 static char *chdir_path(llist_t *env, path_t *paths_var, char *command)
 {
 	char *path = NULL;
-	lnode_t *home_var = NULL;
 
-	if (command == NULL || !strcmp(command, "~")) {
-		home_var = env_get_node(env, "HOME=");
-		if (home_var) {
-			path = (char*)home_var->data + strlen("HOME=");
-		} else {
-			path = paths_var->home;
+	if (command == NULL || command[0] == '~') {
+		path = get_path_home(env, paths_var, command);
+		if (!path) {
+			return (false);
 		}
 	}
 	else if (!strcmp(command, "-")) {
@@ -69,18 +57,30 @@ static char *chdir_path(llist_t *env, path_t *paths_var, char *command)
 	return (path);
 }
 
+int error_gestion(int chdir_value, char **command)
+{
+	if (size_dbl_tab(command) > 2) {
+		fprintf(stderr, "cd: Too many arguments.\n");
+		return (false);
+	}
+	if (chdir_value == -1 && errno == ENOENT) {
+		fprintf(stderr, "%s: No such file or directory.\n",
+			command[1]);
+		return (false);
+	}
+	if (chdir_value == -1) {
+		fprintf(stderr, "%s: Not a directory.\n", command[1]);
+		return (false);
+	}
+	return (true);
+}
+
 int cd_management(shell_info_t *shell, char **command)
 {
 	char *path = chdir_path(shell->env, shell->path, command[1]);
 	int chdir_value = chdir(path);
 
-	if (chdir_value == -1 && errno == ENOENT) {
-		fprintf(stderr, "%s: Aucun fichier ou dossier de ce type.\n",
-			command[1]);
-		return (false);
-	}
-	if (chdir_value == -1) {
-		fprintf(stderr, "%s: N'est pas un dossier.\n", command[1]);
+	if (!error_gestion(chdir_value, command)) {
 		return (false);
 	}
 	if (!reset_paths_var(shell->path, shell->env)) {

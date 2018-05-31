@@ -48,7 +48,7 @@ int my_env(shell_info_t *infos, char **command)
 
 	if (nb_args > 1) {
 		fprintf(stderr, "env: « %s »: "
-		"Aucun fichier ou dossier de ce type\n", command[1]);
+		"No such file or directory\n", command[1]);
 		return (false);
 	}
 	while (node) {
